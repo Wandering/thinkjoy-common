@@ -82,6 +82,8 @@ configure(subprojects.findAll{it.name.contains('war')}){
 
 dependencies{
     compile 'org.mybatis:mybatis:3.2.2'
+
+    compile 'org.springframework:spring-beans:4.1.0.RELEASE'
 }
 
 
