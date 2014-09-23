@@ -2,6 +2,8 @@ package cn.thinkjoy.common.service.impl;
 
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.view.BizData4Page;
+import cn.thinkjoy.common.service.IDaoAware;
+import cn.thinkjoy.common.service.IDataPermAware;
 import cn.thinkjoy.common.service.IDataPermService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -9,14 +11,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 分页处理的抽象实现
+ * 分页处理的抽象实现，继承自baseService，具备业务模型的基本业务逻辑处理
  * <p/>
  * 创建时间: 14-9-3 下午10:21<br/>
  *
  * @author qyang
  * @since v0.0.1
  */
-public abstract class AbstractPageService<D extends IBaseDAO, T>{
+public abstract class AbstractPageService<D extends IBaseDAO, T> extends AbstractBaseService implements IDataPermAware{
     @Autowired
     private IDataPermService dataPermService;
 
@@ -45,16 +47,4 @@ public abstract class AbstractPageService<D extends IBaseDAO, T>{
 
         return bizData4Page;
     }
-
-    /**
-     * 业务主对象dao
-     * @return
-     */
-    protected abstract D getDao();
-
-    /**
-     * 是否进行数据权限
-     * @return true 进行数据权限过滤
-     */
-    protected abstract boolean getEnableDataPerm();
 }
