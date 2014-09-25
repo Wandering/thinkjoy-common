@@ -4,6 +4,7 @@ import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.view.BizData4Page;
 import cn.thinkjoy.common.service.IDataPermAware;
 import cn.thinkjoy.common.service.IDataPermService;
+import cn.thinkjoy.common.service.IPageService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -17,11 +18,12 @@ import java.util.Map;
  * @author qyang
  * @since v0.0.1
  */
-public abstract class AbstractPageService<D extends IBaseDAO, T> extends AbstractBaseService implements IDataPermAware{
+public abstract class AbstractPageService<D extends IBaseDAO, T> extends AbstractBaseService implements IPageService<T>, IDataPermAware{
     @Autowired
     private IDataPermService dataPermService;
 
-    public BizData4Page doQueryPageByDataPerm(String resUri, Map<String, Object> conditions, int curPage, int offset, int rows) {
+    @Override
+    public BizData4Page queryPageByDataPerm(String resUri, Map<String, Object> conditions, int curPage, int offset, int rows) {
         if(getEnableDataPerm()) { //需要进行数据权限处理
             String whereSql = dataPermService.makeDataPermSql(resUri);
             if (whereSql != null) {
