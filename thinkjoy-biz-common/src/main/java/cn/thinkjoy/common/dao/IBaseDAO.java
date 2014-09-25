@@ -90,7 +90,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      *            进行对象匹配的属性值
      * @return 返回泛型参数类型的对象集合，如何取到泛型类型参数，请参看{@link #getEntityClass()}
      */
-    public List<T> findList(String property, Object value);
+    public List<T> findList(@Param("property") String property, @Param("value") Object value);
 
     /**
      * 根据传入的泛型参数类型查询该类型对应表中的所有数据，返回一个集合对象
