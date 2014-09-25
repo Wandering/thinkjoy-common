@@ -15,7 +15,7 @@ import java.util.Map;
 public interface IBaseDAO<T extends BaseDomain> {
 
     /**
-     * 保存单一对象，如果要保存多个对象集合，请参看{@link #insertList(java.util.List)}
+     * 保存单一对象，如果要保存多个对象集合，请参看{@link #insert(T)}
      *
      * @param entity
      */

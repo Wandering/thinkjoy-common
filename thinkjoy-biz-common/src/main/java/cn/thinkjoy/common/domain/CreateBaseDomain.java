@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2013-2014, thinkjoy Inc. All Rights Reserved.
  *
- * Project Name: tecc-common
+ * Project Name: tecc-cn.thinkjoy.common
  * $Id: CreateBaseDomain.java 2014年4月14日 下午10:40:25 $
  */
 package cn.thinkjoy.common.domain;

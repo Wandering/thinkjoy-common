@@ -1,7 +1,6 @@
 package cn.thinkjoy.common.service;
 
 import cn.thinkjoy.common.domain.BaseDomain;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;

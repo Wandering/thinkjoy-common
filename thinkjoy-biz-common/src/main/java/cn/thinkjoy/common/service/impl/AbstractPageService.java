@@ -2,7 +2,6 @@ package cn.thinkjoy.common.service.impl;
 
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.view.BizData4Page;
-import cn.thinkjoy.common.service.IDaoAware;
 import cn.thinkjoy.common.service.IDataPermAware;
 import cn.thinkjoy.common.service.IDataPermService;
 import org.springframework.beans.factory.annotation.Autowired;

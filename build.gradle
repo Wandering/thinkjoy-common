@@ -60,11 +60,11 @@ subprojects{
         file("src/main/scripts").mkdirs()
 
         /** 填充文件，便于git提交 */
-        file("src/main/java/cn/thinkjoy/common").mkdirs()
-        file("src/main/java/cn/thinkjoy/common/package-info.java").createNewFile()
+        file("src/main/java/cn/thinkjoy/cn.thinkjoy.common").mkdirs()
+        file("src/main/java/cn/thinkjoy/cn.thinkjoy.common/package-info.java").createNewFile()
 
-        file("src/test/java/cn/thinkjoy/common").mkdirs()
-        file("src/test/java/cn/thinkjoy/common/package-info.java").createNewFile()
+        file("src/test/java/cn/thinkjoy/cn.thinkjoy.common").mkdirs()
+        file("src/test/java/cn/thinkjoy/cn.thinkjoy.common/package-info.java").createNewFile()
         file("src/test/resources/spring.xml").createNewFile()
     }
 
@@ -92,9 +92,7 @@ configure(subprojects.findAll{it.name.contains('war')}){
 }
 
 dependencies{
-    compile 'org.mybatis:mybatis:3.2.2'
 
-    compile 'org.springframework:spring-beans:4.1.0.RELEASE'
 }
 
 

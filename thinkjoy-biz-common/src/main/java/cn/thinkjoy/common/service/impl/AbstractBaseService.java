@@ -1,10 +1,8 @@
 package cn.thinkjoy.common.service.impl;
 
-import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.service.IBaseService;
 import cn.thinkjoy.common.service.IDaoAware;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
