@@ -15,7 +15,7 @@ import java.util.Map;
 public interface IBaseDAO<T extends BaseDomain> {
 
     /**
-     * 保存单一对象，如果要保存多个对象集合，请参看{@link #insert(T)}
+     * 保存单一对象，如果要保存多个对象集合，请参看{@link #insertList(java.util.List)}
      *
      * @param entity
      */
@@ -30,6 +30,8 @@ public interface IBaseDAO<T extends BaseDomain> {
     public void update(T entity);
 
     public void updateMap(@Param("map") Map<String, Object> entityMap);
+
+    public void insertMap(@Param("map") Map<String, Object> entityMap);
 
     /**
      * 更新对象,如果属性为空，会进行对应的属性值更新,如果有属性不想更新为null，请参看{@link #update(T)}
