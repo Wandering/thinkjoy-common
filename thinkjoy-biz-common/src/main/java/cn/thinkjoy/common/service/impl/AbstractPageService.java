@@ -1,6 +1,7 @@
 package cn.thinkjoy.common.service.impl;
 
 import cn.thinkjoy.common.dao.IBaseDAO;
+import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.domain.view.BizData4Page;
 import cn.thinkjoy.common.service.IDataPermAware;
 import cn.thinkjoy.common.service.IDataPermService;
@@ -18,7 +19,7 @@ import java.util.Map;
  * @author qyang
  * @since v0.0.1
  */
-public abstract class AbstractPageService<D extends IBaseDAO, T> extends AbstractBaseService implements IPageService<T>, IDataPermAware{
+public abstract class AbstractPageService<D extends IBaseDAO,T extends BaseDomain> extends AbstractBaseService<D,T> implements IPageService<D,T>, IDataPermAware{
     @Autowired
     private IDataPermService dataPermService;
 

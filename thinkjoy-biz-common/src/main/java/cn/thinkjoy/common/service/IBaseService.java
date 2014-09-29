@@ -1,5 +1,6 @@
 package cn.thinkjoy.common.service;
 
+import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,8 +15,9 @@ import java.util.Map;
  * @author qyang
  * @since v0.0.1
  */
-public interface IBaseService<T extends BaseDomain> {
+public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
 
+    public D getDao();
 
     /**
      * 新增一条数据

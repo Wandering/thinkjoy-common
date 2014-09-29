@@ -18,14 +18,17 @@ import java.util.Map;
  * @author qyang
  * @since v0.0.1
  */
-public abstract class AbstractBaseService<T extends BaseDomain> implements IBaseService, IDaoAware{
+public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomain> implements IBaseService<D,T>, IDaoAware<D,T>{
+//public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomain> implements IBaseService<D,T>{
+
+
     @Override
-    public void add(BaseDomain entity) {
+    public void add(T entity) {
         getDao().insert(entity);
     }
 
     @Override
-    public void edit(BaseDomain entity) {
+    public void edit(T entity) {
         getDao().update(entity);
     }
 
@@ -35,22 +38,22 @@ public abstract class AbstractBaseService<T extends BaseDomain> implements IBase
     }
 
     @Override
-    public BaseDomain view(Long id) {
-        return getDao().fetch(id);
+    public T view(Long id) {
+        return (T)getDao().fetch(id);
     }
 
     @Override
-    public void insert(BaseDomain entity) {
+    public void insert(T entity) {
         getDao().insert(entity);
     }
 
     @Override
-    public void update(BaseDomain entity) {
+    public void update(T entity) {
         getDao().update(entity);
     }
 
     @Override
-    public void updateNull(BaseDomain entity) {
+    public void updateNull(T entity) {
         getDao().updateNull(entity);
 
     }
@@ -68,13 +71,13 @@ public abstract class AbstractBaseService<T extends BaseDomain> implements IBase
     }
 
     @Override
-    public BaseDomain fetch(Long id) {
-        return getDao().fetch(id);
+    public T fetch(Long id) {
+        return (T)getDao().fetch(id);
     }
 
     @Override
-    public BaseDomain findOne(@Param("property") String property, @Param("value") Object value) {
-        return getDao().findOne(property,value);
+    public T findOne(@Param("property") String property, @Param("value") Object value) {
+        return (T)getDao().findOne(property,value);
     }
 
     @Override
@@ -98,7 +101,7 @@ public abstract class AbstractBaseService<T extends BaseDomain> implements IBase
     }
 
     @Override
-    public void updateOrSave(BaseDomain entity, Long id) {
+    public void updateOrSave(T entity, Long id) {
         if(id!=null&&!StringUtils.isEmpty(id))
         {
            getDao().update(entity);
@@ -110,8 +113,8 @@ public abstract class AbstractBaseService<T extends BaseDomain> implements IBase
     }
 
     @Override
-    public BaseDomain selectOne(String mapperId, Object obj) {
-        return getDao().selectOne(mapperId,obj);
+    public T selectOne(String mapperId, Object obj) {
+        return (T)getDao().selectOne(mapperId,obj);
     }
 
     @Override
@@ -125,8 +128,8 @@ public abstract class AbstractBaseService<T extends BaseDomain> implements IBase
     }
 
     @Override
-    public BaseDomain queryOne(Map condition) {
-        return getDao().queryOne(condition);
+    public T queryOne(Map condition) {
+        return (T)getDao().queryOne(condition);
     }
 
     @Override

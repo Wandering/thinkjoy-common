@@ -1,5 +1,7 @@
 package cn.thinkjoy.common.service;
 
+import cn.thinkjoy.common.dao.IBaseDAO;
+import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.domain.view.BizData4Page;
 
 import java.util.Map;
@@ -12,7 +14,8 @@ import java.util.Map;
  * @author qyang
  * @since v0.0.1
  */
-public interface IPageService<T> {
+//public interface IPageService<T> {
+public interface IPageService<D extends IBaseDAO,T extends BaseDomain> {
     /**
      * 数据权限后的分页数据获取
      * @param resUri

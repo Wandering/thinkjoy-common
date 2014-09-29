@@ -11,6 +11,6 @@ import cn.thinkjoy.common.domain.BaseDomain;
  * @author qyang
  * @since v0.0.1
  */
-public interface IDaoAware<T extends BaseDomain> {
-    public IBaseDAO getDao();
+public interface IDaoAware<D extends IBaseDAO,T extends BaseDomain> {
+    public D getDao();
 }
