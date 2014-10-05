@@ -5,7 +5,7 @@ package cn.thinkjoy.common.exception;
  * ==包装成本异常需要log记录原始msg==
  * Created by qyang on 14-6-17.
  */
-public class BizException extends Exception {
+public class BizException extends RuntimeException {
     /** 异常码 例如： 0010001 业务异常，业务模块01的0001错误（0业务异常、1系统异常）*/
     private String errorCode;
     /** 对用户友好的错误信息 */

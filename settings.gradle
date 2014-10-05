@@ -3,3 +3,5 @@ include 'thinkjoy-io-common'
 
 include 'thinkjoy-biz-common'
 
+include 'thinkjoy-mu-common'
+

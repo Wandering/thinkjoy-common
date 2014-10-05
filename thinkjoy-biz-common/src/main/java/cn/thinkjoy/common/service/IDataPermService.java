@@ -1,7 +1,7 @@
 package cn.thinkjoy.common.service;
 
 /**
- * 数据权限接口   （业务相关接口  TODO 迁移到对应的特定业务场景common工程里）
+ * 数据权限接口   （业务相关接口）
  * <p/>
  * 创建时间: 14-8-16 下午10:20<br/>
  *

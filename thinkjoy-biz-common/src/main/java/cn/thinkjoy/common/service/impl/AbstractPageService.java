@@ -19,18 +19,12 @@ import java.util.Map;
  * @author qyang
  * @since v0.0.1
  */
-public abstract class AbstractPageService<D extends IBaseDAO,T extends BaseDomain> extends AbstractBaseService<D,T> implements IPageService<D,T>, IDataPermAware{
-    @Autowired
-    private IDataPermService dataPermService;
+public abstract class AbstractPageService<D extends IBaseDAO,T extends BaseDomain> extends AbstractBaseService<D,T> implements IPageService<D,T>{
+
 
     @Override
     public BizData4Page queryPageByDataPerm(String resUri, Map<String, Object> conditions, int curPage, int offset, int rows) {
-        if(getEnableDataPerm()) { //需要进行数据权限处理
-            String whereSql = dataPermService.makeDataPermSql(resUri);
-            if (whereSql != null) {
-                conditions.put("whereSql", whereSql);
-            }
-        }
+
 
         List<T> mainData = getDao().queryPage(conditions, offset, rows);
         int records =  getDao().count(conditions);

@@ -23,85 +23,85 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
 
 
     @Override
-    public void add(T entity) {
+    public final void add(T entity) {
         getDao().insert(entity);
     }
 
     @Override
-    public void edit(T entity) {
+    public final void edit(T entity) {
         getDao().update(entity);
     }
 
     @Override
-    public void delete(Long id) {
+    public final void delete(Long id) {
         getDao().deleteById(id);
     }
 
     @Override
-    public T view(Long id) {
+    public final T view(Long id) {
         return (T)getDao().fetch(id);
     }
 
     @Override
-    public void insert(T entity) {
+    public final void insert(T entity) {
         getDao().insert(entity);
     }
 
     @Override
-    public void update(T entity) {
+    public final void update(T entity) {
         getDao().update(entity);
     }
 
     @Override
-    public void updateNull(T entity) {
+    public final void updateNull(T entity) {
         getDao().updateNull(entity);
 
     }
 
     @Override
-    public void deleteById(Long id) {
+    public final void deleteById(Long id) {
 
         getDao().deleteById(id);
     }
 
     @Override
-    public void deleteByProperty(String property, Object value) {
+    public final void deleteByProperty(String property, Object value) {
         getDao().deleteByProperty(property,value);
 
     }
 
     @Override
-    public T fetch(Long id) {
+    public final T fetch(Long id) {
         return (T)getDao().fetch(id);
     }
 
     @Override
-    public T findOne(@Param("property") String property, @Param("value") Object value) {
+    public final T findOne(@Param("property") String property, @Param("value") Object value) {
         return (T)getDao().findOne(property,value);
     }
 
     @Override
-    public List findList(String property, Object value) {
+    public final List findList(String property, Object value) {
         return getDao().findList(property,value);
     }
 
     @Override
-    public List findAll() {
+    public final List findAll() {
        return getDao().findAll();
     }
 
     @Override
-    public List like(String property, Object value) {
+    public final List like(String property, Object value) {
         return getDao().like(property,value);
     }
 
     @Override
-    public Long selectMaxId() {
+    public final Long selectMaxId() {
         return getDao().selectMaxId();
     }
 
     @Override
-    public void updateOrSave(T entity, Long id) {
+    public final void updateOrSave(T entity, Long id) {
         if(id!=null&&!StringUtils.isEmpty(id))
         {
            getDao().update(entity);
@@ -113,52 +113,52 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
     }
 
     @Override
-    public T selectOne(String mapperId, Object obj) {
+    public final T selectOne(String mapperId, Object obj) {
         return (T)getDao().selectOne(mapperId,obj);
     }
 
     @Override
-    public List selectList(String mapperId, Object obj) {
+    public final List selectList(String mapperId, Object obj) {
         return getDao().selectList(mapperId,obj);
     }
 
     @Override
-    public int count(Map condition) {
+    public final int count(Map condition) {
        return getDao().count(condition);
     }
 
     @Override
-    public T queryOne(Map condition) {
+    public final T queryOne(Map condition) {
         return (T)getDao().queryOne(condition);
     }
 
     @Override
-    public List queryList(@Param("condition") Map condition, @Param("orderBy") String orderBy, @Param("sortBy") String sortBy) {
+    public final List queryList(@Param("condition") Map condition, @Param("orderBy") String orderBy, @Param("sortBy") String sortBy) {
         return getDao().queryList(condition,orderBy,sortBy);
     }
 
     @Override
-    public List queryPage(@Param("condition") Map condition, @Param("offset") int offset, @Param("rows") int rows) {
+    public final List queryPage(@Param("condition") Map condition, @Param("offset") int offset, @Param("rows") int rows) {
        return getDao().queryPage(condition,offset,rows);
     }
 
     @Override
-    public void deleteByCondition(Map condition) {
+    public final void deleteByCondition(Map condition) {
         getDao().deleteByCondition(condition);
     }
 
     @Override
-    public void updateMap(@Param("map") Map entityMap) {
+    public final void updateMap(@Param("map") Map entityMap) {
         getDao().updateMap(entityMap);
     }
 
     @Override
-    public void insertMap(@Param("map") Map entityMap) {
+    public final void insertMap(@Param("map") Map entityMap) {
         getDao().insertMap(entityMap);
     }
 
     @Override
-    public List listByPage(Map condition, int offset, int rows) {
+    public final List listByPage(Map condition, int offset, int rows) {
         return getDao().queryPage(condition, offset, rows);
     }
 

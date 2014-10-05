@@ -19,12 +19,12 @@ import java.util.Date;
  */
 public class CreateBaseDomain extends BaseDomain {
     /** 创建人及创建时间 */
-    private long              creator;
-    private long              createDate;
+    private long              creator = 0L;
+    private long              createDate = System.currentTimeMillis();
 
     /** 最后修改人及最后修改时间 */
-    private long              lastModifier;
-    private long              lastModDate;
+    private long              lastModifier = 0L;
+    private long              lastModDate = System.currentTimeMillis();
 
     public long getCreator() {
         return creator;
