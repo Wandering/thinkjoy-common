@@ -31,11 +31,11 @@ public class SecurityFilter implements Filter {
         DynConfigClient dynConfigClient = DynConfigClientFactory.getClient();
 
         try {
-            host = dynConfigClient.getConfig("common", "uchost");
+            host = dynConfigClient.getConfig("ucm", "common", "uchost");
         } catch (Exception e) {
             //TODO
         }
-        dynConfigClient.registerListeners("common", "uchost", new IChangeListener() {
+        dynConfigClient.registerListeners("ucm", "common", "uchost", new IChangeListener() {
             @Override
             public Executor getExecutor() {
                 return Executors.newSingleThreadExecutor();

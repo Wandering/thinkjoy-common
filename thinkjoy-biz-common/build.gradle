@@ -3,5 +3,10 @@ dependencies {
 
     compile 'org.mybatis:mybatis:3.2.2'
 
+    compile 'commons-lang:commons-lang:2.6'
+
     compile "org.springframework:spring-beans:$springVersion"
+    compile "org.springframework:spring-context:$springVersion"
+
+    compile 'cn.thinkjoy.cloudstack:cs-dynconfig-client:0.0.7-SNAPSHOT'
 }
