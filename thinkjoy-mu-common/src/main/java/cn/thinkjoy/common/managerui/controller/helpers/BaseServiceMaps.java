@@ -51,15 +51,16 @@ public class BaseServiceMaps {
     protected final Map<String, IBaseService> serviceMap = Maps.newHashMap();
 
     protected void init(){
-            serviceMap.put("dataModel",dataModelService);
+        //key 全部为小写
+            serviceMap.put("datamodel",dataModelService);
             serviceMap.put("model",modelService);
             serviceMap.put("resource",resourceService);
-            serviceMap.put("resourceAction",resourceActionService);
-            serviceMap.put("resourceGrid",resourceGridService);
+            serviceMap.put("resourceaction",resourceActionService);
+            serviceMap.put("resourcegrid",resourceGridService);
             serviceMap.put("role",roleService);
-            serviceMap.put("roleResource",roleResourceService);
-            serviceMap.put("roleUser",roleUserService);
-            serviceMap.put("userData",userDataService);
+            serviceMap.put("roleresource",roleResourceService);
+            serviceMap.put("roleuser",roleUserService);
+            serviceMap.put("userdata",userDataService);
     }
 
     public IBaseService get(String mainObj){

@@ -49,6 +49,7 @@ public abstract class AbstractAdminController<T extends IPageService> implements
      * @return
      */
     protected abstract T getMainService();
+    protected abstract String getBizSys();
     protected abstract String getMainObjName();
     protected abstract String getViewTitle();
 
@@ -69,6 +70,7 @@ public abstract class AbstractAdminController<T extends IPageService> implements
         List<ResourceGrid> resourceGridList = resourceGridService.findList("moduleName",getMainObjName());
         mav.addObject("cols", resourceGridList);
 
+        mav.addObject("bizSys", getBizSys());
         mav.addObject("mainObj", getMainObjName());
         mav.addObject("title", getViewTitle());
 

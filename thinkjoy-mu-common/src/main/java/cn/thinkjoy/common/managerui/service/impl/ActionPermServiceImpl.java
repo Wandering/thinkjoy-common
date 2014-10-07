@@ -40,7 +40,7 @@ public class ActionPermServiceImpl implements IActionPermService {
         List<ResourceAction> resourceActionList = permissionDAO.getResActionByPerm(params);
         Set<String> actionSet = Sets.newHashSet();
         for(ResourceAction resourceAction : resourceActionList){
-            actionSet.add(resourceAction.getName());
+            actionSet.add(resourceAction.getActionAlias());
         }
         return actionSet;
     }
