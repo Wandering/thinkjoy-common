@@ -31,6 +31,17 @@ public interface IBaseDAO<T extends BaseDomain> {
 
     public void updateMap(@Param("map") Map<String, Object> entityMap);
 
+    /**
+     * 通用的更新操作
+     * @param updateMap 需要更新的值
+     * @param conditionMap 需要被更新的条件
+     */
+    public void updateByCondition(@Param("update") Map<String, Object> updateMap, @Param("condition") Map<String, Object> conditionMap);
+
+    /**
+     * map类型数据的新增
+     * @param entityMap
+     */
     public void insertMap(@Param("map") Map<String, Object> entityMap);
 
     /**
