@@ -15,6 +15,8 @@ public class Response implements Serializable {
     private String rtnCode;
     /** 错误信息 有业务异常的时候，来源于BizException；否则网关出错（系统异常），使用通用异常 */
     private String msg;
+    /** 错误堆栈信息，便于排查问题   正常是调试模式下该字段才返回信息 */
+    private String developMsg;
     /** 错误说明url 有业务异常的时候，来源于BizException；否则网关出错（系统异常），使用通用异常 */
     private String uri;
     /** 返回的业务 有业务异常的时候，来源于BizException；否则网关出错（系统异常），使用通用异常 */
@@ -23,6 +25,7 @@ public class Response implements Serializable {
     private Response(ResponseBuilder builder) {
         this.rtnCode = builder.rtnCode;
         this.msg = builder.msg;
+        this.developMsg = builder.developMsg;
         this.uri = builder.uri;
         this.bizData = builder.bizData;
     }
@@ -62,12 +65,14 @@ public class Response implements Serializable {
     public static class ResponseBuilder {
         private String rtnCode;
         private String msg;
+        private String developMsg;
         private String uri;
         private Object bizData;
 
         public ResponseBuilder(BizException bizException) {
             this.rtnCode = bizException.getErrorCode();
             this.msg = bizException.getMsg();
+            this.developMsg = bizException.getDevelopMsg();
             this.uri = bizException.getUri();
         }
 
@@ -83,6 +88,11 @@ public class Response implements Serializable {
 
         public ResponseBuilder msg(String msg) {
             this.msg = msg;
+            return this;
+        }
+
+        public ResponseBuilder developMsg(String developMsg) {
+            this.developMsg = developMsg;
             return this;
         }
 

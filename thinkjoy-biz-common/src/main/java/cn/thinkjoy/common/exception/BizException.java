@@ -10,19 +10,28 @@ public class BizException extends RuntimeException {
     private String errorCode;
     /** 对用户友好的错误信息 */
     private String msg;
+    /** 错误堆栈信息，便于排查问题 */
+    private String developMsg;
     /** 表示这个错误相关的web页面，可以帮助开发人员获取更多的错误的信息 */
     private String uri;
 
-    public BizException(String errorCode, String msg) {
-        super(msg);
+    public BizException(String errorCode, String message) {
         this.errorCode = errorCode;
-        this.msg = msg;       
+        this.msg = message;
     }
 
-    public BizException(String errorCode, String msg, String uri) {
-        super(msg);
-        this.errorCode = errorCode;
-        this.msg = msg;
+    public BizException(String errorCode, String message, String developMsg) {
+        this(errorCode, message);
+        this.developMsg = developMsg;
+    }
+
+    public BizException(String errorCode, String message, Throwable cause) {
+        this(errorCode, message);
+        this.developMsg = cause.getMessage();
+    }
+
+    public BizException(String errorCode, String message, String developMsg, String uri) {
+        this(errorCode, message, developMsg);
         this.uri = uri;
     }
 
@@ -40,6 +49,14 @@ public class BizException extends RuntimeException {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public String getDevelopMsg() {
+        return developMsg;
+    }
+
+    public void setDevelopMsg(String developMsg) {
+        this.developMsg = developMsg;
     }
 
     public String getUri() {
