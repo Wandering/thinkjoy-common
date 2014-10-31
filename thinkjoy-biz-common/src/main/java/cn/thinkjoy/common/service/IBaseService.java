@@ -2,7 +2,6 @@ package cn.thinkjoy.common.service;
 
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -78,9 +77,9 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
     public void update(T entity);
 
 
-    public void insertMap(@Param("map") Map<String, Object> entityMap);
+    public void insertMap(Map<String, Object> entityMap);
 
-    public void updateMap(@Param("map") Map<String, Object> entityMap);
+    public void updateMap(Map<String, Object> entityMap);
 
     /**
      * 更新对象,如果属性为空，会进行对应的属性值更新,如果有属性不想更新为null，请参看{@link #update(T)}
@@ -128,7 +127,7 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      *            进行对象匹配的属性值
      * @return 返回泛型参数类型对象，如何取到泛型类型参数，请参看{@link #getEntityClass()}
      */
-    public T findOne(@Param("property") String property, @Param("value") Object value);
+    public T findOne(String property, Object value);
 
     /**
      * 根据任意（单一）属性和属性值进行集合查询
@@ -159,7 +158,7 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      *            查询条数
      * @return 返回Pager对象
      */
-    public List<T> queryPage(@Param("condition") Map<String, Object> condition, @Param("offset") int offset, @Param("rows") int rows);
+    public List<T> queryPage(Map<String, Object> condition, int offset, int rows);
 
     /**
      * 根据任意属性和属性值进行对象模糊查询
@@ -179,7 +178,7 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      *            进行查询的条件集合
      * @return 返回泛型参数类型的对象集合，如何取到泛型类型参数，请参看{@link #getEntityClass()}
      */
-    public List<T> queryList(@Param("condition") Map<String, Object> condition, @Param("orderBy") String orderBy, @Param("sortBy") String sortBy);
+    public List<T> queryList(Map<String, Object> condition, String orderBy, String sortBy);
 
     /**
      * 根据条件集合进行指定类型单一对象查询
