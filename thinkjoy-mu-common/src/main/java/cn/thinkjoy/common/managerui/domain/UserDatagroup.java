@@ -18,19 +18,11 @@ import cn.thinkjoy.common.domain.CreateBaseDomain;
 import java.util.*;
 
 public class UserDatagroup extends CreateBaseDomain{
-    private Integer status;
     private Integer datagroupId;
     private Integer userId;
 
 	public UserDatagroup(){
 	}
-    public void setStatus(Integer value) {
-        this.status = value;
-    }
-
-    public Integer getStatus() {
-        return this.status;
-    }
     public void setDatagroupId(Integer value) {
         this.datagroupId = value;
     }

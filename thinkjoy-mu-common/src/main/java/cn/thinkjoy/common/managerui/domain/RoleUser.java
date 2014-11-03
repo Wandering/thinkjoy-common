@@ -18,19 +18,11 @@ import cn.thinkjoy.common.domain.CreateBaseDomain;
 import java.util.*;
 
 public class RoleUser extends CreateBaseDomain{
-    private Integer status;
     private Integer userId;
     private Integer roleId;
 
 	public RoleUser(){
 	}
-    public void setStatus(Integer value) {
-        this.status = value;
-    }
-
-    public Integer getStatus() {
-        return this.status;
-    }
     public void setUserId(Integer value) {
         this.userId = value;
     }

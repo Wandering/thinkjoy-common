@@ -21,7 +21,6 @@ public class Datagroup extends CreateBaseDomain{
     private String name;
     private String number;
     private String description;
-    private Integer status;
 
 	public Datagroup(){
 	}
@@ -45,13 +44,6 @@ public class Datagroup extends CreateBaseDomain{
 
     public String getDescription() {
         return this.description;
-    }
-    public void setStatus(Integer value) {
-        this.status = value;
-    }
-
-    public Integer getStatus() {
-        return this.status;
     }
 
 	public String toString() {

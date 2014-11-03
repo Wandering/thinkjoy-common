@@ -18,7 +18,6 @@ import cn.thinkjoy.common.domain.CreateBaseDomain;
 import java.util.*;
 
 public class ResourceGrid extends CreateBaseDomain{
-    private Integer status;
     private Integer resId;
     private String displayName;
     private String colId;
@@ -32,13 +31,6 @@ public class ResourceGrid extends CreateBaseDomain{
 
 	public ResourceGrid(){
 	}
-    public void setStatus(Integer value) {
-        this.status = value;
-    }
-
-    public Integer getStatus() {
-        return this.status;
-    }
     public void setResId(Integer value) {
         this.resId = value;
     }

@@ -18,20 +18,12 @@ import cn.thinkjoy.common.domain.CreateBaseDomain;
 import java.util.*;
 
 public class Model extends CreateBaseDomain{
-    private Integer status;
     private String name;
     private String tblName;
     private String description;
 
 	public Model(){
 	}
-    public void setStatus(Integer value) {
-        this.status = value;
-    }
-
-    public Integer getStatus() {
-        return this.status;
-    }
     public void setName(String value) {
         this.name = value;
     }

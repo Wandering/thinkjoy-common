@@ -18,19 +18,11 @@ import cn.thinkjoy.common.domain.CreateBaseDomain;
 import java.util.*;
 
 public class DatagroupData extends CreateBaseDomain{
-    private Integer status;
     private Integer dataModelId;
     private Integer dataId;
 
 	public DatagroupData(){
 	}
-    public void setStatus(Integer value) {
-        this.status = value;
-    }
-
-    public Integer getStatus() {
-        return this.status;
-    }
     public void setDataModelId(Integer value) {
         this.dataModelId = value;
     }
