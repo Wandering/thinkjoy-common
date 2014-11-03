@@ -11,4 +11,3 @@ dependencies {
     compile 'cn.thinkjoy.cloudstack:cs-dynconfig-client:0.0.7-SNAPSHOT'
     compile 'cn.thinkjoy.cloudstack:cs-clustermanager-client:0.0.7-SNAPSHOT'
 }
-version = '0.0.3-SNAPSHOT'

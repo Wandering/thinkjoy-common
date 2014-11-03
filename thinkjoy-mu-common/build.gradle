@@ -35,4 +35,3 @@ dependencies {
 
     compile project(':thinkjoy-biz-common')
 }
-version = '0.0.3-SNAPSHOT'
