@@ -35,8 +35,6 @@ public abstract class AbstractAdminController<T extends IPageService> implements
     protected IResourceGridService resourceGridService;
     /** 当前页面的主业务模型  */
     protected String mainObjName;
-    /** 当前页面的标题  */
-    protected String viewTitle;
 
     @Autowired
     private ActionPermHelper actionPermHelper;
@@ -51,7 +49,10 @@ public abstract class AbstractAdminController<T extends IPageService> implements
     protected abstract T getMainService();
     protected abstract String getBizSys();
     protected abstract String getMainObjName();
+    /** 当前页面title */
     protected abstract String getViewTitle();
+    /** 父菜单title */
+    protected abstract String getParentTitle();
 
     protected ModelAndView doRenderMainView(HttpServletRequest request,HttpServletResponse response){
         //request.getRequestURI()
@@ -72,6 +73,7 @@ public abstract class AbstractAdminController<T extends IPageService> implements
 
         mav.addObject("bizSys", getBizSys());
         mav.addObject("mainObj", getMainObjName());
+        mav.addObject("parentTitle", getParentTitle());
         mav.addObject("title", getViewTitle());
 
         //按钮功能权限处理
