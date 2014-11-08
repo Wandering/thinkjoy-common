@@ -101,7 +101,7 @@ public class Response implements Serializable {
             return this;
         }
 
-        public ResponseBuilder bizData(String bizData) {
+        public ResponseBuilder bizData(Object bizData) {
             this.bizData = bizData;
             return this;
         }
