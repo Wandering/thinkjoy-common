@@ -1,7 +1,7 @@
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 
-    compile 'org.mybatis:mybatis:3.2.2'
+    compile "org.mybatis:mybatis:$mybatisVerion"
 
     compile 'commons-lang:commons-lang:2.6'
 
