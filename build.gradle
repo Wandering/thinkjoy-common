@@ -41,7 +41,7 @@ tasks.withType(Compile) {
 /** 此闭包内的声明子类皆可使用 */
 allprojects {
     group = 'cn.thinkjoy.common'
-    version = '0.0.3-SNAPSHOT'
+    version = '0.0.8-SNAPSHOT'
 
     apply plugin: 'java'
     apply plugin: 'idea'
@@ -98,6 +98,9 @@ subprojects{
     configurations {
         provided
         compile.extendsFrom provided
+
+        providedCompile
+        compile.extendsFrom providedCompile
 
         all*.exclude group: 'org.springframework', module: 'spring'
         all*.exclude group: 'asm', module: 'asm'

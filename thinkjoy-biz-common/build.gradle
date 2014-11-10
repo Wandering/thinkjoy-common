@@ -8,6 +8,6 @@ dependencies {
     compile "org.springframework:spring-beans:$springVersion"
     compile "org.springframework:spring-context:$springVersion"
 
-    compile 'cn.thinkjoy.cloudstack:cs-dynconfig-client:0.0.7-SNAPSHOT'
-    compile 'cn.thinkjoy.cloudstack:cs-clustermanager-client:0.0.7-SNAPSHOT'
+    compile "cn.thinkjoy.cloudstack:cs-dynconfig-client:$thinkjoyCloudstackVersion"
+    compile "cn.thinkjoy.cloudstack:cs-clustermanager-client:$thinkjoyCloudstackVersion"
 }

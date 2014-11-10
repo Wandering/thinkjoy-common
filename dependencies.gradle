@@ -1,3 +1,5 @@
 allprojects {
     springVersion = "4.1.0.RELEASE"
+
+    thinkjoyCloudstackVersion = "0.0.8-SNAPSHOT"
 }
