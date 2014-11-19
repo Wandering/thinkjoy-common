@@ -20,6 +20,7 @@ import java.util.*;
 public class DatagroupData extends CreateBaseDomain{
     private Integer dataModelId;
     private Integer dataId;
+	private Integer groupId;
 
 	public DatagroupData(){
 	}
@@ -38,16 +39,25 @@ public class DatagroupData extends CreateBaseDomain{
         return this.dataId;
     }
 
+	public Integer getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
+	}
+
 	public String toString() {
 		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
 			.append("Id",getId())
-			.append("Creator",getCreator())
+			.append("Creator", getCreator())
 			.append("CreateDate",getCreateDate())
 			.append("LastModifier",getLastModifier())
 			.append("LastModDate",getLastModDate())
 			.append("Status",getStatus())
 			.append("DataModelId",getDataModelId())
 			.append("DataId",getDataId())
+			.append("GroupId", getGroupId())
 			.toString();
 	}
 	

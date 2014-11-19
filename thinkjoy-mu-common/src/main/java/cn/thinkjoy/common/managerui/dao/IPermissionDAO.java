@@ -1,5 +1,6 @@
 package cn.thinkjoy.common.managerui.dao;
 
+import cn.thinkjoy.common.managerui.domain.DatagroupData;
 import cn.thinkjoy.common.managerui.domain.Resource;
 import cn.thinkjoy.common.managerui.domain.ResourceAction;
 import org.apache.ibatis.annotations.Param;
@@ -19,4 +20,6 @@ public interface IPermissionDAO {
     public List<Resource> getResByPerm(long userId);
 
     public List<ResourceAction> getResActionByPerm(@Param("condition")Map<String, Object> params);
+
+    public List<DatagroupData> getDataByPerm(@Param("condition")Map<String, Object> params);
 }

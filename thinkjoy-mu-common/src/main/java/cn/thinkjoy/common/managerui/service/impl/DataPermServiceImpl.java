@@ -2,12 +2,10 @@ package cn.thinkjoy.common.managerui.service.impl;
 
 import cn.thinkjoy.common.domain.UserDomain;
 import cn.thinkjoy.common.managerui.dao.IDataModelDAO;
+import cn.thinkjoy.common.managerui.dao.IPermissionDAO;
 import cn.thinkjoy.common.managerui.dao.IResourceDAO;
 import cn.thinkjoy.common.managerui.dao.IUserDataDAO;
-import cn.thinkjoy.common.managerui.domain.DataModel;
-import cn.thinkjoy.common.managerui.domain.Resource;
-import cn.thinkjoy.common.managerui.domain.User;
-import cn.thinkjoy.common.managerui.domain.UserData;
+import cn.thinkjoy.common.managerui.domain.*;
 import cn.thinkjoy.common.service.IDataPermService;
 
 import cn.thinkjoy.common.utils.UserContext;
@@ -34,6 +32,8 @@ public class DataPermServiceImpl implements IDataPermService {
     private IResourceDAO resourceDAO;
     @Autowired
     private IUserDataDAO userDataDAO;
+    @Autowired
+    private IPermissionDAO permissionDAO;
 
     @Override
     public String makeDataPermSql(String resUrl) {
@@ -57,9 +57,10 @@ public class DataPermServiceImpl implements IDataPermService {
         Map<String, Object> paramMap = Maps.newHashMap();
         paramMap.put("dataModelId", dataModel.getModelId());
         paramMap.put("userId", user.getId());
-        List<UserData> dataIds = userDataDAO.queryList(paramMap, null, null);
+        //List<UserData> dataIds = userDataDAO.queryList(paramMap, null, null);
+        List<DatagroupData> dataIds = permissionDAO.getDataByPerm(paramMap);
         StringBuilder stringBuilder = new StringBuilder();
-        for(UserData userData : dataIds){
+        for(DatagroupData userData : dataIds){
             stringBuilder.append(userData.getDataId()).append(",");
         }
         return String.format(formatSql, stringBuilder.deleteCharAt(stringBuilder.length() - 1));
