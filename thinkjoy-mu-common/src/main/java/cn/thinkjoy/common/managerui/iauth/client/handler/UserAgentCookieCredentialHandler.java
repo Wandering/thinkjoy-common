@@ -1,6 +1,6 @@
 package cn.thinkjoy.common.managerui.iauth.client.handler;
 
-import cn.thinkjoy.common.managerui.iauth.client.UCMAuthRequest;
+import cn.thinkjoy.common.managerui.iauth.client.UcmAuthRequest;
 import cn.thinkjoy.common.managerui.iauth.client.EncryptionCookieCredential;
 import cn.thinkjoy.common.managerui.iauth.provider.*;
 import cn.thinkjoy.common.managerui.iauth.client.token.AccessToken;
@@ -77,7 +77,7 @@ public class UserAgentCookieCredentialHandler extends AbstractTokenBundledHandle
             String userKey = credential.getKey();
 
             // 从cookie中获取secret信息
-            Cookie secretCookie = ((UCMAuthRequest)baseRequest).getCookieFromRequest(userKey);
+            Cookie secretCookie = ((UcmAuthRequest)baseRequest).getCookieFromRequest(userKey);
 
             // check cookie
             if (secretCookie == null) {
@@ -95,7 +95,7 @@ public class UserAgentCookieCredentialHandler extends AbstractTokenBundledHandle
             if (!token.getSecret().equals(credential.getSecret())) {
                 return false;
             }
-            ((UCMAuthRequest) baseRequest).setCredential(credential);
+            ((UcmAuthRequest) baseRequest).setCredential(credential);
 
         }
         return true;
@@ -133,7 +133,7 @@ public class UserAgentCookieCredentialHandler extends AbstractTokenBundledHandle
         Cookie secretCookie = new Cookie(credential.getKey(), credential.getSecret());
 //        secretCookie.setDomain(".xy189.cn");
         secretCookie.setPath("/");
-        ((UCMAuthRequest) baseRequest).addCookieToResponse(secretCookie);
+        ((UcmAuthRequest) baseRequest).addCookieToResponse(secretCookie);
         return true;
     }
 

@@ -43,6 +43,7 @@ allprojects {
     group = 'cn.thinkjoy.common'
     version = '0.0.10-SNAPSHOT'
 
+
     apply plugin: 'java'
     apply plugin: 'idea'
     apply plugin: 'eclipse'
@@ -90,6 +91,9 @@ subprojects{
     configurations {
         provided
         compile.extendsFrom provided
+
+        providedCompile
+        compile.extendsFrom providedCompile
 
         all*.exclude group: 'org.springframework', module: 'spring'
         all*.exclude group: 'asm', module: 'asm'

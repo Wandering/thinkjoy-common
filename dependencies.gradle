@@ -1,3 +1,15 @@
 allprojects {
     springVersion = "4.1.0.RELEASE"
+
+    thinkjoyCloudstackVersion = "0.0.8-SNAPSHOT"
+
+    mybatisVerion = "3.2.2"
+
+    mybatisSpringVerion = "1.2.0"
+
+    guavaVersion = "17.0"
+
+    fastjsonVersion = "1.2.0"
+
+    druidVersion = "1.0.7"
 }

@@ -18,7 +18,6 @@ import cn.thinkjoy.common.domain.CreateBaseDomain;
 import java.util.*;
 
 public class DataModel extends CreateBaseDomain{
-    private Integer status;
     private Integer priority;
     private Integer modelId;
     private String assignUrl;
@@ -27,13 +26,6 @@ public class DataModel extends CreateBaseDomain{
 
 	public DataModel(){
 	}
-    public void setStatus(Integer value) {
-        this.status = value;
-    }
-
-    public Integer getStatus() {
-        return this.status;
-    }
     public void setPriority(Integer value) {
         this.priority = value;
     }

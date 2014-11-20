@@ -1,6 +1,5 @@
 package cn.thinkjoy.common.managerui.iauth.client.handler;
 
-import cn.thinkjoy.common.managerui.iauth.client.UCMAuthRequest;
 import cn.thinkjoy.common.managerui.iauth.client.token.EmbedToken;
 import cn.thinkjoy.common.managerui.iauth.client.token.UserStore;
 import cn.thinkjoy.common.managerui.iauth.provider.AbstractTokenHandler;
@@ -13,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.servlet.http.Cookie;
 import java.io.IOException;
 
 /**

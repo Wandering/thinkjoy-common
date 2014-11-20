@@ -45,8 +45,10 @@ public class UcmAuthRequest extends BaseRequest {
     }
 
     public Cookie getCookieFromRequest(String name) {
-
         Cookie[] cookies = getRequest().getCookies();
+        if (cookies == null) {
+            return null;
+        }
         for (Cookie cookie: cookies){
             if (cookie.getName().equalsIgnoreCase(name))
                 return cookie;

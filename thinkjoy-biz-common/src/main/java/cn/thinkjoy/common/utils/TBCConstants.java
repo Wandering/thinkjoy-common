@@ -15,5 +15,9 @@ public class TBCConstants {
     /** 请求成功的CODE */
     public static final String SUCC_CODE = "0000000";
 
+    /** 排序常量 升序 */
+    public static final String ASC = "asc";
 
+    /** 排序常量 降序 */
+    public static final String DESC = "desc";
 }

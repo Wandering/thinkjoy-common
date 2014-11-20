@@ -19,7 +19,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class User extends UserDomain {
     private Integer isAdmin;
 
-    private Integer status;
     private Integer employeeId;
 
 	public User(){
@@ -32,13 +31,6 @@ public class User extends UserDomain {
         return this.isAdmin;
     }
 
-    public void setStatus(Integer value) {
-        this.status = value;
-    }
-
-    public Integer getStatus() {
-        return this.status;
-    }
     public void setEmployeeId(Integer value) {
         this.employeeId = value;
     }

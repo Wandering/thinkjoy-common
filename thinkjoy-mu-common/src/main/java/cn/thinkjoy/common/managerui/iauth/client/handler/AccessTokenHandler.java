@@ -1,14 +1,13 @@
 package cn.thinkjoy.common.managerui.iauth.client.handler;
 
 import cn.thinkjoy.common.managerui.domain.User;
-import cn.thinkjoy.common.managerui.iauth.client.UCMAuthRequest;
+import cn.thinkjoy.common.managerui.iauth.client.UcmAuthRequest;
 import cn.thinkjoy.common.managerui.iauth.client.token.AccessToken;
 import cn.thinkjoy.common.managerui.iauth.client.token.EmbedToken;
 import cn.thinkjoy.common.managerui.iauth.client.token.UserStore;
 import cn.thinkjoy.common.managerui.iauth.provider.*;
 import cn.thinkjoy.common.managerui.iauth.provider.token.Token;
 import cn.thinkjoy.common.managerui.iauth.provider.token.TokenStore;
-import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +74,7 @@ public class AccessTokenHandler extends AbstractTokenBundledHandler {
             }
             principal.setOwner(user);
         }
-        ((UCMAuthRequest) baseRequest).setPrincipal(principal);
+        ((UcmAuthRequest) baseRequest).setPrincipal(principal);
         return true;
     }
 
@@ -99,7 +98,7 @@ public class AccessTokenHandler extends AbstractTokenBundledHandler {
         // 创建principal和access token
         Principal<User> principal = new Principal();
         principal.setOwner(user);
-        ((UCMAuthRequest) baseRequest).setPrincipal(principal);
+        ((UcmAuthRequest) baseRequest).setPrincipal(principal);
 
 
 
@@ -111,7 +110,7 @@ public class AccessTokenHandler extends AbstractTokenBundledHandler {
         Cookie tokenCookie = new Cookie(HTTP_COOKIE_ACCESS_TOKEN, accessToken.getValue());
         //tokenCookie.setDomain(".xy189.cn");
         tokenCookie.setPath("/");
-        ((UCMAuthRequest) baseRequest).addCookieToResponse(tokenCookie);
+        ((UcmAuthRequest) baseRequest).addCookieToResponse(tokenCookie);
 
         baseRequest.setToken(accessToken);
         return true;
@@ -125,7 +124,7 @@ public class AccessTokenHandler extends AbstractTokenBundledHandler {
     @Override
     public Token getTokenFromRequest(BaseRequest baseRequest) {
         // 获取cookie中的token
-        Cookie tokenCookie = ((UCMAuthRequest) baseRequest).getCookieFromRequest(HTTP_COOKIE_ACCESS_TOKEN);
+        Cookie tokenCookie = ((UcmAuthRequest) baseRequest).getCookieFromRequest(HTTP_COOKIE_ACCESS_TOKEN);
 
         if (tokenCookie == null ) {
             return null;

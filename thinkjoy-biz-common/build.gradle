@@ -1,13 +1,13 @@
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 
-    compile 'org.mybatis:mybatis:3.2.2'
+    compile "org.mybatis:mybatis:$mybatisVerion"
 
     compile 'commons-lang:commons-lang:2.6'
 
     compile "org.springframework:spring-beans:$springVersion"
     compile "org.springframework:spring-context:$springVersion"
 
-    compile 'cn.thinkjoy.cloudstack:cs-dynconfig-client:0.0.7-SNAPSHOT'
-    compile 'cn.thinkjoy.cloudstack:cs-clustermanager-client:0.0.7-SNAPSHOT'
+    compile "cn.thinkjoy.cloudstack:cs-dynconfig-client:$thinkjoyCloudstackVersion"
+    compile "cn.thinkjoy.cloudstack:cs-clustermanager-client:$thinkjoyCloudstackVersion"
 }

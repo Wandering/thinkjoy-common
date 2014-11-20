@@ -25,6 +25,7 @@ public class CreateBaseDomain extends BaseDomain {
     /** 最后修改人及最后修改时间 */
     private long              lastModifier = 0L;
     private long              lastModDate = System.currentTimeMillis();
+    private int               status = StatusEnum.N.getCode();
 
     public long getCreator() {
         return creator;
@@ -64,5 +65,13 @@ public class CreateBaseDomain extends BaseDomain {
 
     public Date getLastModDateAsDate() {
         return lastModDate > 0 ? new Date(lastModDate) : null;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }
