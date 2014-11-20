@@ -12,4 +12,7 @@ allprojects {
     fastjsonVersion = "1.2.0"
 
     druidVersion = "1.0.7"
+
+    jedisVersion = "2.1.0"
+
 }

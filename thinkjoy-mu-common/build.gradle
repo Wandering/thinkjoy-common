@@ -32,17 +32,10 @@ dependencies {
     compile 'org.apache.poi:poi-scratchpad:3.11-beta2'
 
     compile "cn.thinkjoy.cloudstack:cs-spring-zkconfig:$thinkjoyCloudstackVersion"
+    compile "cn.thinkjoy.cloudstack:cs-spring-redis:$thinkjoyCloudstackVersion"
+
+    compile "redis.clients:jedis:$jedisVersion"
 
     compile project(':thinkjoy-biz-common')
-<<<<<<< HEAD
     compile project(':thinkjoy-security-common')
-
-    compile 'cn.thinkjoy.cloudstack:cs-spring-redis:1.0'
-    compile 'redis.clients:jedis:2.1.0'
-    compile 'org.springframework:spring-context-support:4.0.5.RELEASE'
-    compile 'org.springframework:spring-tx:3.2.4.RELEASE'
-
 }
-=======
-}
->>>>>>> 07628f5bf6bf5f57caa778cb2c410fdb5b150002
