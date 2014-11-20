@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by Michael on 11/10/14.
  */
-public class UcmAuthRequestFactory implements BaseRequestFactory{
+public class DefaultAuthRequestFactory implements BaseRequestFactory{
 
 
     @Override
     public BaseRequest buildFromHttpServletRequest(HttpServletRequest request, HttpServletResponse response, Authenticator authenticator) {
-        BaseRequest baseRequest = new UcmAuthRequest();
+        BaseRequest baseRequest = new DefaultAuthRequest();
         baseRequest.setRequest(request);
         baseRequest.setResponse(response);
         baseRequest.setAuthenticator(authenticator);

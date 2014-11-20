@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Created by Michael on 11/10/14.
  */
-public class UcmAuthRequest extends BaseRequest {
+public class DefaultAuthRequest extends BaseRequest {
     private Principal<User> principal;
     private Credential credential;
 
