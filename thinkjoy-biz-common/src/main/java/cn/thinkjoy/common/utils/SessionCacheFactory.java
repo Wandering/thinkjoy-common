@@ -11,6 +11,7 @@ import cn.thinkjoy.common.domain.UserDomain;
  * @author qyang
  * @since v0.0.1
  */
+@Deprecated
 public class SessionCacheFactory {
     private static class SessionCacheHolder{
         private static SessionCache<String, UserDomain> instance = new SessionCache<String, UserDomain>(500);

@@ -1,5 +1,7 @@
 package cn.thinkjoy.common.exception;
 
+import cn.thinkjoy.common.utils.Exceptions;
+
 /**
  * 业务异常，为检查时异常，必须捕获
  * ==包装成本异常需要log记录原始msg==
@@ -14,6 +16,7 @@ public class BizException extends RuntimeException {
     private String developMsg;
     /** 表示这个错误相关的web页面，可以帮助开发人员获取更多的错误的信息 */
     private String uri;
+
 
     public BizException(String errorCode, String message) {
         this.errorCode = errorCode;

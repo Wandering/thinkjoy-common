@@ -130,6 +130,8 @@ public abstract class AbstractCommonController {
             try {
                 String originalFilename = file.getOriginalFilename();
                 // 文件保存路径
+                // FIXME
+                // 避免使用request session
                 String filePath = request.getSession().getServletContext().getRealPath("/") + "/upload/"
                         + originalFilename;
                 // 转存文件

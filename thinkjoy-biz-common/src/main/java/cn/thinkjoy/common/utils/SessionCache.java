@@ -9,6 +9,7 @@ package cn.thinkjoy.common.utils;
  * @author qyang
  * @since v0.0.1
  */
+@Deprecated
 public class SessionCache<K, V> extends LRUCache<K, V> {
     public SessionCache(int maxSize) {
         super(maxSize);

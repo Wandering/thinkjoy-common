@@ -5,3 +5,4 @@ include 'thinkjoy-biz-common'
 
 include 'thinkjoy-mu-common'
 
+include 'thinkjoy-security-common'

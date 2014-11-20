@@ -1,0 +1,17 @@
+dependencies {
+
+
+    compile project(':thinkjoy-biz-common')
+
+
+
+
+
+    testCompile 'junit:junit:4.11'
+    compile 'commons-codec:commons-codec:1.9'
+    compile 'org.apache.commons:commons-lang3:3.3.2'
+
+
+
+
+}

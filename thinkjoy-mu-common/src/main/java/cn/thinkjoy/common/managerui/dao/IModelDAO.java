@@ -8,7 +8,9 @@ package cn.thinkjoy.common.managerui.dao;
 
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.managerui.domain.Model;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface IModelDAO extends IBaseDAO<Model>{
 	
 
