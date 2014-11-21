@@ -1,7 +1,7 @@
 package cn.thinkjoy.common.managerui.iauth.client.handler;
 
 import cn.thinkjoy.common.managerui.domain.User;
-import cn.thinkjoy.common.managerui.iauth.client.UcmAuthRequest;
+import cn.thinkjoy.common.managerui.iauth.client.DefaultAuthRequest;
 import cn.thinkjoy.common.managerui.iauth.client.token.AccessToken;
 import cn.thinkjoy.common.managerui.iauth.client.token.EmbedToken;
 import cn.thinkjoy.common.managerui.iauth.client.token.UserStore;
@@ -74,7 +74,7 @@ public class AccessTokenHandler extends AbstractTokenBundledHandler {
             }
             principal.setOwner(user);
         }
-        ((UcmAuthRequest) baseRequest).setPrincipal(principal);
+        ((DefaultAuthRequest) baseRequest).setPrincipal(principal);
         return true;
     }
 
@@ -98,7 +98,7 @@ public class AccessTokenHandler extends AbstractTokenBundledHandler {
         // 创建principal和access token
         Principal<User> principal = new Principal();
         principal.setOwner(user);
-        ((UcmAuthRequest) baseRequest).setPrincipal(principal);
+        ((DefaultAuthRequest) baseRequest).setPrincipal(principal);
 
 
 
@@ -110,7 +110,7 @@ public class AccessTokenHandler extends AbstractTokenBundledHandler {
         Cookie tokenCookie = new Cookie(HTTP_COOKIE_ACCESS_TOKEN, accessToken.getValue());
         //tokenCookie.setDomain(".xy189.cn");
         tokenCookie.setPath("/");
-        ((UcmAuthRequest) baseRequest).addCookieToResponse(tokenCookie);
+        ((DefaultAuthRequest) baseRequest).addCookieToResponse(tokenCookie);
 
         baseRequest.setToken(accessToken);
         return true;
@@ -124,7 +124,7 @@ public class AccessTokenHandler extends AbstractTokenBundledHandler {
     @Override
     public Token getTokenFromRequest(BaseRequest baseRequest) {
         // 获取cookie中的token
-        Cookie tokenCookie = ((UcmAuthRequest) baseRequest).getCookieFromRequest(HTTP_COOKIE_ACCESS_TOKEN);
+        Cookie tokenCookie = ((DefaultAuthRequest) baseRequest).getCookieFromRequest(HTTP_COOKIE_ACCESS_TOKEN);
 
         if (tokenCookie == null ) {
             return null;

@@ -11,7 +11,7 @@ import cn.thinkjoy.common.managerui.iauth.client.token.UserStore;
 import cn.thinkjoy.common.managerui.iauth.provider.*;
 import cn.thinkjoy.common.managerui.domain.User;
 import cn.thinkjoy.common.managerui.iauth.provider.token.TokenStore;
-import cn.thinkjoy.common.managerui.iauth.utils.URLStringUtil;
+import cn.thinkjoy.common.managerui.iauth.utils.UrlStringUtil;
 import cn.thinkjoy.common.utils.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -181,7 +181,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
 
 
     private void redirectTologinWithParams(HttpServletResponse res, Map<String, String> params) throws IOException {
-        String paramsString = URLStringUtil.paramsMapToURLString(params);
+        String paramsString = UrlStringUtil.paramsMapToURLString(params);
 
 
         String result = redirect_url + (paramsString.length() > 1 ? paramsString.toString() : "");

@@ -17,7 +17,7 @@
         <property name="bundledTo" ref="accessTokenHandler"/>
     </bean>
     <bean id="ucmIntegrationAuthenticator"
-          class="cn.thinkjoy.common.managerui.iauth.client.UcmIntegrationAuthenticator">
+          class="cn.thinkjoy.common.managerui.iauth.client.DefaultAuthenticator">
 
         <constructor-arg>
             <list>
