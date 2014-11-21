@@ -13,6 +13,4 @@ allprojects {
 
     druidVersion = "1.0.7"
 
-    jedisVersion = "2.1.0"
-
 }

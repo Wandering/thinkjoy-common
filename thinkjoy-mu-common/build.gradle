@@ -34,7 +34,6 @@ dependencies {
     compile "cn.thinkjoy.cloudstack:cs-spring-zkconfig:$thinkjoyCloudstackVersion"
     compile "cn.thinkjoy.cloudstack:cs-spring-redis:$thinkjoyCloudstackVersion"
 
-    compile "redis.clients:jedis:$jedisVersion"
 
     compile project(':thinkjoy-biz-common')
     compile project(':thinkjoy-security-common')
