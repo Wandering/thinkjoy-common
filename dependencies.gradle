@@ -1,7 +1,7 @@
 allprojects {
     springVersion = "4.1.0.RELEASE"
 
-    thinkjoyCloudstackVersion = "0.0.8-SNAPSHOT"
+    thinkjoyCloudstackVersion = "0.0.9-SNAPSHOT"
 
     mybatisVerion = "3.2.2"
 
@@ -12,4 +12,7 @@ allprojects {
     fastjsonVersion = "1.2.0"
 
     druidVersion = "1.0.7"
+
+    jedisVersion = "2.1.0"
+
 }
