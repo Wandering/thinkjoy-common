@@ -1,13 +1,13 @@
 package cn.thinkjoy.common.managerui.iauth.client.token;
 
 import cn.thinkjoy.cloudstack.cache.RedisRepository;
+import cn.thinkjoy.cloudstack.cache.RedisRepositoryFactory;
 import cn.thinkjoy.cloudstack.dynconfig.DynConfigClient;
 import cn.thinkjoy.cloudstack.dynconfig.DynConfigClientFactory;
 import cn.thinkjoy.cloudstack.dynconfig.IChangeListener;
 import cn.thinkjoy.cloudstack.dynconfig.domain.Configuration;
 import cn.thinkjoy.common.managerui.iauth.provider.token.Token;
 import cn.thinkjoy.common.managerui.iauth.provider.token.TokenStore;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
@@ -23,12 +23,12 @@ public class RedisTokenStore implements TokenStore {
     public int TOKEN_EXPIRE_TIME = 60*10;    // second default
     public static final String PREFIX = "token:";
 
-    @Autowired
-    private RedisRepository redisRepository;
+    private RedisRepository tokenStorage;
 
 
     @PostConstruct
-    public void init(){
+    public void init() throws Exception {
+
         DynConfigClient dynConfigClient = DynConfigClientFactory.getClient();
         try {
             TOKEN_EXPIRE_TIME = Integer.parseInt(dynConfigClient.getConfig("ucm", "common", "tokenExpireTime"));
@@ -54,28 +54,29 @@ public class RedisTokenStore implements TokenStore {
                 });
             }
         });
+        tokenStorage = RedisRepositoryFactory.getRepository("ucm", "common", "tokenStorage");
     }
 
 
     @Override
     public Token readToken(String key) {
-        return (Token) redisRepository.get(PREFIX+key);
+        return (Token) tokenStorage.get(PREFIX+key);
     }
 
     @Override
     public void postpone(String key) {
-        redisRepository.expire(PREFIX+key, TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
+        tokenStorage.expire(PREFIX+key, TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
 
     }
 
     @Override
     public void store(String key, Token token)
     {
-        redisRepository.set(PREFIX+key, token, TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
+        tokenStorage.set(PREFIX+key, token, TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
     }
 
     @Override
     public void removeToken(String key) {
-        redisRepository.del(PREFIX+key);
+        tokenStorage.del(PREFIX+key);
     }
 }
