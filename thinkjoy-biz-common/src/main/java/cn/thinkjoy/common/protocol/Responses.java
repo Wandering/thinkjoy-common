@@ -38,6 +38,15 @@ public class Responses {
     }
 
     /**
+     * 正常业务对象的返回
+     * @param bizData
+     * @return
+     */
+    public static Response newResponse(Object bizData){
+        return new Response.ResponseBuilder(RtnCodeEnum.SUCCESS).bizData(bizData).build();
+    }
+
+    /**
      * 返回网络异常
      * @return
      */
