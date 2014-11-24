@@ -58,7 +58,7 @@ public class Principal<T> implements java.security.Principal {
         return "passed";
     }
 
-    @Override
+
     public boolean implies(Subject subject) {
         return false;
     }
