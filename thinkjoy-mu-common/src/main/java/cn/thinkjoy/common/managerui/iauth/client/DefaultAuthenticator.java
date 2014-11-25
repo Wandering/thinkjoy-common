@@ -37,6 +37,14 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
 
     private static Logger logger = LoggerFactory.getLogger(DefaultAuthenticator.class);
 
+    private String debugKey = null;
+
+    public void setDebugKey(String debugKey) {
+        this.debugKey = debugKey;
+    }
+
+    private String SECRET_KEY = null;
+
     @Autowired
     private TokenStore tokenStore;
     @Autowired
@@ -71,6 +79,32 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
         this.tokenHandlers = tokenHandlers;
 
         initRedirectUrl();
+
+        DynConfigClient dynConfigClient = DynConfigClientFactory.getClient();
+        try {
+            SECRET_KEY = dynConfigClient.getConfig("ucm", "common", "secretKey");
+        } catch (Exception e) {
+            //TODO
+        }
+        dynConfigClient.registerListeners("ucm", "common", "tokenExpireTime", new IChangeListener() {
+            @Override
+            public Executor getExecutor() {
+                return Executors.newSingleThreadExecutor();
+            }
+
+            @Override
+            public void receiveConfigInfo(final Configuration configuration) {
+                System.out.println("=================" + configuration);
+
+                getExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.println("========ASYN=========" + configuration);
+                        SECRET_KEY = configuration.getConfig();
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -81,6 +115,18 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
     @Override
     public List<TokenHandler> getTokenHandlers() {
         return tokenHandlers;
+    }
+
+    @Override
+    public boolean isNeedAuthentication() {
+        if (SECRET_KEY == null) {
+            return true;
+        }
+        if(SECRET_KEY.equals(debugKey)) {
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -173,9 +219,8 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
     }
 
     @Override
-    public void callWhenAuthenticatiorError(BaseRequest baseRequest, Exception ex) throws IOException {
-        logger.error(ex.getMessage(), ex);
-        redirectTologin(baseRequest);
+    public void callWhenAuthenticatiorError(BaseRequest baseRequest, CannotAuthException ex) throws IOException {
+        logger.error("验证出现异常");
 
     }
 
