@@ -1,5 +1,6 @@
 package cn.thinkjoy.common.managerui.iauth.client;
 
+import cn.thinkjoy.cloudstack.context.CloudContextFactory;
 import cn.thinkjoy.cloudstack.dynconfig.DynConfigClient;
 import cn.thinkjoy.cloudstack.dynconfig.DynConfigClientFactory;
 import cn.thinkjoy.cloudstack.dynconfig.IChangeListener;
@@ -84,7 +85,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
         try {
             SECRET_KEY = dynConfigClient.getConfig("ucm", "common", "secretKey");
         } catch (Exception e) {
-            //TODO
+            logger.info("SECRET_KEY没有进行配置，采用默认值: "+SECRET_KEY);
         }
         dynConfigClient.registerListeners("ucm", "common", "tokenExpireTime", new IChangeListener() {
             @Override
@@ -135,7 +136,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
         try {
             redirect_url = dynConfigClient.getConfig("ucm", "common", "uchost");
         } catch (Exception e) {
-            //TODO
+            logger.info("uchost没有进行配置，采用默认值: "+redirect_url);
         }
         dynConfigClient.registerListeners("ucm", "common", "uchost", new IChangeListener() {
             @Override
@@ -178,6 +179,9 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
             params.put("username", user.getName());
         }
 
+        String appKey = CloudContextFactory.getCloudContext().getApplicationName();
+
+        params.put("appKey",appKey);
 
         redirectTologinWithParams(baseRequest.getResponse(), params);
 
@@ -213,14 +217,14 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
     }
     @Override
     public void callWhenAuthenticatiorFailed(BaseRequest baseRequest) throws IOException {
-        logger.info("验证没通过。");
+        assert false;
+        logger.error("拒绝访问。发生未知错误。");
         redirectTologin(baseRequest);
-
     }
 
     @Override
     public void callWhenAuthenticatiorError(BaseRequest baseRequest, CannotAuthException ex) throws IOException {
-        logger.error("验证出现异常");
+        logger.error("拒绝访问。验证出现异常: "+ex.getMessage(), ex);
 
     }
 
@@ -230,6 +234,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
 
 
         String result = redirect_url + (paramsString.length() > 1 ? paramsString.toString() : "");
+        logger.info(CloudContextFactory.getCloudContext().getApplicationName()+"跳转到ucm登录页面: url" + result);
         res.sendRedirect(result);
     }
 

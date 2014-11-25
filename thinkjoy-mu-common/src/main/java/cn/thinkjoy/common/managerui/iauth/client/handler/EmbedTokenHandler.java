@@ -54,14 +54,15 @@ public class EmbedTokenHandler extends AbstractTokenHandler {
 
     @Override
     public void callWhenAuthenticationFailed(BaseRequest baseRequest) throws IOException {
-        // 结束当前验证，重定向
+        // 埋点完成，结束当前验证，重定向到原访问路径
         String url = baseRequest.getRequest().getRequestURI();
+        logger.info("埋点完成。重定向到当前访问路径: uri=" + url);
         baseRequest.getResponse().sendRedirect(url);
     }
 
     @Override
     public void callWhenAuthenticationError(BaseRequest baseRequest, Exception ex) throws IOException {
-        logger.error(ex.getMessage(), ex);
+        logger.error("埋点异常。埋点处理出现异常: "+ex.getMessage(), ex);
         baseRequest.getAuthenticator().redirectTologin(baseRequest);
 
     }

@@ -3,13 +3,10 @@ package cn.thinkjoy.common.managerui.iauth.client.handler;
 import cn.thinkjoy.common.managerui.iauth.provider.AbstractTokenHandler;
 import cn.thinkjoy.common.managerui.iauth.provider.BaseRequest;
 import cn.thinkjoy.common.managerui.iauth.provider.token.Token;
-import cn.thinkjoy.common.managerui.iauth.provider.token.TokenStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -25,14 +22,18 @@ public class TokenResolver extends AbstractTokenHandler {
 
     @Override
     public void callWhenAuthenticationFailed(BaseRequest baseRequest) throws IOException {
-        logger.info("验证没通过。");
+        if (baseRequest.getToken() == null) {
+            logger.info("Token解析失败。token为空");
+        } else {
+            logger.info("Token解析失败。tokenStore中获取不到该token: token=" + baseRequest.getToken().getValue());
+        }
         baseRequest.getAuthenticator().redirectTologin(baseRequest);
 
     }
 
     @Override
     public void callWhenAuthenticationError(BaseRequest baseRequest, Exception ex) throws IOException {
-        logger.error(ex.getMessage(), ex);
+        logger.error("Token解析异常: " + ex.getMessage(), ex);
         baseRequest.getAuthenticator().redirectTologin(baseRequest);
 
     }

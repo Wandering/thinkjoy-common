@@ -173,5 +173,6 @@ public abstract class Authenticator {
      * @param baseRequest
      * @throws IOException
      */
+    @Deprecated
     public abstract void callWhenAuthenticatiorFailed(BaseRequest baseRequest) throws IOException;
 }
