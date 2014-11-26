@@ -1,5 +1,6 @@
 package cn.thinkjoy.common.managerui.iauth.client;
 
+import cn.thinkjoy.cloudstack.context.CloudContextFactory;
 import cn.thinkjoy.cloudstack.dynconfig.DynConfigClient;
 import cn.thinkjoy.cloudstack.dynconfig.DynConfigClientFactory;
 import cn.thinkjoy.cloudstack.dynconfig.IChangeListener;
@@ -37,6 +38,14 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
 
     private static Logger logger = LoggerFactory.getLogger(DefaultAuthenticator.class);
 
+    private String debugKey = null;
+
+    public void setDebugKey(String debugKey) {
+        this.debugKey = debugKey;
+    }
+
+    private String SECRET_KEY = null;
+
     @Autowired
     private TokenStore tokenStore;
     @Autowired
@@ -71,6 +80,32 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
         this.tokenHandlers = tokenHandlers;
 
         initRedirectUrl();
+
+        DynConfigClient dynConfigClient = DynConfigClientFactory.getClient();
+        try {
+            SECRET_KEY = dynConfigClient.getConfig("ucm", "common", "secretKey");
+        } catch (Exception e) {
+            logger.info("SECRET_KEY没有进行配置，采用默认值: "+SECRET_KEY);
+        }
+        dynConfigClient.registerListeners("ucm", "common", "tokenExpireTime", new IChangeListener() {
+            @Override
+            public Executor getExecutor() {
+                return Executors.newSingleThreadExecutor();
+            }
+
+            @Override
+            public void receiveConfigInfo(final Configuration configuration) {
+                System.out.println("=================" + configuration);
+
+                getExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.println("========ASYN=========" + configuration);
+                        SECRET_KEY = configuration.getConfig();
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -83,13 +118,25 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
         return tokenHandlers;
     }
 
+    @Override
+    public boolean isNeedAuthentication() {
+        if (SECRET_KEY == null) {
+            return true;
+        }
+        if(SECRET_KEY.equals(debugKey)) {
+            return false;
+        }
+
+        return true;
+    }
+
 
     private void initRedirectUrl() {
         DynConfigClient dynConfigClient = DynConfigClientFactory.getClient();
         try {
             redirect_url = dynConfigClient.getConfig("ucm", "common", "uchost");
         } catch (Exception e) {
-            //TODO
+            logger.info("uchost没有进行配置，采用默认值: "+redirect_url);
         }
         dynConfigClient.registerListeners("ucm", "common", "uchost", new IChangeListener() {
             @Override
@@ -132,6 +179,9 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
             params.put("username", user.getName());
         }
 
+        String appKey = CloudContextFactory.getCloudContext().getApplicationName();
+
+        params.put("appKey",appKey);
 
         redirectTologinWithParams(baseRequest.getResponse(), params);
 
@@ -167,15 +217,14 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
     }
     @Override
     public void callWhenAuthenticatiorFailed(BaseRequest baseRequest) throws IOException {
-        logger.info("验证没通过。");
+        assert false;
+        logger.error("拒绝访问。发生未知错误。");
         redirectTologin(baseRequest);
-
     }
 
     @Override
-    public void callWhenAuthenticatiorError(BaseRequest baseRequest, Exception ex) throws IOException {
-        logger.error(ex.getMessage(), ex);
-        redirectTologin(baseRequest);
+    public void callWhenAuthenticatiorError(BaseRequest baseRequest, CannotAuthException ex) throws IOException {
+        logger.error("拒绝访问。验证出现异常: "+ex.getMessage(), ex);
 
     }
 
@@ -185,6 +234,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
 
 
         String result = redirect_url + (paramsString.length() > 1 ? paramsString.toString() : "");
+        logger.info(CloudContextFactory.getCloudContext().getApplicationName()+"跳转到ucm登录页面: url" + result);
         res.sendRedirect(result);
     }
 

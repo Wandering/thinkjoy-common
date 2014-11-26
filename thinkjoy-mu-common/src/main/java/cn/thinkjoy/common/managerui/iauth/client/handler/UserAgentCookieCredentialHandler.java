@@ -103,14 +103,14 @@ public class UserAgentCookieCredentialHandler extends AbstractTokenBundledHandle
 
     @Override
     public void callWhenAuthenticationFailed(BaseRequest baseRequest) throws IOException {
-        logger.info("验证没通过。");
+        logger.info("拒绝访问。获取不到token的验证信息，或验证信息不匹配。");
         baseRequest.getAuthenticator().redirectTologin(baseRequest);
 
     }
 
     @Override
     public void callWhenAuthenticationError(BaseRequest baseRequest, Exception ex) throws IOException {
-        logger.error(ex.getMessage(), ex);
+        logger.error("访问异常。获取token验证信息出现异常: "+ex.getMessage(), ex);
         baseRequest.getAuthenticator().redirectTologin(baseRequest);
 
     }

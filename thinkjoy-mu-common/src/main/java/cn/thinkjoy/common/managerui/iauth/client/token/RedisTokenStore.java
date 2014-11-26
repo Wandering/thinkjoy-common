@@ -8,6 +8,8 @@ import cn.thinkjoy.cloudstack.dynconfig.IChangeListener;
 import cn.thinkjoy.cloudstack.dynconfig.domain.Configuration;
 import cn.thinkjoy.common.managerui.iauth.provider.token.Token;
 import cn.thinkjoy.common.managerui.iauth.provider.token.TokenStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
@@ -20,6 +22,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Repository
 public class RedisTokenStore implements TokenStore {
+
+    private static Logger logger = LoggerFactory.getLogger(RedisTokenStore.class);
     public int TOKEN_EXPIRE_TIME = 60*10;    // second default
     public static final String PREFIX = "token:";
 
@@ -33,7 +37,7 @@ public class RedisTokenStore implements TokenStore {
         try {
             TOKEN_EXPIRE_TIME = Integer.parseInt(dynConfigClient.getConfig("ucm", "common", "tokenExpireTime"));
         } catch (Exception e) {
-            //TODO
+            logger.info("tokenExpireTime没有进行配置，采用默认值: "+TOKEN_EXPIRE_TIME);
         }
         dynConfigClient.registerListeners("ucm", "common", "tokenExpireTime", new IChangeListener() {
             @Override

@@ -7,6 +7,8 @@ import cn.thinkjoy.cloudstack.dynconfig.DynConfigClientFactory;
 import cn.thinkjoy.cloudstack.dynconfig.IChangeListener;
 import cn.thinkjoy.cloudstack.dynconfig.domain.Configuration;
 import cn.thinkjoy.common.managerui.domain.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
@@ -19,6 +21,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Repository
 public class RedisUserStore implements UserStore{
+    private static Logger logger = LoggerFactory.getLogger(RedisTokenStore.class);
+
     public int USER_EXPIRE_TIME = 60*10;    // second default
     public static final String PREFIX = "user:";
 
@@ -28,9 +32,9 @@ public class RedisUserStore implements UserStore{
     public void init() throws Exception {
         DynConfigClient dynConfigClient = DynConfigClientFactory.getClient();
         try {
-            USER_EXPIRE_TIME = Integer.parseInt(dynConfigClient.getConfig("ucm", "common", "tokenExpireTime"));
+            USER_EXPIRE_TIME = Integer.parseInt(dynConfigClient.getConfig("ucm", "common", "userExpireTime"));
         } catch (Exception e) {
-            //TODO
+            logger.info("userExpireTime没有进行配置，采用默认值: "+USER_EXPIRE_TIME);
         }
         dynConfigClient.registerListeners("ucm", "common", "tokenExpireTime", new IChangeListener() {
             @Override

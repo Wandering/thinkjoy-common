@@ -19,6 +19,9 @@ public abstract class Authenticator {
 
     public abstract List<TokenHandler> getTokenHandlers();
 
+
+    public abstract boolean isNeedAuthentication();
+
     public abstract void init(List<TokenHandler> tokenHandlers);
 
     public List<Token> getTokens(BaseRequest baseRequest) {
@@ -42,9 +45,13 @@ public abstract class Authenticator {
      * @throws IOException
      * @throws ServletException
      */
-    public void authentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
-            throws IOException, ServletException {
-            BaseRequestFactory requestFactory = getRequestFactory();
+    public void authentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException{
+        if(!isNeedAuthentication()){
+            chain.doFilter(req,res);
+            return;
+        }
+
+        BaseRequestFactory requestFactory = getRequestFactory();
             BaseRequest baseRequest = requestFactory.buildFromHttpServletRequest(req,res,this);
         try {
             for (TokenHandler tokenHandler: getTokenHandlers()) {
@@ -68,8 +75,9 @@ public abstract class Authenticator {
             // passed
             authenticationDone(baseRequest);
             chain.doFilter(req, res);
-        } catch (Exception ex) {
+        } catch (CannotAuthException ex) {
             callWhenAuthenticatiorError(baseRequest, ex);
+
         }
 
     }
@@ -158,12 +166,13 @@ public abstract class Authenticator {
      * 验证器出异常，进行调用
      * @param baseRequest
      */
-    public abstract void callWhenAuthenticatiorError(BaseRequest baseRequest, Exception ex) throws IOException;
+    public abstract void callWhenAuthenticatiorError(BaseRequest baseRequest, CannotAuthException ex) throws IOException;
 
     /**
      * 验证器没通过，进行调用
      * @param baseRequest
      * @throws IOException
      */
+    @Deprecated
     public abstract void callWhenAuthenticatiorFailed(BaseRequest baseRequest) throws IOException;
 }

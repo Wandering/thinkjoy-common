@@ -137,14 +137,14 @@ public class AccessTokenHandler extends AbstractTokenBundledHandler {
 
     @Override
     public void callWhenAuthenticationFailed(BaseRequest baseRequest) throws IOException {
-        logger.info("验证没通过。");
+        logger.info("拒绝访问。获取用户信息失败: userId="+((AccessToken)baseRequest.getToken()).getUserId());
         baseRequest.getAuthenticator().redirectTologin(baseRequest);
 
     }
 
     @Override
     public void callWhenAuthenticationError(BaseRequest baseRequest, Exception ex) throws IOException {
-        logger.error(ex.getMessage(), ex);
+        logger.error("访问异常。获取用户信息异常:"+ex.getMessage(), ex);
         baseRequest.getAuthenticator().redirectTologin(baseRequest);
 
     }
