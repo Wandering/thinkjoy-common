@@ -30,6 +30,8 @@ public class Response implements Serializable {
         this.bizData = builder.bizData;
     }
 
+    public Response(){}
+
     public String getRtnCode() {
         return rtnCode;
     }
