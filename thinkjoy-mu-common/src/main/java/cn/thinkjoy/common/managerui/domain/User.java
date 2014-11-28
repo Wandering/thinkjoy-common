@@ -19,6 +19,8 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class User extends UserDomain {
     private Integer isAdmin;
 
+	private Integer bizDimension;
+
     private Integer employeeId;
 
 	public User(){
@@ -67,6 +69,14 @@ public class User extends UserDomain {
 		return new EqualsBuilder()
 			.append(getId(),other.getId())
 			.isEquals();
+	}
+
+	public Integer getBizDimension() {
+		return bizDimension;
+	}
+
+	public void setBizDimension(Integer bizDimension) {
+		this.bizDimension = bizDimension;
 	}
 }
 
