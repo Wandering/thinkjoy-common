@@ -1,11 +1,9 @@
 package cn.thinkjoy.common.managerui.iauth.provider.filter;
 
 
-import cn.thinkjoy.common.managerui.iauth.provider.Authentication;
 import cn.thinkjoy.common.managerui.iauth.provider.Authenticator;
 import cn.thinkjoy.common.managerui.iauth.provider.CannotAuthException;
-import cn.thinkjoy.common.managerui.iauth.provider.TokenHandler;
-import cn.thinkjoy.common.managerui.iauth.provider.token.Token;
+import cn.thinkjoy.common.managerui.iauth.provider.handler.TokenHandler;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

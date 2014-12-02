@@ -9,7 +9,7 @@
     <!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
     <context:annotation-config/>
     <context:component-scan base-package="cn.thinkjoy"/>
-    <bean id="tokenResolver" class="cn.thinkjoy.common.managerui.iauth.client.handler.TokenResolver"/>
+    <bean id="tokenResolver" class="cn.thinkjoy.common.managerui.iauth.provider.handler.TokenResolver"/>
     <bean id="embedTokenHandler" class="cn.thinkjoy.common.managerui.iauth.client.handler.EmbedTokenHandler"/>
     <bean id="accessTokenHandler" class="cn.thinkjoy.common.managerui.iauth.client.handler.AccessTokenHandler"/>
     <bean id="agentCookieCredentialHandler"

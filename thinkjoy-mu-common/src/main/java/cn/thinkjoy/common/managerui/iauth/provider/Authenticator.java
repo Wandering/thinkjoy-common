@@ -1,6 +1,8 @@
 package cn.thinkjoy.common.managerui.iauth.provider;
 
-import cn.thinkjoy.common.managerui.iauth.client.handler.TokenResolver;
+import cn.thinkjoy.common.managerui.iauth.provider.handler.TokenResolver;
+import cn.thinkjoy.common.managerui.iauth.provider.handler.AbstractTokenBundledHandler;
+import cn.thinkjoy.common.managerui.iauth.provider.handler.TokenHandler;
 import cn.thinkjoy.common.managerui.iauth.provider.token.Token;
 
 import javax.servlet.FilterChain;

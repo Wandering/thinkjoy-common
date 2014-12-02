@@ -1,5 +1,7 @@
-package cn.thinkjoy.common.managerui.iauth.provider;
+package cn.thinkjoy.common.managerui.iauth.provider.handler;
 
+import cn.thinkjoy.common.managerui.iauth.provider.Authentication;
+import cn.thinkjoy.common.managerui.iauth.provider.BaseRequest;
 import cn.thinkjoy.common.managerui.iauth.provider.token.Token;
 
 import java.io.IOException;
@@ -7,7 +9,7 @@ import java.io.IOException;
 /**
  * Created by Michael on 11/13/14.
  */
-public interface TokenHandler extends Authentication{
+public interface TokenHandler extends Authentication {
 
     String getHandleTokenType();
 

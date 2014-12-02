@@ -51,8 +51,8 @@ allprojects {
     apply plugin: 'maven-publish-auth'
 
     repositories {
-        mavenLocal()
         repositories { maven { url 'http://repo.thinkjoy.local/content/groups/public/' } }
+        mavenLocal()
         mavenCentral()
     }
 
@@ -99,6 +99,8 @@ subprojects{
 
         all*.exclude group: 'org.springframework', module: 'spring'
         all*.exclude group: 'asm', module: 'asm'
+        all*.exclude group: 'log4j', module: 'log4j'
+        all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
 }
 
