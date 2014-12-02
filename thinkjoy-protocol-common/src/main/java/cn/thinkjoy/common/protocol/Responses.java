@@ -16,11 +16,11 @@ public class Responses {
     public static Response newUnknow(){
         return new Response.ResponseBuilder(RtnCodeEnum.UNKNOW).build();
     }
-    
+
     /**
-     * 
+     *
      * 成功返回
-     * 
+     *
      * @return
      */
     public static Response newOK(){
@@ -28,9 +28,9 @@ public class Responses {
     }
 
     /**
-     * 
+     *
      * 业务异常返回
-     * 
+     *
      * @return
      */
     public static Response newResponse(BizException ex){

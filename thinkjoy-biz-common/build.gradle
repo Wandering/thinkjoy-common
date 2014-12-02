@@ -10,4 +10,6 @@ dependencies {
 
     compile "cn.thinkjoy.cloudstack:cs-dynconfig-client:$thinkjoyCloudstackVersion"
     compile "cn.thinkjoy.cloudstack:cs-clustermanager-client:$thinkjoyCloudstackVersion"
+
+    compile project (':thinkjoy-protocol-common')
 }

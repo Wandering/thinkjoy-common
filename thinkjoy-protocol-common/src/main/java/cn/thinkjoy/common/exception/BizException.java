@@ -1,7 +1,5 @@
 package cn.thinkjoy.common.exception;
 
-import cn.thinkjoy.common.utils.Exceptions;
-
 /**
  * 业务异常，为检查时异常，必须捕获
  * ==包装成本异常需要log记录原始msg==

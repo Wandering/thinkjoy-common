@@ -1,0 +1,80 @@
+package cn.thinkjoy.common.protocol;
+
+
+import cn.thinkjoy.common.exception.BizException;
+import cn.thinkjoy.common.utils.RtnCodeEnum;
+
+/**
+ * Response 工具类
+ * Created by qyang on 14-6-17.
+ */
+public class ResponseTs {
+    /**
+     * 返回未知异常
+     * @return
+     */
+    public static <T> ResponseT newUnknow(){
+        ResponseT<T> responseT = new ResponseT(RtnCodeEnum.UNKNOW);
+        return responseT;
+    }
+
+    /**
+     *
+     * 成功返回
+     *
+     * @return
+     */
+    public static <T> ResponseT newOK(){
+        ResponseT<T> responseT = new ResponseT(RtnCodeEnum.SUCCESS);
+        return responseT;
+    }
+
+    /**
+     *
+     * 业务异常返回
+     *
+     * @return
+     */
+    public static <T> ResponseT newResponse(BizException ex){
+        ResponseT<T> responseT = new ResponseT(ex);
+        return responseT;
+    }
+
+    /**
+     * 正常业务对象的返回
+     * @param bizData
+     * @return
+     */
+    public static <T> ResponseT newResponse(T bizData){
+        ResponseT<T> responseT = new ResponseT(RtnCodeEnum.SUCCESS);
+        responseT.setBizData(bizData);
+        return responseT;
+    }
+
+    /**
+     * 返回网络异常
+     * @return
+     */
+    public static <T> ResponseT newNetError(){
+        ResponseT<T> responseT = new ResponseT(RtnCodeEnum.NET_ERROR);
+        return responseT;
+    }
+
+    /**
+     * 返回请求参数异常
+     * @return
+     */
+    public static <T> ResponseT newParamError(){
+        ResponseT<T> responseT = new ResponseT(RtnCodeEnum.UNKNOW);
+        return responseT;
+    }
+
+    /**
+     * 返回调用次数超限异常
+     * @return
+     */
+    public static <T> ResponseT newOverLimit(){
+        ResponseT<T> responseT = new ResponseT(RtnCodeEnum.APP_OVER_INVOCATION_LIMIT);
+        return responseT;
+    }
+}
