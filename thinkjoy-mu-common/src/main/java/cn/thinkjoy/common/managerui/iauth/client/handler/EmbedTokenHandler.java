@@ -2,9 +2,9 @@ package cn.thinkjoy.common.managerui.iauth.client.handler;
 
 import cn.thinkjoy.common.managerui.iauth.client.token.EmbedToken;
 import cn.thinkjoy.common.managerui.iauth.client.token.UserStore;
-import cn.thinkjoy.common.managerui.iauth.provider.AbstractTokenHandler;
 import cn.thinkjoy.common.managerui.iauth.provider.BaseRequest;
 import cn.thinkjoy.common.managerui.iauth.provider.CannotAuthException;
+import cn.thinkjoy.common.managerui.iauth.provider.handler.AbstractTokenHandler;
 import cn.thinkjoy.common.managerui.iauth.provider.token.Token;
 import cn.thinkjoy.common.managerui.iauth.provider.token.TokenStore;
 import com.google.common.base.Strings;
@@ -62,7 +62,7 @@ public class EmbedTokenHandler extends AbstractTokenHandler {
 
     @Override
     public void callWhenAuthenticationError(BaseRequest baseRequest, Exception ex) throws IOException {
-        logger.error("埋点异常。埋点处理出现异常: "+ex.getMessage(), ex);
+        logger.error("埋点异常。埋点处理出现异常: " + ex.getMessage(), ex);
         baseRequest.getAuthenticator().redirectTologin(baseRequest);
 
     }
@@ -92,7 +92,7 @@ public class EmbedTokenHandler extends AbstractTokenHandler {
 
     @Override
     public Token getTokenFromRequest(BaseRequest baseRequest) {
-         // 获取parameter中的token
+        // 获取parameter中的token
         String tokenParam = baseRequest.getRequest().getParameter(HTTP_PARAMETER_EMBED_TOKEN);
 
         if (Strings.isNullOrEmpty(tokenParam)) {

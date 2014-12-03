@@ -1,6 +1,5 @@
-package cn.thinkjoy.common.managerui.iauth.client.handler;
+package cn.thinkjoy.common.managerui.iauth.provider.handler;
 
-import cn.thinkjoy.common.managerui.iauth.provider.AbstractTokenHandler;
 import cn.thinkjoy.common.managerui.iauth.provider.BaseRequest;
 import cn.thinkjoy.common.managerui.iauth.provider.token.Token;
 import org.slf4j.Logger;

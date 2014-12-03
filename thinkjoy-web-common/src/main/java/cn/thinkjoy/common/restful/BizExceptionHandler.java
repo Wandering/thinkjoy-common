@@ -19,10 +19,11 @@ public class BizExceptionHandler implements RestExceptionHandler {
 
     @Override
     public ResponseEntity handleException(Exception exception, HttpServletRequest request) {
-        Response response = new Response.ResponseBuilder((BizException) exception).build();
+//        Response response = new Response.ResponseBuilder((BizException) exception).build();
 
         logger.error(((BizException) exception).getMsg(), exception);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
+        return null;
     }
 }

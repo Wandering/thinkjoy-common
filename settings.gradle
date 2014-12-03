@@ -8,3 +8,5 @@ include 'thinkjoy-mu-common'
 include 'thinkjoy-security-common'
 include 'thinkjoy-web-common'
 
+include 'thinkjoy-protocol-common'
+

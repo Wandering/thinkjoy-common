@@ -41,7 +41,7 @@ tasks.withType(Compile) {
 /** 此闭包内的声明子类皆可使用 */
 allprojects {
     group = 'cn.thinkjoy.common'
-    version = '0.0.10-SNAPSHOT'
+    version = '0.0.11-SNAPSHOT'
 
 
     apply plugin: 'java'
@@ -51,8 +51,8 @@ allprojects {
     apply plugin: 'maven-publish-auth'
 
     repositories {
-        mavenLocal()
         repositories { maven { url 'http://repo.thinkjoy.local/content/groups/public/' } }
+        mavenLocal()
         mavenCentral()
     }
 
@@ -91,14 +91,16 @@ subprojects{
     }
 
     configurations {
-        provided
-        compile.extendsFrom provided
+//        provided
+//        compile.extendsFrom provided
 
         providedCompile
         compile.extendsFrom providedCompile
 
         all*.exclude group: 'org.springframework', module: 'spring'
         all*.exclude group: 'asm', module: 'asm'
+        all*.exclude group: 'log4j', module: 'log4j'
+        all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
 }
 
