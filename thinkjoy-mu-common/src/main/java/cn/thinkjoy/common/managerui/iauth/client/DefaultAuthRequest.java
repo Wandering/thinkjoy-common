@@ -16,6 +16,7 @@ import java.util.Map;
 public class DefaultAuthRequest extends BaseRequest {
     private Principal<User> principal;
     private Credential credential;
+    private Map<String, Object> additionalInformation = Collections.emptyMap();
 
     public Map<String, Object> getAdditionalInformation() {
         return additionalInformation;
@@ -24,9 +25,6 @@ public class DefaultAuthRequest extends BaseRequest {
     public void setAdditionalInformation(Map<String, Object> additionalInformation) {
         this.additionalInformation = additionalInformation;
     }
-
-    private Map<String, Object> additionalInformation = Collections.emptyMap();
-
 
     public Principal<User> getPrincipal() {
         return principal;
@@ -49,7 +47,7 @@ public class DefaultAuthRequest extends BaseRequest {
         if (cookies == null) {
             return null;
         }
-        for (Cookie cookie: cookies){
+        for (Cookie cookie : cookies) {
             if (cookie.getName().equalsIgnoreCase(name))
                 return cookie;
         }
@@ -58,20 +56,18 @@ public class DefaultAuthRequest extends BaseRequest {
 
     }
 
-    public void addCookieToResponse(Cookie ... cookies ) {
-        for (Cookie cookie: cookies) {
+    public void addCookieToResponse(Cookie... cookies) {
+        for (Cookie cookie : cookies) {
             getResponse().addCookie(cookie);
         }
     }
 
     public void removeCookieToResponse(String name) {
-        Cookie cookie = getCookieFromRequest(name);
-        cookie.setValue("");
+        Cookie cookie = new Cookie(name, null);
         cookie.setMaxAge(0);
+        cookie.setPath("/");
         addCookieToResponse(cookie);
     }
-
-
 
 
 }
