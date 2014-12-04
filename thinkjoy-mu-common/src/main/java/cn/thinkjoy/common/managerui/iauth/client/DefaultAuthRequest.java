@@ -64,6 +64,13 @@ public class DefaultAuthRequest extends BaseRequest {
         }
     }
 
+    public void removeCookieToResponse(String name) {
+        Cookie cookie = getCookieFromRequest(name);
+        cookie.setValue("");
+        cookie.setMaxAge(0);
+        addCookieToResponse(cookie);
+    }
+
 
 
 

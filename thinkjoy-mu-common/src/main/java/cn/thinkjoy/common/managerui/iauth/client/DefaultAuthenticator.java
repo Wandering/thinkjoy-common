@@ -110,6 +110,17 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
     }
 
     @Override
+    public boolean isLogout(BaseRequest baseRequest) {
+//        if ()
+        String uri = baseRequest.getRequest().getRequestURI();
+        if (uri .endsWith("/logout")) {
+
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public BaseRequestFactory getRequestFactory() {
         return authRequestFactory;
     }
@@ -120,7 +131,11 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
     }
 
     @Override
-    public boolean isNeedAuthentication() {
+    public boolean isNeedAuthentication(BaseRequest baseRequest) {
+        return isNeedAuthentication();
+    }
+
+    private boolean isNeedAuthentication() {
         if (SECRET_KEY == null) {
             return true;
         }
@@ -189,8 +204,14 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
     }
 
     @Override
+    public void redirectTologout(BaseRequest baseRequest) throws IOException {
+        // TODO 通知ucm
+        baseRequest.getResponse().sendRedirect("/");
+
+    }
+
+    @Override
     public void authenticationDone(BaseRequest baseRequest) {
-        //TODO
         Principal<User> principal = ((DefaultAuthRequest) baseRequest).getPrincipal();
         if (null == principal || principal.getName() == null) {
             // 验证没通过啊

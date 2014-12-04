@@ -32,6 +32,7 @@ public class UserAgentCookieCredentialHandler extends AbstractTokenBundledHandle
 
     @Autowired
     private TokenStore tokenStore;
+
     private String handleTokenType = Token.ACCESS_TOKEN;
 
 //    public Credential loadCredential(HttpServletRequest res) {
@@ -105,6 +106,14 @@ public class UserAgentCookieCredentialHandler extends AbstractTokenBundledHandle
 
         }
         return true;
+    }
+
+    @Override
+    public void clear(BaseRequest baseRequest) {
+        Credential credential = ((DefaultAuthRequest) baseRequest).getCredential();
+        if (credential != null) {
+            ((DefaultAuthRequest) baseRequest).removeCookieToResponse(credential.getKey());
+        }
     }
 
     @Override
