@@ -32,7 +32,7 @@ import java.util.concurrent.Executors;
 
 /**
  * Created by Michael on 11/10/14.
- * ucm集成，登录、授权等。
+ * ucm集成，登录、授权=等。
  */
 @Component
 public class DefaultAuthenticator extends Authenticator implements HttpRquestConstant {
@@ -57,7 +57,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
     private DefaultAuthRequestFactory authRequestFactory = new DefaultAuthRequestFactory();
 
     public DefaultAuthenticator() {
-        // for spring bean initial
+        // for spring bean initial intal
     }
 
     public DefaultAuthenticator(List<TokenHandler> tokenHandlers) {
