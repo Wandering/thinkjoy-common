@@ -8,7 +8,7 @@ import java.io.IOException;
  */
 public interface Authentication {
 
-      /**
+    /**
      * 进行验证埋点
      * 返回true，继续
      * 返回false，停止继续
@@ -26,5 +26,11 @@ public interface Authentication {
      */
     boolean invoke(BaseRequest baseRequest) throws CannotAuthException, IOException;
 
+
+    /**
+     * 清除埋点
+     * @param baseRequest
+     */
+    void clear(BaseRequest baseRequest);
 
 }

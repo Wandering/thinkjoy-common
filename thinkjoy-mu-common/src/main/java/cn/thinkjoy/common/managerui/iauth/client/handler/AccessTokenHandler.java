@@ -83,6 +83,11 @@ public class AccessTokenHandler extends AbstractTokenBundledHandler {
         return true;
     }
 
+    @Override
+    public void clear(BaseRequest baseRequest) {
+        ((DefaultAuthRequest) baseRequest).removeCookieToResponse(HTTP_COOKIE_ACCESS_TOKEN);
+    }
+
     /**
      * principal -> credential
      *
@@ -105,6 +110,7 @@ public class AccessTokenHandler extends AbstractTokenBundledHandler {
 //        if (Strings.isNullOrEmpty(appName)) {
 //
 //        }
+        // FIXME
 
         if (user.getBizDimension() == null || user.getBizDimension() == 0) {
             logger.info("该用户没有权限登录");

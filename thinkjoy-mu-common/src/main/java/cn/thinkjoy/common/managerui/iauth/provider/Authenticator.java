@@ -22,7 +22,7 @@ public abstract class Authenticator {
     public abstract List<TokenHandler> getTokenHandlers();
 
 
-    public abstract boolean isNeedAuthentication();
+    public abstract boolean isNeedAuthentication(BaseRequest baseRequest);
 
     public abstract void init(List<TokenHandler> tokenHandlers);
 
@@ -37,6 +37,8 @@ public abstract class Authenticator {
         return tokens;
     }
 
+    public abstract boolean isLogout(BaseRequest baseRequest);
+
     /**
      * 找到相应的token handler进行执行
      * 注意执行顺序
@@ -48,13 +50,15 @@ public abstract class Authenticator {
      * @throws ServletException
      */
     public void authentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException{
-        if(!isNeedAuthentication()){
+        BaseRequestFactory requestFactory = getRequestFactory();
+            BaseRequest baseRequest = requestFactory.buildFromHttpServletRequest(req,res,this);
+
+
+        if(!isNeedAuthentication(baseRequest)){
             chain.doFilter(req,res);
             return;
         }
 
-        BaseRequestFactory requestFactory = getRequestFactory();
-            BaseRequest baseRequest = requestFactory.buildFromHttpServletRequest(req,res,this);
         try {
             for (TokenHandler tokenHandler: getTokenHandlers()) {
                 if (!checkTokenTypeBeforeInvoke(baseRequest, tokenHandler)) {
@@ -75,12 +79,20 @@ public abstract class Authenticator {
                 }
             }
             // passed
+            if (isLogout(baseRequest)) {
+                for (TokenHandler tokenHandler: getTokenHandlers()) {
+                    tokenHandler.clear(baseRequest);
+                }
+                redirectTologout(baseRequest);
+                return;
+            }
             authenticationDone(baseRequest);
             chain.doFilter(req, res);
         } catch (CannotAuthException ex) {
             callWhenAuthenticatiorError(baseRequest, ex);
 
         }
+
 
     }
 
@@ -149,6 +161,15 @@ public abstract class Authenticator {
      * @throws IOException
      */
     public abstract void redirectTologin(BaseRequest baseRequest) throws IOException;
+
+
+
+    /**
+     * 登出后进行需要的跳转
+     * @param baseRequest
+     * @throws IOException
+     */
+    public abstract void redirectTologout(BaseRequest baseRequest) throws IOException;
 
     /**
      * 完成验证后，给请求加上已经验证通过的标示和userid

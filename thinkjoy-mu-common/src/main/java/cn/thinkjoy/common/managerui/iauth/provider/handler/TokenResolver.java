@@ -77,6 +77,11 @@ public class TokenResolver extends AbstractTokenHandler {
     }
 
     @Override
+    public void clear(BaseRequest baseRequest) {
+
+    }
+
+    @Override
     public String getHandleTokenType() {
         return null;
     }

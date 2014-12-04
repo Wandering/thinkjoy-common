@@ -1,5 +1,6 @@
 package cn.thinkjoy.common.managerui.iauth.client.handler;
 
+import cn.thinkjoy.common.managerui.iauth.client.DefaultAuthRequest;
 import cn.thinkjoy.common.managerui.iauth.client.token.EmbedToken;
 import cn.thinkjoy.common.managerui.iauth.client.token.UserStore;
 import cn.thinkjoy.common.managerui.iauth.provider.BaseRequest;
@@ -50,6 +51,12 @@ public class EmbedTokenHandler extends AbstractTokenHandler {
         // 重新定向到当前地址
 
         return false;
+    }
+
+    @Override
+    public void clear(BaseRequest baseRequest) {
+
+
     }
 
     @Override
