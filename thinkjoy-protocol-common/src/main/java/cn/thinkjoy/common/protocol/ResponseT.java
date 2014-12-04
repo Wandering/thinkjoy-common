@@ -23,7 +23,7 @@ public class ResponseT<T> implements Serializable {
     private T bizData;
 
     public ResponseT(){}
-    public ResponseT(RtnCodeEnum rtnCode){ this.rtnCode = rtnCode.getCode();}
+    public ResponseT(RtnCodeEnum rtnCode){ this.rtnCode = rtnCode.getValue();}
 
     public ResponseT(BizException bizException) {
         this.rtnCode = bizException.getErrorCode();
