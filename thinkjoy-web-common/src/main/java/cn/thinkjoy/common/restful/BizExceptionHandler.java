@@ -21,8 +21,12 @@ public class BizExceptionHandler implements RestExceptionHandler {
 
     @Override
     public ResponseEntity handleException(Exception exception, HttpServletRequest request) {
+        boolean isDebug = false;
+        if(request.getParameter("debug") != null){
+            isDebug = true;
+        }
 //        Response response = new Response.ResponseBuilder((BizException) exception).build();
-        ResponseT<String> responseT = ResponseTs.newResponse(exception);
+        ResponseT<String> responseT = ResponseTs.<String>newResponseException((BizException) exception, isDebug);
         logger.error(((BizException) exception).getMsg(), exception);
 
         return new ResponseEntity<>(responseT, HttpStatus.OK);

@@ -26,9 +26,15 @@ public class ResponseT<T> implements Serializable {
     public ResponseT(RtnCodeEnum rtnCode){ this.rtnCode = rtnCode.getValue();}
 
     public ResponseT(BizException bizException) {
+        this(bizException, false);
+    }
+
+    public ResponseT(BizException bizException, boolean isDebug) {
         this.rtnCode = bizException.getErrorCode();
         this.msg = bizException.getMsg();
-        this.developMsg = bizException.getDevelopMsg();
+        if(isDebug) {
+            this.developMsg = bizException.getDevelopMsg();
+        }
         this.uri = bizException.getUri();
     }
 
