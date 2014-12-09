@@ -1,0 +1,4 @@
+android会依赖此包
+
+android客户端和服务端交互的协议类；
+ios和其对应的json交互；

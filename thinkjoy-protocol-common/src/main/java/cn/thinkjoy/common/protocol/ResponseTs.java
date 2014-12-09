@@ -31,12 +31,24 @@ public class ResponseTs {
 
     /**
      *
+     * @param ex
+     * @param isDebug  是否调试模式    true 调试模式，返回详细的错误堆栈信息
+     * @param <T>
+     * @return
+     */
+    public static <T> ResponseT<T> newResponseException(BizException ex, boolean isDebug){
+        ResponseT<T> responseT = new ResponseT<T>(ex, isDebug);
+        return responseT;
+    }
+
+    /**
+     *
      * 业务异常返回
      *
      * @return
      */
-    public static <T> ResponseT newResponse(BizException ex){
-        ResponseT<T> responseT = new ResponseT(ex);
+    public static <T> ResponseT<T> newResponseException(BizException ex){
+        ResponseT<T> responseT = new ResponseT<T>(ex);
         return responseT;
     }
 
