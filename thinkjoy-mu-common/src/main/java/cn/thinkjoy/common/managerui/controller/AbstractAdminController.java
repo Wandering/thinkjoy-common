@@ -1,22 +1,30 @@
 package cn.thinkjoy.common.managerui.controller;
 
-import cn.thinkjoy.common.domain.view.BizData4Page;
-import cn.thinkjoy.common.managerui.controller.helpers.ActionPermHelper;
-import cn.thinkjoy.common.managerui.domain.Resource;
-import cn.thinkjoy.common.managerui.domain.ResourceGrid;
-import cn.thinkjoy.common.service.IDataPermService;
-import cn.thinkjoy.common.managerui.service.IResourceGridService;
-import cn.thinkjoy.common.service.IDataPermAware;
-import cn.thinkjoy.common.service.IPageService;
-
-import com.google.common.collect.Maps;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.ModelAndView;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.servlet.ModelAndView;
+
+import cn.thinkjoy.common.domain.SearchField;
+import cn.thinkjoy.common.domain.SearchFilter;
+import cn.thinkjoy.common.domain.view.BizData4Page;
+import cn.thinkjoy.common.enumration.SearchEnum;
+import cn.thinkjoy.common.managerui.controller.helpers.ActionPermHelper;
+import cn.thinkjoy.common.managerui.domain.Resource;
+import cn.thinkjoy.common.managerui.domain.ResourceGrid;
+import cn.thinkjoy.common.managerui.service.IResourceGridService;
+import cn.thinkjoy.common.service.IDataPermAware;
+import cn.thinkjoy.common.service.IDataPermService;
+import cn.thinkjoy.common.service.IPageService;
+
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
 
 /**
  * 管理类controller抽象类
@@ -112,6 +120,21 @@ public abstract class AbstractAdminController<T extends IPageService> implements
             if (whereSql != null) {
                 conditions.put("whereSql", whereSql);
             }
+        }
+        
+        //增加搜索
+        String filters = request.getParameter("filters");
+        if (StringUtils.isNotBlank(filters)) {
+            SearchFilter searchFilter = JSON.parseObject(filters,
+                    SearchFilter.class);
+            if (!CollectionUtils.isEmpty(searchFilter.getRules())) {
+                conditions.put("groupOp", searchFilter.getGroupOp());
+                for (SearchField field : searchFilter.getRules()) {
+                    field.setOp(SearchEnum.codeOf(field.getOp()).getDes());
+                    conditions.put(field.getField(), field);
+                }
+            }
+
         }
 
         return getMainService().queryPageByDataPerm(uri, conditions, page, (page-1)*rows, rows);
