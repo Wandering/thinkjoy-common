@@ -1,6 +1,6 @@
 package cn.thinkjoy.cn.thinkjoy.helpers;
 
-import cn.thinkjoy.common.managerui.HashedDataSource;
+//import cn.thinkjoy.common.managerui.HashedDataSource;
 import cn.thinkjoy.common.managerui.dao.IRoleDAO;
 import cn.thinkjoy.common.managerui.domain.Role;
 import com.google.common.collect.Maps;
@@ -29,7 +29,7 @@ public class CommonTest {
     @Test
     public void test(){
 
-        HashedDataSource.DynamicDataSourceHolder.putDataSource("ds2");
+//        HashedDataSource.DynamicDataSourceHolder.putDataSource("ds2");
 
         roleDAO.findOne("sid", 11);
         Map<String, Object> paramMap = Maps.newHashMap();
