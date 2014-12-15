@@ -18,4 +18,9 @@ allprojects {
     rxjavaVersion = "1.0.0"
 
     androidVersion = "4.1.1.4"
+
+    mysqlConnectorVersion = "5.1.26"
+
+    dubboVersion = "2.5.3"
+    dubboZKClientVersion = "0.4"
 }

@@ -3,6 +3,8 @@ include 'thinkjoy-io-common'
 
 include 'thinkjoy-biz-common'
 
+include 'thinkjoy-mus-common'
+
 include 'thinkjoy-mu-common'
 
 include 'thinkjoy-security-common'
