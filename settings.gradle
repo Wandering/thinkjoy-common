@@ -12,3 +12,5 @@ include 'thinkjoy-web-common'
 
 include 'thinkjoy-protocol-common'
 
+include 'thinkjoy-domain-common'
+

@@ -12,4 +12,5 @@ dependencies {
     compile "cn.thinkjoy.cloudstack:cs-clustermanager-client:$thinkjoyCloudstackVersion"
 
     compile project (':thinkjoy-protocol-common')
+    compile project (':thinkjoy-domain-common')
 }

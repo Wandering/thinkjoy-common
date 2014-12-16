@@ -1,8 +1,8 @@
 package cn.thinkjoy.common.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
 
 /**
  * 搜索条件集合
@@ -20,7 +20,7 @@ public class SearchFilter {
 	/**
 	 * 搜索条件集合
 	 */
-	private List<SearchField> rules = Lists.newArrayList();
+	private List<SearchField> rules = new ArrayList<>();
 
 	public String getGroupOp() {
 		return groupOp;
