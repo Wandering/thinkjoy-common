@@ -71,7 +71,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @param property
      * @param value
      */
-    public int deleteByProperty(String property, Object value);
+    public int deleteByProperty(@Param("update") String property,@Param("value") Object value);
 
     /**
      * 根据id进行对象查询
