@@ -71,7 +71,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @param property
      * @param value
      */
-    public int deleteByProperty(@Param("update") String property,@Param("value") Object value);
+    public int deleteByProperty(@Param("property") String property,@Param("value") Object value);
 
     /**
      * 根据id进行对象查询
@@ -132,7 +132,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      *            进行对象匹配的模糊属性值
      * @return
      */
-    public List<T> like(String property, Object value);
+    public List<T> like(@Param("property") String property, @Param("value") Object value);
 
     /**
      * 根据条件集合进行指定类型对象集合查询
@@ -185,7 +185,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @throws SecurityException
      * @throws IllegalArgumentException
      */
-    public T updateOrSave(T t, Long id);
+    public T updateOrSave(@Param("condition") T t, @Param("condition") Long id);
 
     /**
      * 根据泛型类型，执行最原始的sql
@@ -195,7 +195,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @return 返回泛型类型对象，如果返回多个结果集会抛出异常，如果要返回多个结果集，请参看
      *         {@link #selectList(String, Object)}
      */
-    public T selectOne(String mapperId, Object obj);
+    public T selectOne(@Param("condition") String mapperId, @Param("condition") Object obj);
 
     /**
      * 根据泛型类型，执行最原始的sql
@@ -204,7 +204,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @param obj
      * @return 返回泛型类型对象集合，如果要返回单个结果对象，请参看{@link #selectOne(String, Object)}
      */
-    public List<T> selectList(String mapperId, Object obj);
+    public List<T> selectList(@Param("condition") String mapperId, @Param("condition") Object obj);
 
     /**
      * 取得泛型类型
