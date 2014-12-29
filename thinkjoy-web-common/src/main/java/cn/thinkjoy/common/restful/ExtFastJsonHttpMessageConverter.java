@@ -90,7 +90,8 @@ public class ExtFastJsonHttpMessageConverter<T> extends AbstractHttpMessageConve
         }
 
         byte[] bytes = baos.toByteArray();
-        String url = ((ServletServerHttpRequest) inputMessage).getURI().getPath();
+        //String url = ((ServletServerHttpRequest) inputMessage).getURI().getPath();
+        String url = ((ServletServerHttpRequest)((ServletServerHttpRequest) inputMessage)).getServletRequest().getServletPath();
         //支持 url包含？参数
         int size = url.indexOf("?");
         if(size != -1){

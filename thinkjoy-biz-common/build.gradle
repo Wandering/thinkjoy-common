@@ -3,7 +3,7 @@ dependencies {
 
     compile "org.mybatis:mybatis:$mybatisVerion"
 
-    compile 'commons-lang:commons-lang:2.6'
+
 
     compile "org.springframework:spring-beans:$springVersion"
     compile "org.springframework:spring-context:$springVersion"
