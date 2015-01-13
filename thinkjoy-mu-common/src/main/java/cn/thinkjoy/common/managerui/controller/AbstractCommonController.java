@@ -3,7 +3,9 @@ package cn.thinkjoy.common.managerui.controller;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.managerui.controller.helpers.ActionPermHelper;
 import cn.thinkjoy.common.managerui.controller.helpers.BaseServiceMaps;
+import cn.thinkjoy.common.service.IBaseService;
 import cn.thinkjoy.common.utils.ActionEnum;
+import cn.thinkjoy.common.utils.UserContext;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,6 +42,7 @@ public abstract class AbstractCommonController {
     @RequestMapping(value="/commonsave/{mainObj}")
     @ResponseBody
     public String doSave(@PathVariable String mainObj){
+        //TODO   支持多对象保存
         Map<String, Object> dataMap = Maps.newHashMap();
 
         String prop = null;
@@ -51,28 +55,43 @@ public abstract class AbstractCommonController {
 
         Set<String> actionSet = actionPermHelper.getActionPerm(mainObj);
 
+        //对dataMap进行处理
+        enhanceDataMap(dataMap);
+
         //功能权限处理
         if(ActionEnum.EDIT.getAction().equals(operValue)) { //修改
             if(!actionSet.contains(ActionEnum.EDIT.getAction())){
                 //无业务权限的异常
                 throw new BizException("", "");
             }
-            getServiceMaps().get(mainObj).updateMap(dataMap);
+
+            dataMap.put("lastModifier", UserContext.getCurrentUser().getId());
+            dataMap.put("lastModDate", System.currentTimeMillis());
+            //getMainService(mainObj).updateMap(dataMap);
+            innerHandleUpdate(mainObj, dataMap);
         } else if(ActionEnum.ADD.getAction().equals(operValue)){//新增
             if(!actionSet.contains(ActionEnum.ADD.getAction())){
                 //无业务权限的异常
                 throw new BizException("", "");
             }
 
-            getServiceMaps().get(mainObj).insertMap(dataMap);
+            dataMap.put("creator", UserContext.getCurrentUser().getId());
+            dataMap.put("createDate", System.currentTimeMillis());
+            dataMap.put("lastModifier", UserContext.getCurrentUser().getId());
+            dataMap.put("lastModDate", System.currentTimeMillis());
+            //getMainService(mainObj).insertMap(dataMap);
+            innerHandleAdd(mainObj, dataMap);
         } else if(ActionEnum.DEL.getAction().equals(operValue)){//删除
             if(!actionSet.contains(ActionEnum.DEL.getAction())){
                 //无业务权限的异常
                 throw new BizException("", "");
             }
 
+            dataMap.put("lastModifier", UserContext.getCurrentUser().getId());
+            dataMap.put("lastModDate", System.currentTimeMillis());
             long id = Long.parseLong(dataMap.get("id").toString());
-            getServiceMaps().get(mainObj).delete(id);
+            //getMainService(mainObj).delete(id);
+            innerHandleDel(mainObj, dataMap);
         } else {
             return "false";
         }
@@ -80,39 +99,41 @@ public abstract class AbstractCommonController {
         return "true";
     }
 
-//    @RequestMapping(value="/commondel/{mainObj}")
-//    @ResponseBody
-//    public String doDel(@PathVariable String mainObj){
-//        Map<String, Object> dataMap = Maps.newHashMap();
-//        String prop = null;
-//        Enumeration<String> names = request.getParameterNames();
-//        while(names.hasMoreElements()){
-//            prop = names.nextElement();
-//            dataMap.put(prop, request.getParameter(prop));
-//        }
-////        daoMaps.get(mainObj).deleteById();
-//        long id = Long.parseLong(dataMap.get("id").toString());
-//        serviceMaps.get(mainObj).delete(id);
-//
-//        return "true";
-//    }
-//
-//    @RequestMapping(value="/commonadd/{mainObj}")
-//    @ResponseBody
-//    public String doAdd(@PathVariable String mainObj){
-//        Map<String, Object> dataMap = Maps.newHashMap();
-//        String prop = null;
-//        Enumeration<String> names = request.getParameterNames();
-//        while(names.hasMoreElements()){
-//            prop = names.nextElement();
-//            dataMap.put(prop, request.getParameter(prop));
-//        }
-////        daoMaps.get(mainObj).deleteById();
-//
-////        serviceMaps.get(mainObj).
-//
-//        return "true";
-//    }
+    /**
+     * 子类可重载
+     * @param dataMap
+     */
+    protected void enhanceDataMap(Map<String, Object> dataMap) {
+
+    }
+
+    /**
+     * 子类可重载, 主要用于级联对象处理   新增
+     * @param mainObj
+     * @return
+     */
+    protected void innerHandleAdd(String mainObj, Map<String, Object> dataMap){
+        getServiceMaps().get(mainObj).insertMap(dataMap);
+    }
+
+    /**
+     * 子类可重载, 主要用于级联对象处理  更新
+     * @param mainObj
+     * @param dataMap
+     */
+    protected void innerHandleUpdate(String mainObj, Map<String, Object> dataMap){
+        getServiceMaps().get(mainObj).updateMap(dataMap);
+    }
+
+    /**
+     * 子类可重载, 主要用于级联对象处理  删除
+     * @param mainObj
+     * @param dataMap
+     */
+    protected void innerHandleDel(String mainObj, Map<String, Object> dataMap){
+        long id = Long.parseLong(dataMap.get("id").toString());
+        getServiceMaps().get(mainObj).delete(id);
+    }
 
     @RequestMapping(value="/import/{mainObj}")
     @ResponseBody
@@ -151,6 +172,18 @@ public abstract class AbstractCommonController {
     }
 
     protected abstract BaseServiceMaps getServiceMaps();
+
+    /**
+     * 设定多对象的存储顺序
+     * @return
+     */
+//    protected abstract List<String> getCascadeObjList();
+
+    /**
+     * 设定每个对象保存的service
+     * @return
+     */
+//    protected abstract Map<String, IBaseService> getCascadeObjServices();
 
 //    @RequestMapping(value="/export/{mainObj}")
 //    @ResponseBody

@@ -23,7 +23,7 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      *
      * @param entity
      */
-    public void add(T entity);
+    public int add(T entity);
 
     /**
      * 修改一条数据
@@ -31,14 +31,14 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      * @param entity
      *            要更新的实体对象
      */
-    public void edit(T entity);
+    public int edit(T entity);
 
     /**
      * 删除一条数据
      *
      * @param id
      */
-    public void delete(Long id);
+    public int delete(Long id);
 
     /**
      * 查看一条确定的数据
@@ -66,7 +66,7 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      *
      * @param entity
      */
-    public void insert(T entity);
+    public int insert(T entity);
 
     /**
      * 更新对象,如果属性为空，则不会进行对应的属性值更新,如果有属性要更新为null，请参看{@link #updateNull(T)}
@@ -74,33 +74,33 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      * @param entity
      *            要更新的实体对象
      */
-    public void update(T entity);
+    public int update(T entity);
 
 
-    public void insertMap(Map<String, Object> entityMap);
+    public int insertMap(Map<String, Object> entityMap);
 
-    public void updateMap(Map<String, Object> entityMap);
+    public int updateMap(Map<String, Object> entityMap);
 
     /**
      * 更新对象,如果属性为空，会进行对应的属性值更新,如果有属性不想更新为null，请参看{@link #update(T)}
      *
      * @param entity
      */
-    public void updateNull(T entity);
+    public int updateNull(T entity);
 
     /**
      * 根据id删除对象
      *
      * @param id
      */
-    public void deleteById(Long id);
+    public int deleteById(Long id);
 
     /**
      * 根据条件集合删除对象
      *
      * @param condition
      */
-    public void deleteByCondition(Map<String, Object> condition);
+    public int deleteByCondition(Map<String, Object> condition);
 
     /**
      * 根据属性和属性值删除对象
@@ -108,7 +108,7 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      * @param property
      * @param value
      */
-    public void deleteByProperty(String property, Object value);
+    public int deleteByProperty(String property, Object value);
 
     /**
      * 根据id进行对象查询

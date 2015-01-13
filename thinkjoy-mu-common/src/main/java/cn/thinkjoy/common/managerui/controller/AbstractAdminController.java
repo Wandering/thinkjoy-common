@@ -76,7 +76,12 @@ public abstract class AbstractAdminController<T extends IPageService> implements
         mav.addObject("resources", resourceList);
 
 //        List<ResourceGrid> resourceGridList = resourceGridService.findAll();
-        List<ResourceGrid> resourceGridList = resourceGridService.findList("moduleName",getMainObjName());
+        Map<String, Object> condition = Maps.newHashMap();
+        condition.put("moduleName",getMainObjName());
+        //屏蔽掉不显示的列
+        condition.put("hide","0");
+
+        List<ResourceGrid> resourceGridList = resourceGridService.queryList(condition, null, null);//resourceGridService.findList("moduleName",getMainObjName());
         mav.addObject("cols", resourceGridList);
 
         mav.addObject("bizSys", getBizSys());
