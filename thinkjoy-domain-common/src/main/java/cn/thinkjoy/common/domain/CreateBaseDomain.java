@@ -19,44 +19,52 @@ import java.util.Date;
  */
 public class CreateBaseDomain extends BaseDomain {
     /** 创建人及创建时间 */
-    private long              creator = 0L;
-    private long              createDate = System.currentTimeMillis();
+    private Long              creator;
+    private Long              createDate;
 
     /** 最后修改人及最后修改时间 */
-    private long              lastModifier = 0L;
-    private long              lastModDate = System.currentTimeMillis();
-    private int               status = StatusEnum.N.getCode();
+    private Long              lastModifier;
+    private Long              lastModDate = System.currentTimeMillis();
+    private Integer               status;
 
-    public long getCreator() {
+    public Long getCreator() {
         return creator;
     }
 
-    public void setCreator(long creator) {
+    public void setCreator(Long creator) {
         this.creator = creator;
     }
 
-    public long getCreateDate() {
+    public Long getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(long createDate) {
+    public void setCreateDate(Long createDate) {
         this.createDate = createDate;
     }
 
-    public long getLastModifier() {
+    public Long getLastModifier() {
         return lastModifier;
     }
 
-    public void setLastModifier(long lastModifier) {
+    public void setLastModifier(Long lastModifier) {
         this.lastModifier = lastModifier;
     }
 
-    public long getLastModDate() {
+    public Long getLastModDate() {
         return lastModDate;
     }
 
-    public void setLastModDate(long lastModDate) {
+    public void setLastModDate(Long lastModDate) {
         this.lastModDate = lastModDate;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Date getCreateDateAsDate() {
@@ -65,13 +73,5 @@ public class CreateBaseDomain extends BaseDomain {
 
     public Date getLastModDateAsDate() {
         return lastModDate > 0 ? new Date(lastModDate) : null;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 }

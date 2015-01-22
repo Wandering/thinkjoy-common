@@ -7,20 +7,25 @@ import cn.thinkjoy.common.service.IBaseService;
 import cn.thinkjoy.common.utils.ActionEnum;
 import cn.thinkjoy.common.utils.UserContext;
 import com.google.common.collect.Maps;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.jeecgframework.poi.excel.ExcelExportUtil;
+import org.jeecgframework.poi.excel.entity.ExportParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.*;
 
 /**
  * 每个页面grid数据的每个对象保存   基类，业务系统controller重载， requeatmapping的命名规则为  “/admin/$业务系统名称/$业务模型”    例如  "/admin/ehr/commonsave"
@@ -30,14 +35,24 @@ import java.util.Set;
  * @author qyang
  * @since v0.0.1
  */
-public abstract class AbstractCommonController {
+public abstract class AbstractCommonController<T>  extends AbstractController{
+    public static final Logger logger = LoggerFactory.getLogger(AbstractCommonController.class);
+
     private final static String OPER = "oper";
 
-    @Autowired
-    private HttpServletRequest request;
+    protected HttpServletRequest request;
+
+    protected HttpServletResponse response;
 
     @Autowired
     private ActionPermHelper actionPermHelper;
+
+    @ModelAttribute
+    public void setReqAndRes(HttpServletRequest request,
+                             HttpServletResponse response) {
+        this.request = request;
+        this.response = response;
+    }
 
     @RequestMapping(value="/commonsave/{mainObj}")
     @ResponseBody
@@ -173,6 +188,8 @@ public abstract class AbstractCommonController {
 
     protected abstract BaseServiceMaps getServiceMaps();
 
+
+
     /**
      * 设定多对象的存储顺序
      * @return
@@ -185,24 +202,63 @@ public abstract class AbstractCommonController {
      */
 //    protected abstract Map<String, IBaseService> getCascadeObjServices();
 
-//    @RequestMapping(value="/export/{mainObj}")
-//    @ResponseBody
-//    public String doExport(@RequestParam("file") MultipartFile file, @PathVariable String mainObj){
-//        String filename = mainObj + ".xlsx";//设置下载时客户端Excel的名称
-//        response.setContentType("application/vnd.ms-excel");
-//        response.setHeader("Content-disposition", "attachment;filename=" + filename);
-//
-//        try {
-//            OutputStream ouputStream = response.getOutputStream();
-//            //workbook.write(ouputStream);
-//
-//            ouputStream.flush();
-//            ouputStream.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//        return "true";
-//    }
+    @RequestMapping(value="/export/{mainObj}")
+    @ResponseBody
+    public String doExport(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        String uri = request.getRequestURI().substring(0, request.getRequestURI().length() - 1);
+        String title = request.getParameter("fileName");
+        //获取参数
+        Map<String, Object> conditions = makeQueryCondition(request, response, uri);
+
+        List<T> expertUserDetails = getExportService().queryPage(conditions, 0, Integer.MAX_VALUE);
+        OutputStream out = null;
+        try {
+            response.setContentType("application/x-msdownload");
+            out = new BufferedOutputStream(response.getOutputStream());
+            //解决中文乱码
+            response.setHeader("Content-Disposition", "attachment;filename="+new String((title + ".xls").getBytes("utf-8"),"ISO-8859-1"));
+            response.setContentType("application/octet-stream");
+
+            Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams(null, title),
+                    getGenericType(0), expertUserDetails);
+
+            workbook.write(out);
+//            OutputStream out= response.getOutputStream();
+//           ex.exportExcel("专家信息",headers, expertUserExcelBeans, out,"yyyy-MM-dd");
+
+        }catch(Exception e){
+            //日志打印错误
+            logger.error("导出数据失败", e);
+        }finally{
+            if(out!=null) {
+                out.flush();
+                out.close();
+            }
+        }
+        return null;
+
+    }
+
+    protected abstract IBaseService getExportService();
+
+    /**
+     * 获取泛型类泛型
+     * @param index
+     * @return
+     */
+    private final Class getGenericType(int index) {
+        Type genType = getClass().getGenericSuperclass();
+        if (!(genType instanceof ParameterizedType)) {
+            return Object.class;
+        }
+        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+        if (index >= params.length || index < 0) {
+            throw new RuntimeException("Index outof bounds");
+        }
+        if (!(params[index] instanceof Class)) {
+            return Object.class;
+        }
+        return (Class) params[index];
+    }
+
 }

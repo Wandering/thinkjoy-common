@@ -30,6 +30,8 @@ dependencies {
 //    compile "cn.thinkjoy.cloudstack:cs-spring-zkconfig:$thinkjoyCloudstackVersion"
 //    compile "cn.thinkjoy.cloudstack:cs-spring-redis:$thinkjoyCloudstackVersion"
 
+    compile "com.easypoi:easypoi-base:2.0.6"
+    compile "com.easypoi:easypoi-web:2.0.6"
 
     compile project(':thinkjoy-web-common')
     compile project(':thinkjoy-mus-common')
