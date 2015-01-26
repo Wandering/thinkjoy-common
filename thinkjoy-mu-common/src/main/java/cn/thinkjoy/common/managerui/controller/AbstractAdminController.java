@@ -9,6 +9,7 @@ import cn.thinkjoy.common.managerui.service.IResourceGridService;
 import cn.thinkjoy.common.service.IDataPermAware;
 import cn.thinkjoy.common.service.IPageService;
 
+import cn.thinkjoy.common.utils.UserContext;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
@@ -75,6 +76,9 @@ public abstract class AbstractAdminController<T extends IPageService> implements
         mav.addObject("mainObj", getMainObjName());
         mav.addObject("parentTitle", getParentTitle());
         mav.addObject("title", getViewTitle());
+
+        // 当前用户
+        mav.addObject("current_userName", UserContext.getCurrentUser().getName());
 
         //按钮功能权限处理
         mav.addObject("actions", actionPermHelper.getActionPerm(getMainObjName()));

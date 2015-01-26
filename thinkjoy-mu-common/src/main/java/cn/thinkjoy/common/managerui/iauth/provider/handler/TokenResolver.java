@@ -54,6 +54,8 @@ public class TokenResolver extends AbstractTokenHandler {
 
     /**
      * 从请求中获取token
+     * FIXME 多token目前不兼容，需要修改
+     * 应该每个token有自己的handler去处理
      *
      * @param baseRequest
      * @return
