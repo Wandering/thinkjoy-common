@@ -23,21 +23,21 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
 
 
     @Override
-    public final void add(T entity) {
+    public final int add(T entity) {
         enhanceNewCreateBaseDomain(entity);
-        getDao().insert(entity);
+        return getDao().insert(entity);
     }
 
     @Override
-    public final void edit(T entity) {
+    public final int edit(T entity) {
         enhanceCreateBaseDomain(entity);
 
-        getDao().update(entity);
+        return getDao().update(entity);
     }
 
     @Override
-    public final void delete(Long id) {
-        getDao().deleteById(id);
+    public final int delete(Long id) {
+        return getDao().deleteById(id);
     }
 
     @Override
@@ -46,34 +46,34 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
     }
 
     @Override
-    public final void insert(T entity) {
+    public final int insert(T entity) {
         enhanceNewCreateBaseDomain(entity);
-        getDao().insert(entity);
+        return getDao().insert(entity);
     }
 
     @Override
-    public final void update(T entity) {
+    public final int update(T entity) {
         enhanceCreateBaseDomain(entity);
-        getDao().update(entity);
+        return getDao().update(entity);
     }
 
     @Override
-    public final void updateNull(T entity) {
+    public final int updateNull(T entity) {
         enhanceCreateBaseDomain(entity);
 
-        getDao().updateNull(entity);
+        return getDao().updateNull(entity);
 
     }
 
     @Override
-    public final void deleteById(Long id) {
+    public final int deleteById(Long id) {
 
-        getDao().deleteById(id);
+        return getDao().deleteById(id);
     }
 
     @Override
-    public final void deleteByProperty(String property, Object value) {
-        getDao().deleteByProperty(property,value);
+    public final int deleteByProperty(String property, Object value) {
+        return getDao().deleteByProperty(property,value);
 
     }
 
@@ -149,20 +149,20 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
     }
 
     @Override
-    public final void deleteByCondition(Map condition) {
-        getDao().deleteByCondition(condition);
+    public final int deleteByCondition(Map condition) {
+        return getDao().deleteByCondition(condition);
     }
 
     @Override
-    public final void updateMap(Map entityMap) {
+    public final int updateMap(Map entityMap) {
         enhanceCreateBaseDomain(entityMap);
-        getDao().updateMap(entityMap);
+        return getDao().updateMap(entityMap);
     }
 
     @Override
-    public final void insertMap(Map entityMap) {
+    public final int insertMap(Map entityMap) {
         enhanceNewCreateBaseDomain(entityMap);
-        getDao().insertMap(entityMap);
+        return getDao().insertMap(entityMap);
     }
 
     @Override

@@ -19,16 +19,23 @@ public class ResponseT<T> implements Serializable {
     private String developMsg;
     /** 错误说明url 有业务异常的时候，来源于BizException；否则网关出错（系统异常），使用通用异常 */
     private String uri;
+    private long ts = System.currentTimeMillis();
     /** 返回的业务 有业务异常的时候，来源于BizException；否则网关出错（系统异常），使用通用异常 */
     private T bizData;
 
     public ResponseT(){}
-    public ResponseT(RtnCodeEnum rtnCode){ this.rtnCode = rtnCode.getCode();}
+    public ResponseT(RtnCodeEnum rtnCode){ this.rtnCode = rtnCode.getValue();}
 
     public ResponseT(BizException bizException) {
+        this(bizException, false);
+    }
+
+    public ResponseT(BizException bizException, boolean isDebug) {
         this.rtnCode = bizException.getErrorCode();
         this.msg = bizException.getMsg();
-        this.developMsg = bizException.getDevelopMsg();
+        if(isDebug) {
+            this.developMsg = bizException.getDevelopMsg();
+        }
         this.uri = bizException.getUri();
     }
 
@@ -56,11 +63,15 @@ public class ResponseT<T> implements Serializable {
         this.uri = uri;
     }
 
-    public Object getBizData() {
+    public T getBizData() {
         return bizData;
     }
 
     public void setBizData(T bizData) {
         this.bizData = bizData;
+    }
+
+    public long getTs() {
+        return ts;
     }
 }

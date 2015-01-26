@@ -1,23 +1,31 @@
 package cn.thinkjoy.common.managerui.controller;
 
-import cn.thinkjoy.common.domain.view.BizData4Page;
-import cn.thinkjoy.common.managerui.controller.helpers.ActionPermHelper;
-import cn.thinkjoy.common.managerui.domain.Resource;
-import cn.thinkjoy.common.managerui.domain.ResourceGrid;
-import cn.thinkjoy.common.service.IDataPermService;
-import cn.thinkjoy.common.managerui.service.IResourceGridService;
-import cn.thinkjoy.common.service.IDataPermAware;
-import cn.thinkjoy.common.service.IPageService;
-
-import cn.thinkjoy.common.utils.UserContext;
-import com.google.common.collect.Maps;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.ModelAndView;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.servlet.ModelAndView;
+
+import cn.thinkjoy.common.domain.SearchField;
+import cn.thinkjoy.common.domain.SearchFilter;
+import cn.thinkjoy.common.domain.view.BizData4Page;
+import cn.thinkjoy.common.enumration.SearchEnum;
+import cn.thinkjoy.common.managerui.controller.helpers.ActionPermHelper;
+import cn.thinkjoy.common.managerui.domain.Resource;
+import cn.thinkjoy.common.managerui.domain.ResourceGrid;
+import cn.thinkjoy.common.managerui.service.IResourceGridService;
+import cn.thinkjoy.common.service.IDataPermAware;
+import cn.thinkjoy.common.service.IDataPermService;
+import cn.thinkjoy.common.service.IPageService;
+
+import cn.thinkjoy.common.utils.UserContext;
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
 
 /**
  * 管理类controller抽象类
@@ -29,7 +37,7 @@ import java.util.Map;
  * @author qyang
  * @since v0.0.1
  */
-public abstract class AbstractAdminController<T extends IPageService> implements IDataPermAware{
+public abstract class AbstractAdminController<T extends IPageService> extends AbstractController{
     /** 当前页面的主service  */
     protected T mainService;
     @Autowired
@@ -69,7 +77,12 @@ public abstract class AbstractAdminController<T extends IPageService> implements
         mav.addObject("resources", resourceList);
 
 //        List<ResourceGrid> resourceGridList = resourceGridService.findAll();
-        List<ResourceGrid> resourceGridList = resourceGridService.findList("moduleName",getMainObjName());
+        Map<String, Object> condition = Maps.newHashMap();
+        condition.put("moduleName",getMainObjName());
+        //屏蔽掉不显示的列
+        condition.put("hide","0");
+
+        List<ResourceGrid> resourceGridList = resourceGridService.queryList(condition, null, null);//resourceGridService.findList("moduleName",getMainObjName());
         mav.addObject("cols", resourceGridList);
 
         mav.addObject("bizSys", getBizSys());
@@ -87,9 +100,6 @@ public abstract class AbstractAdminController<T extends IPageService> implements
     }
 
     protected BizData4Page doPage(HttpServletRequest request,HttpServletResponse response){
-        //获取参数
-        Map<String, Object> conditions = Maps.newHashMap();
-
         Integer page = 1;
         if(request.getParameter("page") != null) {
             page = Integer.valueOf(request.getParameter("page"));
@@ -99,25 +109,11 @@ public abstract class AbstractAdminController<T extends IPageService> implements
             rows = Integer.valueOf(request.getParameter("rows"));
         }
 
-        String sidx = request.getParameter("sidx");
-        String sord = request.getParameter("sord");
-        conditions.put("sort", sidx + " " + sord);
-
-        String searchField = request.getParameter("searchField");
-        String searchOper = request.getParameter("searchOper");
-        String searchString = request.getParameter("searchString");
-        conditions.put(searchField, searchString);
-
         String uri = request.getRequestURI().substring(0, request.getRequestURI().length() - 1);
-
-        //需要在controller处  对 是否有数据权限进行设定和处理
-        if(getEnableDataPerm()) { //需要进行数据权限处理
-            String whereSql = dataPermService.makeDataPermSql(uri);
-            if (whereSql != null) {
-                conditions.put("whereSql", whereSql);
-            }
-        }
+        //获取参数
+        Map<String, Object> conditions = makeQueryCondition(request, response, uri);
 
         return getMainService().queryPageByDataPerm(uri, conditions, page, (page-1)*rows, rows);
     }
+
 }

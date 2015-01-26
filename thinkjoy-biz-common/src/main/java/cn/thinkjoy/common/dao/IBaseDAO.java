@@ -19,7 +19,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      *
      * @param entity
      */
-    public void insert(T entity);
+    public int insert(T entity);
 
     /**
      * 更新对象,如果属性为空，则不会进行对应的属性值更新,如果有属性要更新为null，请参看{@link #updateNull(T)}
@@ -27,43 +27,43 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @param entity
      *            要更新的实体对象
      */
-    public void update(T entity);
+    public int update(T entity);
 
-    public void updateMap(@Param("map") Map<String, Object> entityMap);
+    public int updateMap(@Param("map") Map<String, Object> entityMap);
 
     /**
      * 通用的更新操作
      * @param updateMap 需要更新的值
      * @param conditionMap 需要被更新的条件
      */
-    public void updateByCondition(@Param("update") Map<String, Object> updateMap, @Param("condition") Map<String, Object> conditionMap);
+    public int updateByCondition(@Param("update") Map<String, Object> updateMap, @Param("condition") Map<String, Object> conditionMap);
 
     /**
      * map类型数据的新增
      * @param entityMap
      */
-    public void insertMap(@Param("map") Map<String, Object> entityMap);
+    public int insertMap(@Param("map") Map<String, Object> entityMap);
 
     /**
      * 更新对象,如果属性为空，会进行对应的属性值更新,如果有属性不想更新为null，请参看{@link #update(T)}
      *
      * @param entity
      */
-    public void updateNull(T entity);
+    public int updateNull(T entity);
 
     /**
      * 根据id删除对象
      *
      * @param id
      */
-    public void deleteById(Long id);
+    public int deleteById(Long id);
 
     /**
      * 根据条件集合删除对象
      *
      * @param condition
      */
-    public void deleteByCondition(Map<String, Object> condition);
+    public int deleteByCondition(Map<String, Object> condition);
 
     /**
      * 根据属性和属性值删除对象
@@ -71,7 +71,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @param property
      * @param value
      */
-    public void deleteByProperty(String property, Object value);
+    public int deleteByProperty(@Param("property") String property,@Param("value") Object value);
 
     /**
      * 根据id进行对象查询
@@ -132,7 +132,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      *            进行对象匹配的模糊属性值
      * @return
      */
-    public List<T> like(String property, Object value);
+    public List<T> like(@Param("property") String property, @Param("value") Object value);
 
     /**
      * 根据条件集合进行指定类型对象集合查询
@@ -185,7 +185,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @throws SecurityException
      * @throws IllegalArgumentException
      */
-    public T updateOrSave(T t, Long id);
+    public T updateOrSave(@Param("condition") T t, @Param("condition") Long id);
 
     /**
      * 根据泛型类型，执行最原始的sql
@@ -195,7 +195,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @return 返回泛型类型对象，如果返回多个结果集会抛出异常，如果要返回多个结果集，请参看
      *         {@link #selectList(String, Object)}
      */
-    public T selectOne(String mapperId, Object obj);
+    public T selectOne(@Param("condition") String mapperId, @Param("condition") Object obj);
 
     /**
      * 根据泛型类型，执行最原始的sql
@@ -204,7 +204,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @param obj
      * @return 返回泛型类型对象集合，如果要返回单个结果对象，请参看{@link #selectOne(String, Object)}
      */
-    public List<T> selectList(String mapperId, Object obj);
+    public List<T> selectList(@Param("condition") String mapperId, @Param("condition") Object obj);
 
     /**
      * 取得泛型类型

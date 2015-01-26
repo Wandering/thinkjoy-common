@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.common.managerui.dao.IPermissionDAO">
+
+    <!-- 获取用户菜单 -->
+    <select id="getResByPerm" resultType="Resource">
+        select distinct res.* from
+        cmc_resource res left outer join cmc_role_resource rres on res.id = rres.resourceId
+        left outer join cmc_role_user ru on rres.roleId = ru.roleId
+        where ru.userId = #{userId}
+        order by res.longNumber
+    </select>
+
+    <!-- 获取用户对应菜单的按钮权限 -->
+    <select id="getResActionByPerm" resultType="ResourceAction">
+        select ra.* from
+        cmc_resource res left outer join cmc_role_resource rres on res.id = rres.resourceId
+        left outer join cmc_role_user ru on rres.roleId = ru.roleId
+        left outer join cmc_resource_action ra on rres.resourceActionId = ra.id
+        <where>
+            <if test="condition.userId != null">
+                and ru.userId in (#{condition.userId})
+            </if>
+
+            <if test="condition.resourceId != null">
+                and ra.resourceId in (#{condition.resourceId})
+            </if>
+        </where>
+    </select>
+
+    <!-- 根据用户所在数据组获取其对应的数据id集合 -->
+    <select id="getDataByPerm" resultType="DatagroupData">
+        select mdgd.* from cmc_datagroup_data mdgd
+        inner join cmc_user_datagroup mudg on mudg.datagroupId = mdgd.datagroupId
+
+        <where>
+            <if test="condition.userId != null">
+                and mudg.userId in (#{condition.userId})
+            </if>
+
+            <if test="condition.dataModelId != null">
+                and mdgd.dataModelId in (#{condition.dataModelId})
+            </if>
+        </where>
+    </select>
+</mapper>
+

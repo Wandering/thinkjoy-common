@@ -14,8 +14,9 @@ import java.io.Serializable;
  */
 public class BaseDomain implements Serializable {
 
+    private static final long serialVersionUID = 6667600871541308622L;
     // ID
-    private long              id;
+    private Long              id;
 
     public long getId() {
         return id;
