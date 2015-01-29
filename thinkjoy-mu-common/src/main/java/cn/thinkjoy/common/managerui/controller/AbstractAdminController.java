@@ -23,6 +23,7 @@ import cn.thinkjoy.common.service.IDataPermAware;
 import cn.thinkjoy.common.service.IDataPermService;
 import cn.thinkjoy.common.service.IPageService;
 
+import cn.thinkjoy.common.utils.UserContext;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 
@@ -88,6 +89,9 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
         mav.addObject("mainObj", getMainObjName());
         mav.addObject("parentTitle", getParentTitle());
         mav.addObject("title", getViewTitle());
+
+        // 当前用户
+        mav.addObject("current_userName", UserContext.getCurrentUser().getName());
 
         //按钮功能权限处理
         mav.addObject("actions", actionPermHelper.getActionPerm(getMainObjName()));
