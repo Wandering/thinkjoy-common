@@ -207,6 +207,8 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
     public String doExport(HttpServletRequest request,HttpServletResponse response) throws Exception {
         String uri = request.getRequestURI().substring(0, request.getRequestURI().length() - 1);
         String title = request.getParameter("fileName");
+        //post 中文支持 仅支持 tomcat容器
+        title = new String(title.getBytes("ISO-8859-1"), "utf-8");
         //获取参数
         Map<String, Object> conditions = makeQueryCondition(request, response, uri);
 

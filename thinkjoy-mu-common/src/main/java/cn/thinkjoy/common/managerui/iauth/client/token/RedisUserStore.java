@@ -7,6 +7,7 @@ import cn.thinkjoy.cloudstack.dynconfig.DynConfigClientFactory;
 import cn.thinkjoy.cloudstack.dynconfig.IChangeListener;
 import cn.thinkjoy.cloudstack.dynconfig.domain.Configuration;
 import cn.thinkjoy.common.managerui.domain.User;
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -62,13 +63,14 @@ public class RedisUserStore implements UserStore{
 
     @Override
     public User storeUser(long key, User user) {
-        userStorage.set(PREFIX+key, user, USER_EXPIRE_TIME, TimeUnit.SECONDS);
+        String userJson = JSON.toJSONString(user);
+        userStorage.set(PREFIX+key, userJson, USER_EXPIRE_TIME, TimeUnit.SECONDS);
         return null;
     }
 
     @Override
     public User readUser(long key) {
-        return (User) userStorage.get(PREFIX+key);
+        return JSON.parseObject((String)userStorage.get(PREFIX+key), User.class);
     }
 
     @Override

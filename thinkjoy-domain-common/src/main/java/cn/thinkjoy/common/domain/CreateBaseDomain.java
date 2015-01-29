@@ -68,10 +68,16 @@ public class CreateBaseDomain extends BaseDomain {
     }
 
     public Date getCreateDateAsDate() {
+        if(createDate == null){
+            return new Date();
+        }
         return createDate > 0 ? new Date(createDate) : null;
     }
 
     public Date getLastModDateAsDate() {
+        if(lastModDate == null){
+            return new Date();
+        }
         return lastModDate > 0 ? new Date(lastModDate) : null;
     }
 }

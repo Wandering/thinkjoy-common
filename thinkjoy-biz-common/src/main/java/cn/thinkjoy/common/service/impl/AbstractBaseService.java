@@ -89,7 +89,7 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
 
     @Override
     public final List findList(String property, Object value) {
-        return getDao().findList(property,value);
+        return getDao().findList(property, value);
     }
 
     @Override
@@ -99,7 +99,7 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
 
     @Override
     public final List like(String property, Object value) {
-        return getDao().like(property,value);
+        return getDao().like(property, value);
     }
 
     @Override
@@ -125,7 +125,7 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
 
     @Override
     public final List selectList(String mapperId, Object obj) {
-        return getDao().selectList(mapperId,obj);
+        return getDao().selectList(mapperId, obj);
     }
 
     @Override
@@ -140,12 +140,12 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
 
     @Override
     public final List queryList(Map condition, String orderBy, String sortBy) {
-        return getDao().queryList(condition,orderBy,sortBy);
+        return getDao().queryList(condition, orderBy, sortBy);
     }
 
     @Override
     public final List queryPage(Map condition, int offset, int rows) {
-       return getDao().queryPage(condition,offset,rows);
+       return getDao().queryPage(condition, offset, rows);
     }
 
     @Override
@@ -181,7 +181,22 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
 
     private final T enhanceNewCreateBaseDomain(T entity){
         if(entity instanceof CreateBaseDomain){
-            ((CreateBaseDomain) entity).setCreateDate(System.currentTimeMillis());
+            //设置默认值，如果默认值和common不一样，需要自行设置初始值
+            if (((CreateBaseDomain) entity).getCreateDate() == null){
+                ((CreateBaseDomain) entity).setCreateDate(System.currentTimeMillis());
+            }
+            if (((CreateBaseDomain) entity).getStatus() == null){
+                ((CreateBaseDomain) entity).setStatus(0);
+            }
+            if (((CreateBaseDomain) entity).getLastModDate() == null){
+                ((CreateBaseDomain) entity).setLastModDate(0l);
+            }
+            if (((CreateBaseDomain) entity).getCreator() == null){
+                ((CreateBaseDomain) entity).setCreator(0l);
+            }
+            if (((CreateBaseDomain) entity).getLastModifier() == null){
+                ((CreateBaseDomain) entity).setLastModifier(0l);
+            }
             //TODO 当前用户
         }
 
