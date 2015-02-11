@@ -133,10 +133,15 @@ public abstract class Authenticator {
                 // 处理绑定关系的handler
                 AbstractTokenBundledHandler bundledTokenHandler = (AbstractTokenBundledHandler) tokenHandler;
                 if (bundledTokenHandler.isBundled()) {
-                    tokenHandler.embed(baseRequest);
-                    for (Authentication bundle : bundledTokenHandler.getOthers()) {
-                        bundle.embed(baseRequest);
-                    }
+                    if (tokenHandler.embed(baseRequest)) {
+
+                        for (Authentication bundle : bundledTokenHandler.getOthers()) {
+                            if(!bundle.embed(baseRequest)){
+                                return false;
+                            }
+                        }
+
+                    } else { return false;}
 
                 }
                 continue;
