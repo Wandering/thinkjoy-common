@@ -1,14 +1,17 @@
-package cn.thinkjoy.common.managerui.iauth.provider;
+package cn.thinkjoy.common.managerui.iauth.core.exception;
 
-import cn.thinkjoy.common.exception.BizException;
 
 /**
  * Created by Michael on 11/10/14.
+ *
+ * 认证失败，认证过程出错
+ * 异常
  *
  */
 public class CannotAuthException extends RuntimeException {
 
     public CannotAuthException() {
+        super("认证失败。认证过程出错。");
     }
 
     public CannotAuthException(String message) {

@@ -1,4 +1,4 @@
-package cn.thinkjoy.common.managerui.iauth.provider;
+package cn.thinkjoy.common.managerui.iauth.core;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 /**
  * Created by Michael on 11/13/14.
  */
+@Deprecated
 public abstract class BundledAuthentication implements Authentication, Bundled<BundledAuthentication> {
     private boolean bundled = false;
     private BundledAuthentication bundledTo;

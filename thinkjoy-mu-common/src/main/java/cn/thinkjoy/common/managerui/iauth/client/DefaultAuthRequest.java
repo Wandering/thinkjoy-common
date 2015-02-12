@@ -2,9 +2,9 @@ package cn.thinkjoy.common.managerui.iauth.client;
 
 
 import cn.thinkjoy.common.managerui.domain.User;
-import cn.thinkjoy.common.managerui.iauth.provider.BaseRequest;
-import cn.thinkjoy.common.managerui.iauth.provider.Credential;
-import cn.thinkjoy.common.managerui.iauth.provider.Principal;
+import cn.thinkjoy.common.managerui.iauth.core.BaseRequest;
+import cn.thinkjoy.common.managerui.iauth.core.Credential;
+import cn.thinkjoy.common.managerui.iauth.core.Principal;
 
 import javax.servlet.http.Cookie;
 import java.util.Collections;
@@ -14,6 +14,8 @@ import java.util.Map;
  * Created by Michael on 11/10/14.
  */
 public class DefaultAuthRequest extends BaseRequest {
+
+    private boolean isDebug = false;
     private Principal<User> principal;
     private Credential credential;
     private Map<String, Object> additionalInformation = Collections.emptyMap();
@@ -70,4 +72,11 @@ public class DefaultAuthRequest extends BaseRequest {
     }
 
 
+    public boolean isDebug() {
+        return isDebug;
+    }
+
+    public void setDebug(boolean isDebug) {
+        this.isDebug = isDebug;
+    }
 }

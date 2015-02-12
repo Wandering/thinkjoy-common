@@ -1,25 +1,21 @@
-package cn.thinkjoy.common.managerui.iauth.client.token;
+package cn.thinkjoy.common.managerui.iauth.core.token;
 
-import cn.thinkjoy.common.managerui.iauth.provider.token.Token;
+import cn.thinkjoy.common.managerui.iauth.core.token.Token;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by Michael on 11/10/14.
  */
 public class EmbedToken implements Token{
 
-    private final int weight = 10;
+    private final int weight = 100; // 非常高
     private String tokenType = EMBED_TOKEN.toLowerCase();
     private String value;
-    private String secret;
     private Date birthday;
-    private Map<String, Object> additionalInformation = Collections.emptyMap();
-    private long userId;
+    private Map<String, Object> additionalInformation = new HashMap<String, Object>();
     private String embedTokenType;
+    private Token embedToken;
 
     public EmbedToken() {
         value = UUID.randomUUID().toString();
@@ -45,7 +41,7 @@ public class EmbedToken implements Token{
 
     @Override
     public String getSecret() {
-        return secret;
+        return null;
     }
 
     @Override
@@ -73,11 +69,11 @@ public class EmbedToken implements Token{
         return additionalInformation;
     }
 
-    public long getUserId() {
-        return userId;
+    public Token getEmbedToken() {
+        return embedToken;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setEmbedToken(Token embedToken) {
+        this.embedToken = embedToken;
     }
 }

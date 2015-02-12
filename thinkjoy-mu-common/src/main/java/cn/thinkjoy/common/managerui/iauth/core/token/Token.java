@@ -1,4 +1,4 @@
-package cn.thinkjoy.common.managerui.iauth.provider.token;
+package cn.thinkjoy.common.managerui.iauth.core.token;
 
 import java.io.Serializable;
 import java.util.Date;

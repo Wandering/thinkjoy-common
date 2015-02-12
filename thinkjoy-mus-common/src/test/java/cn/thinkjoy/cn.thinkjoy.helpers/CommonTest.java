@@ -38,7 +38,7 @@ public class CommonTest {
         System.out.println(roleDAO.findAll());
 
         Role role = new Role();
-        role.setId(1);
+        role.setId(1L);
         role.setCreateDate(System.currentTimeMillis());
         int affectRow = roleDAO.update(role);
 

@@ -1,7 +1,7 @@
 package cn.thinkjoy.common.managerui.iauth.client.filter;
 
-import cn.thinkjoy.common.managerui.iauth.provider.Authenticator;
-import cn.thinkjoy.common.managerui.iauth.provider.filter.DelegableSecurityFilter;
+import cn.thinkjoy.common.managerui.iauth.core.Authenticator;
+import cn.thinkjoy.common.managerui.iauth.core.filter.DelegableSecurityFilter;
 
 
 /**

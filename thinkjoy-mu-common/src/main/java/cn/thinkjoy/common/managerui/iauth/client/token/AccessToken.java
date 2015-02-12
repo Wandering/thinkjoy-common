@@ -1,8 +1,7 @@
 package cn.thinkjoy.common.managerui.iauth.client.token;
 
-import cn.thinkjoy.common.managerui.iauth.provider.token.Token;
+import cn.thinkjoy.common.managerui.iauth.core.token.Token;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
@@ -15,7 +14,7 @@ import java.util.UUID;
  */
 public class AccessToken implements Token {
 
-    private final int weight = 5;
+    private final int weight = 10;  // 较高
     private String tokenType = ACCESS_TOKEN.toLowerCase();
     private String value;
     private String secret;

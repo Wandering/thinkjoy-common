@@ -1,5 +1,6 @@
-package cn.thinkjoy.common.managerui.iauth.provider.token;
+package cn.thinkjoy.common.managerui.iauth.core.token.storage;
 
+import cn.thinkjoy.common.managerui.iauth.core.token.Token;
 import org.springframework.stereotype.Repository;
 
 /**

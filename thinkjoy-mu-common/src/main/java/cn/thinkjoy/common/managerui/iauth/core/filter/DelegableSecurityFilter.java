@@ -1,9 +1,9 @@
-package cn.thinkjoy.common.managerui.iauth.provider.filter;
+package cn.thinkjoy.common.managerui.iauth.core.filter;
 
 
-import cn.thinkjoy.common.managerui.iauth.provider.Authenticator;
-import cn.thinkjoy.common.managerui.iauth.provider.CannotAuthException;
-import cn.thinkjoy.common.managerui.iauth.provider.handler.TokenHandler;
+import cn.thinkjoy.common.managerui.iauth.core.Authenticator;
+import cn.thinkjoy.common.managerui.iauth.core.exception.CannotAuthException;
+import cn.thinkjoy.common.managerui.iauth.core.handler.TokenHandler;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -44,7 +44,7 @@ public abstract class DelegableSecurityFilter implements Filter {
             throws IOException, ServletException {
 //        chain.doFilter(request,response);
         if (getAuthenticator() == null) {
-            throw new CannotAuthException();
+            throw new CannotAuthException("验证模块不存在，请检查配置文件。");
         }
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;

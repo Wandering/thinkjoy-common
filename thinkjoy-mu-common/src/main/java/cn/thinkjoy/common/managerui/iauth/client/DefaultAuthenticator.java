@@ -5,14 +5,17 @@ import cn.thinkjoy.cloudstack.dynconfig.DynConfigClient;
 import cn.thinkjoy.cloudstack.dynconfig.DynConfigClientFactory;
 import cn.thinkjoy.cloudstack.dynconfig.IChangeListener;
 import cn.thinkjoy.cloudstack.dynconfig.domain.Configuration;
-import cn.thinkjoy.common.managerui.iauth.client.handler.EmbedTokenHandler;
-import cn.thinkjoy.common.managerui.iauth.provider.handler.TokenResolver;
+import cn.thinkjoy.common.managerui.iauth.core.handler.EmbedTokenHandler;
+import cn.thinkjoy.common.managerui.iauth.core.exception.CannotAuthException;
+import cn.thinkjoy.common.managerui.iauth.core.handler.TokenResolver;
 import cn.thinkjoy.common.managerui.iauth.client.token.AccessToken;
-import cn.thinkjoy.common.managerui.iauth.client.token.UserStore;
-import cn.thinkjoy.common.managerui.iauth.provider.*;
+import cn.thinkjoy.common.managerui.iauth.client.token.storage.UserStore;
+import cn.thinkjoy.common.managerui.iauth.core.*;
 import cn.thinkjoy.common.managerui.domain.User;
-import cn.thinkjoy.common.managerui.iauth.provider.handler.TokenHandler;
-import cn.thinkjoy.common.managerui.iauth.provider.token.TokenStore;
+import cn.thinkjoy.common.managerui.iauth.core.handler.TokenHandler;
+import cn.thinkjoy.common.managerui.iauth.core.token.storage.TokenStore;
+import cn.thinkjoy.common.managerui.iauth.utils.HttpRequestConstant;
+import cn.thinkjoy.common.managerui.iauth.utils.LogErrorUtil;
 import cn.thinkjoy.common.managerui.iauth.utils.UrlStringUtil;
 import cn.thinkjoy.common.utils.UserContext;
 import org.slf4j.Logger;
@@ -22,7 +25,6 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +37,7 @@ import java.util.concurrent.Executors;
  * ucm集成，登录、授权=等。
  */
 @Component
-public class DefaultAuthenticator extends Authenticator implements HttpRquestConstant {
+public class DefaultAuthenticator extends Authenticator implements HttpRequestConstant {
 
     private static Logger logger = LoggerFactory.getLogger(DefaultAuthenticator.class);
 
@@ -57,7 +59,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
     private DefaultAuthRequestFactory authRequestFactory = new DefaultAuthRequestFactory();
 
     public DefaultAuthenticator() {
-        // for spring bean initial intal
+        // for spring bean initial
     }
 
     public DefaultAuthenticator(List<TokenHandler> tokenHandlers) {
@@ -180,13 +182,18 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
         tokenHandlers.clear();
     }
 
+    public void redirectTologin(BaseRequest baseRequest, RuntimeException ex) throws IOException {
+        if(((DefaultAuthRequest) baseRequest).isDebug()) {
+            throw ex;
+        }
 
-    public void redirectTologin(BaseRequest baseRequest) throws IOException {
         String url = baseRequest.getRequest().getRequestURL().toString();
-        String from = URLEncoder.encode(url, "utf-8");
+//        String from = URLEncoder.encode(url, "utf-8");
 
         Map<String, String> params = new HashMap<String, String>();
-        params.put("from", from);
+        params.put("from", url);
+        params.put("error", ex.getMessage());
+        params.put("log", LogErrorUtil.toString(ex));
 //        params.put() FIXME
 
         DefaultAuthRequest request = (DefaultAuthRequest) baseRequest;
@@ -211,7 +218,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
     }
 
     @Override
-    public void authenticationDone(BaseRequest baseRequest) {
+    public void callWhenAuthenticatornSuccess(BaseRequest baseRequest) {
         Principal<User> principal = ((DefaultAuthRequest) baseRequest).getPrincipal();
         if (null == principal || principal.getName() == null) {
             // 验证没通过啊
@@ -232,23 +239,19 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
     }
 
     @Override
-    public void embedmentDone(BaseRequest baseRequest) {
+    public void callWhenEmbedmentSuccess(BaseRequest baseRequest) {
         Principal principal = ((DefaultAuthRequest) baseRequest).getPrincipal();
         assert principal != null;
 
     }
-    @Override
-    public void callWhenAuthenticatiorFailed(BaseRequest baseRequest) throws IOException {
-        assert false;
-        logger.error("拒绝访问。发生未知错误。");
-        redirectTologin(baseRequest);
-    }
+
 
     @Override
-    public void callWhenAuthenticatiorError(BaseRequest baseRequest, CannotAuthException ex) throws IOException {
+    public void callWhenAuthenticatiornError(BaseRequest baseRequest, RuntimeException ex) throws IOException {
         logger.error("拒绝访问。验证出现异常: "+ex.getMessage(), ex);
-
+        redirectTologin(baseRequest, ex);
     }
+
 
 
     private void redirectTologinWithParams(HttpServletResponse res, Map<String, String> params) throws IOException {
@@ -256,7 +259,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRquestCon
 
 
         String result = redirect_url + (paramsString.length() > 1 ? paramsString.toString() : "");
-        logger.info(CloudContextFactory.getCloudContext().getApplicationName()+"跳转到ucm登录页面: url" + result);
+        logger.info(CloudContextFactory.getCloudContext().getApplicationName() + "跳转到ucm登录页面: url" + result);
         res.sendRedirect(result);
     }
 

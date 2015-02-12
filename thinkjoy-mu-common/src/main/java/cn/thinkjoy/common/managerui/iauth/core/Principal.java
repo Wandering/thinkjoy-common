@@ -1,7 +1,6 @@
-package cn.thinkjoy.common.managerui.iauth.provider;
+package cn.thinkjoy.common.managerui.iauth.core;
 
-import cn.thinkjoy.common.managerui.iauth.provider.token.Token;
-import cn.thinkjoy.common.managerui.domain.User;
+import cn.thinkjoy.common.managerui.iauth.core.token.Token;
 
 import javax.security.auth.Subject;
 import java.util.Collections;

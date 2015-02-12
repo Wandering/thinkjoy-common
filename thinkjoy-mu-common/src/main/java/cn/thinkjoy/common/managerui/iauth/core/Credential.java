@@ -1,7 +1,4 @@
-package cn.thinkjoy.common.managerui.iauth.provider;
-
-import cn.thinkjoy.security.utils.Digests;
-import cn.thinkjoy.security.utils.Encodes;
+package cn.thinkjoy.common.managerui.iauth.core;
 
 import java.util.Collections;
 import java.util.Map;

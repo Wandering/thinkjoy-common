@@ -1,4 +1,4 @@
-package cn.thinkjoy.common.managerui.iauth.provider;
+package cn.thinkjoy.common.managerui.iauth.core;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import java.util.List;
  * Created by Michael on 11/13/14.
  * bundled + others
  */
+@Deprecated
 public interface Bundled<T> {
 
     void setBundled(boolean bundled);

@@ -9,13 +9,13 @@
     <!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
     <context:annotation-config/>
     <context:component-scan base-package="cn.thinkjoy"/>
-    <bean id="tokenResolver" class="cn.thinkjoy.common.managerui.iauth.provider.handler.TokenResolver"/>
-    <bean id="embedTokenHandler" class="cn.thinkjoy.common.managerui.iauth.client.handler.EmbedTokenHandler"/>
+    <bean id="tokenResolver" class="cn.thinkjoy.common.managerui.iauth.core.handler.TokenResolver"/>
+    <bean id="embedTokenHandler" class="cn.thinkjoy.common.managerui.iauth.core.handler.EmbedTokenHandler"/>
     <bean id="accessTokenHandler" class="cn.thinkjoy.common.managerui.iauth.client.handler.AccessTokenHandler"/>
-    <bean id="agentCookieCredentialHandler"
-          class="cn.thinkjoy.common.managerui.iauth.client.handler.UserAgentCookieCredentialHandler">
-        <property name="bundledTo" ref="accessTokenHandler"/>
-    </bean>
+    <!--<bean id="agentCookieCredentialHandler"-->
+          <!--class="cn.thinkjoy.common.managerui.iauth.client.handler.UserAgentCookieCredentialHelper">-->
+        <!--<property name="bundledTo" ref="accessTokenHandler"/>-->
+    <!--</bean>-->
     <bean id="ucmIntegrationAuthenticator"
           class="cn.thinkjoy.common.managerui.iauth.client.DefaultAuthenticator">
 
@@ -24,7 +24,7 @@
                 <ref bean="tokenResolver"/>
                 <ref bean="embedTokenHandler"/>
                 <ref bean="accessTokenHandler"/>
-                <ref bean="agentCookieCredentialHandler"/>
+                <!--<ref bean="agentCookieCredentialHandler"/>-->
             </list>
         </constructor-arg>
     </bean>

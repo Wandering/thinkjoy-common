@@ -3,48 +3,30 @@ package cn.thinkjoy.common.managerui.iauth.client.handler;
 import cn.thinkjoy.common.managerui.iauth.client.DefaultAuthRequest;
 import cn.thinkjoy.common.managerui.iauth.client.EncryptionCookieCredential;
 import cn.thinkjoy.common.managerui.iauth.client.token.AccessToken;
-import cn.thinkjoy.common.managerui.iauth.provider.BaseRequest;
-import cn.thinkjoy.common.managerui.iauth.provider.CannotAuthException;
-import cn.thinkjoy.common.managerui.iauth.provider.Credential;
-import cn.thinkjoy.common.managerui.iauth.provider.handler.AbstractTokenBundledHandler;
-import cn.thinkjoy.common.managerui.iauth.provider.token.Token;
-import cn.thinkjoy.common.managerui.iauth.provider.token.TokenStore;
+import cn.thinkjoy.common.managerui.iauth.core.BaseRequest;
+import cn.thinkjoy.common.managerui.iauth.core.exception.AuthNotPassException;
+import cn.thinkjoy.common.managerui.iauth.core.Credential;
+import cn.thinkjoy.common.managerui.iauth.core.exception.TokenNotExistException;
+import cn.thinkjoy.common.managerui.iauth.core.token.EmbedToken;
+import cn.thinkjoy.common.managerui.iauth.utils.HttpRequestConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 /**
  * Created by Michael on 11/10/14.
  * 带有credential验证的handler
  */
-public class UserAgentCookieCredentialHandler extends AbstractTokenBundledHandler {
+public class UserAgentCookieCredentialHelper implements HttpRequestConstant{
 
-    private static Logger logger = LoggerFactory.getLogger(UserAgentCookieCredentialHandler.class);
+    private static Logger logger = LoggerFactory.getLogger(UserAgentCookieCredentialHelper.class);
 
     /**
      * TODO
      */
     private boolean defaultSecret = false;
-
-    @Autowired
-    private TokenStore tokenStore;
-
-    private String handleTokenType = Token.ACCESS_TOKEN;
-
-//    public Credential loadCredential(HttpServletRequest res) {
-//        String userAgent = res.getHeader(HTTP_HEADER_USER_AGENT);
-//        Credential credential = new EncryptionCookieCredential();
-//        String key = Encodes.encodeHex(
-//                Digests.md5(userAgent.getBytes()))
-//                .substring(0, 5);
-//
-//        credential.setKey(key);
-//        return credential;
-//    }
 
     private Credential generateCredential(String key, String secret) {
         Credential credential = new EncryptionCookieCredential();
@@ -70,11 +52,10 @@ public class UserAgentCookieCredentialHandler extends AbstractTokenBundledHandle
      * @param baseRequest
      * @return
      */
-    @Override
-    public boolean invoke(BaseRequest baseRequest) {
+    public void checkCredential(BaseRequest baseRequest) {
         AccessToken token = (AccessToken) baseRequest.getToken();
         if (token == null) {
-            throw new CannotAuthException();
+            throw new TokenNotExistException("AccessToken不存在。");
         }
 
         // 判断是否需要安全认证
@@ -88,47 +69,28 @@ public class UserAgentCookieCredentialHandler extends AbstractTokenBundledHandle
 
             // check cookie
             if (secretCookie == null) {
-                return false;
+                throw new AuthNotPassException("验证cookie不存在。");
             }
 
             // 构建完整的credential
             credential.setSecret(secretCookie.getValue());
 
-//            // 判断credential是否存在
-//            if (credential == null) {
-//                return false;
-//            }
-
             if (!token.getSecret().equals(credential.getSecret())) {
-                return false;
+                throw new AuthNotPassException("验证cookie不匹配。");
             }
             ((DefaultAuthRequest) baseRequest).setCredential(credential);
 
         }
-        return true;
     }
 
-    @Override
-    public void clear(BaseRequest baseRequest) {
+    public void clearCredentialEmbedment(BaseRequest baseRequest) {
         Credential credential = ((DefaultAuthRequest) baseRequest).getCredential();
         if (credential != null) {
             ((DefaultAuthRequest) baseRequest).removeCookieToResponse(credential.getKey());
         }
     }
 
-    @Override
-    public void callWhenAuthenticationFailed(BaseRequest baseRequest) throws IOException {
-        logger.info("拒绝访问。获取不到token的验证信息，或验证信息不匹配。");
-        baseRequest.getAuthenticator().redirectTologin(baseRequest);
 
-    }
-
-    @Override
-    public void callWhenAuthenticationError(BaseRequest baseRequest, Exception ex) throws IOException {
-        logger.error("访问异常。获取token验证信息出现异常: " + ex.getMessage(), ex);
-        baseRequest.getAuthenticator().redirectTologin(baseRequest);
-
-    }
 
     /**
      * 生成credential相关信息，并进行埋点
@@ -136,32 +98,20 @@ public class UserAgentCookieCredentialHandler extends AbstractTokenBundledHandle
      * @param baseRequest
      * @return
      */
-    @Override
-    public boolean embed(BaseRequest baseRequest) {
-        AccessToken token = (AccessToken) baseRequest.getToken();
+    public void embedCredential(BaseRequest baseRequest) {
+        AccessToken token = (AccessToken) ((EmbedToken)baseRequest.getToken()).getEmbedToken();
         if (token == null) {
-            throw new CannotAuthException();
+            throw new TokenNotExistException("进行埋点时，获取不到AccessToken");
         }
 
         // 创建credential
         Credential credential = generateCredential(baseRequest.getRequest(), true);
         token.setSecret(credential.getSecret());
 
-        tokenStore.store(token.getValue(), token);
         Cookie secretCookie = new Cookie(credential.getKey(), credential.getSecret());
 //        secretCookie.setDomain(".xy189.cn");
         secretCookie.setPath("/");
         ((DefaultAuthRequest) baseRequest).addCookieToResponse(secretCookie);
-        return true;
     }
 
-    @Override
-    public String getHandleTokenType() {
-        return handleTokenType;
-    }
-
-    @Override
-    public Token getTokenFromRequest(BaseRequest baseRequest) {
-        return null;
-    }
 }

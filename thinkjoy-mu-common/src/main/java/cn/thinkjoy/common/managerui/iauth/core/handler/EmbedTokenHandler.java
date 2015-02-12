@@ -1,13 +1,11 @@
-package cn.thinkjoy.common.managerui.iauth.client.handler;
+package cn.thinkjoy.common.managerui.iauth.core.handler;
 
-import cn.thinkjoy.common.managerui.iauth.client.DefaultAuthRequest;
-import cn.thinkjoy.common.managerui.iauth.client.token.EmbedToken;
-import cn.thinkjoy.common.managerui.iauth.client.token.UserStore;
-import cn.thinkjoy.common.managerui.iauth.provider.BaseRequest;
-import cn.thinkjoy.common.managerui.iauth.provider.CannotAuthException;
-import cn.thinkjoy.common.managerui.iauth.provider.handler.AbstractTokenHandler;
-import cn.thinkjoy.common.managerui.iauth.provider.token.Token;
-import cn.thinkjoy.common.managerui.iauth.provider.token.TokenStore;
+import cn.thinkjoy.common.managerui.iauth.core.exception.TokenNotExistException;
+import cn.thinkjoy.common.managerui.iauth.core.token.EmbedToken;
+import cn.thinkjoy.common.managerui.iauth.core.BaseRequest;
+import cn.thinkjoy.common.managerui.iauth.core.exception.CannotAuthException;
+import cn.thinkjoy.common.managerui.iauth.core.token.Token;
+import cn.thinkjoy.common.managerui.iauth.core.token.storage.TokenStore;
 import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +25,6 @@ public class EmbedTokenHandler extends AbstractTokenHandler {
     @Autowired
     private TokenStore tokenStore;
 
-    @Autowired
-    private UserStore userStore;
 
     private String handleTokenType = Token.EMBED_TOKEN;
 
@@ -41,37 +37,37 @@ public class EmbedTokenHandler extends AbstractTokenHandler {
      * @throws IOException
      */
     @Override
-    public boolean invoke(BaseRequest baseRequest) throws IOException {
+    public void invoke(BaseRequest baseRequest) throws IOException {
         EmbedToken token = (EmbedToken) baseRequest.getToken();
         if (token == null) {
-            throw new CannotAuthException();
+            throw new TokenNotExistException("EmbedToken不存在。");
         }
         // 客户端对已经注册的handler进行埋点
         baseRequest.getAuthenticator().embedment(baseRequest, token.getEmbedTokenType());
-        // 重新定向到当前地址
-
-        return false;
     }
 
     @Override
     public void clear(BaseRequest baseRequest) {
+        assert false;
+    }
 
+
+    @Override
+    public void callWhenAuthenticationError(BaseRequest baseRequest, RuntimeException ex) throws IOException {
+        logger.error("埋点失败。埋点处理出现异常: " + ex.getMessage(), ex);
+        baseRequest.getAuthenticator().redirectTologin(baseRequest, ex);
 
     }
 
     @Override
-    public void callWhenAuthenticationFailed(BaseRequest baseRequest) throws IOException {
+    public boolean callWhenAuthenticationSuccess(BaseRequest baseRequest) throws IOException {
         // 埋点完成，结束当前验证，重定向到原访问路径
         String url = baseRequest.getRequest().getRequestURI();
         logger.info("埋点完成。重定向到当前访问路径: uri=" + url);
         baseRequest.getResponse().sendRedirect(url);
-    }
-
-    @Override
-    public void callWhenAuthenticationError(BaseRequest baseRequest, Exception ex) throws IOException {
-        logger.error("埋点异常。埋点处理出现异常: " + ex.getMessage(), ex);
-        baseRequest.getAuthenticator().redirectTologin(baseRequest);
-
+        baseRequest.consumeToken();
+        // 停止执行
+        return false;
     }
 
     /**
@@ -79,17 +75,8 @@ public class EmbedTokenHandler extends AbstractTokenHandler {
      * @return
      */
     @Override
-    public boolean embed(BaseRequest baseRequest) {
+    public void embed(BaseRequest baseRequest) {
         assert false;   // unreachable
-        return true;
-    }
-
-    public TokenStore getTokenStore() {
-        return tokenStore;
-    }
-
-    public void setTokenStore(TokenStore tokenStore) {
-        this.tokenStore = tokenStore;
     }
 
     @Override
@@ -98,7 +85,7 @@ public class EmbedTokenHandler extends AbstractTokenHandler {
     }
 
     @Override
-    public Token getTokenFromRequest(BaseRequest baseRequest) {
+    public Token loadTokenFromRequest(BaseRequest baseRequest) {
         // 获取parameter中的token
         String tokenParam = baseRequest.getRequest().getParameter(HTTP_PARAMETER_EMBED_TOKEN);
 

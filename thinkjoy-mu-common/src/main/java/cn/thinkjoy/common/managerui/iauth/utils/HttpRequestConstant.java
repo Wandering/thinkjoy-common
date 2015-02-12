@@ -1,9 +1,9 @@
-package cn.thinkjoy.common.managerui.iauth.provider;
+package cn.thinkjoy.common.managerui.iauth.utils;
 
 /**
  * Created by Michael on 11/11/14.
  */
-public interface HttpRquestConstant {
+public interface HttpRequestConstant {
     public static final String MAIN_PREFIX = "iauth-";
     public static final String TOKEN = "token";
 
