@@ -130,7 +130,7 @@ public class AccessTokenHandler extends AbstractTokenHandler {
 
         if (user.getBizDimension() == null || user.getBizDimension() == 0) {
             logger.info("该用户{0}({1})没有权限登录。", user.getName(), user.getBizDimension());
-            throw new AuthNotPassException(String.format("该用户{0}({1})没有权限登录。", user.getName(), user.getBizDimension()));
+            throw new AuthNotPassException(String.format("该用户%s(%s)没有权限登录，请联系管理员授权。", user.getName(), user.getBizDimension()));
         }
 
         AccessToken accessToken = new AccessToken();
@@ -179,5 +179,10 @@ public class AccessTokenHandler extends AbstractTokenHandler {
     public boolean callWhenAuthenticationSuccess(BaseRequest baseRequest) throws IOException {
         baseRequest.consumeToken();
         return true;
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println(String.format("该用户%s(%s)没有权限登录。", "gbdai", "1"));
     }
 }

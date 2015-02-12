@@ -67,7 +67,7 @@ public abstract class Authenticator {
             while (baseRequest.hasToken()) {
                 TokenHandler tokenHandler = getTokenHandler(baseRequest.getToken().getTokenType());
                 if (tokenHandler == null) {
-                    throw new CannotAuthException(String.format("没有找到{0}处理器", baseRequest.getToken().getTokenType()));
+                    throw new CannotAuthException(String.format("没有找到%s处理器", baseRequest.getToken().getTokenType()));
                 }
 
 //              if (!checkTokenType(baseRequest, tokenHandler)) {
@@ -143,7 +143,7 @@ public abstract class Authenticator {
     public void embedment(BaseRequest baseRequest, String tokenType) {
         TokenHandler tokenHandler = getTokenHandler(tokenType);
         if (tokenHandler == null) {
-            throw new CannotAuthException(String.format("没有找到{0}解析器", baseRequest.getToken().getTokenType()));
+            throw new CannotAuthException(String.format("没有找到%s解析器", baseRequest.getToken().getTokenType()));
         }
         if (tokenHandler instanceof AbstractTokenBundledHandler) {
             // 处理绑定关系的handler
