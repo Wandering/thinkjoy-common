@@ -53,16 +53,20 @@ public class DataPermServiceImpl implements IDataPermService {
             return null;
         }
         String formatSql = dataModel.getWhereSql();
-
+        StringBuilder stringBuilder = new StringBuilder("");
         Map<String, Object> paramMap = Maps.newHashMap();
         paramMap.put("dataModelId", dataModel.getModelId());
         paramMap.put("userId", user.getId());
         //List<UserData> dataIds = userDataDAO.queryList(paramMap, null, null);
         List<DatagroupData> dataIds = permissionDAO.getDataByPerm(paramMap);
-        StringBuilder stringBuilder = new StringBuilder();
-        for(DatagroupData userData : dataIds){
+
+        for (DatagroupData userData : dataIds) {
             stringBuilder.append(userData.getDataId()).append(",");
         }
-        return String.format(formatSql, stringBuilder.deleteCharAt(stringBuilder.length() - 1));
+        if (stringBuilder.indexOf(",") > -1) {
+            return String.format(formatSql, stringBuilder.deleteCharAt(stringBuilder.length() - 1));
+        } else {
+            return String.format(formatSql, stringBuilder);
+        }
     }
 }

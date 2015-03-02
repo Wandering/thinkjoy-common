@@ -20,7 +20,7 @@ public class SearchFilter {
 	/**
 	 * 搜索条件集合
 	 */
-	private List<SearchField> rules = new ArrayList<>();
+	private List<SearchField> rules = new ArrayList<SearchField>();
 
 	public String getGroupOp() {
 		return groupOp;
