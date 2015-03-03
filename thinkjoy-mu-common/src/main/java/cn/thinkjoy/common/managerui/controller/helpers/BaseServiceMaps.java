@@ -22,8 +22,6 @@ import java.util.Map;
  * Created by shurrik on 14-9-24.
  */
 public class BaseServiceMaps {
-    @Autowired
-    private IDataModelService dataModelService;
 
     @Autowired
     private IModelService modelService;
@@ -48,19 +46,34 @@ public class BaseServiceMaps {
     @Autowired
     private IUserDataService userDataService;
 
+    @Autowired
+    private IDatagroupDataService datagroupDataService;
+
+    @Autowired
+    private IDatagroupService datagroupService;
+
+    @Autowired
+    private IDataModelService dataModelService;
+
+    @Autowired
+    private IUserDatagroupService userDatagroupService;
+
     protected final Map<String, IBaseService> serviceMap = Maps.newHashMap();
 
     protected void init(){
         //key 全部为小写
-            serviceMap.put("datamodel",dataModelService);
-            serviceMap.put("model",modelService);
-            serviceMap.put("resource",resourceService);
-            serviceMap.put("resourceaction",resourceActionService);
-            serviceMap.put("resourcegrid",resourceGridService);
-            serviceMap.put("role",roleService);
-            serviceMap.put("roleresource",roleResourceService);
-            serviceMap.put("roleuser",roleUserService);
-            serviceMap.put("userdata",userDataService);
+        serviceMap.put("datamodel",dataModelService);
+        serviceMap.put("model",modelService);
+        serviceMap.put("resource",resourceService);
+        serviceMap.put("resourceaction",resourceActionService);
+        serviceMap.put("resourcegrid",resourceGridService);
+        serviceMap.put("role",roleService);
+        serviceMap.put("roleresource",roleResourceService);
+        serviceMap.put("roleuser",roleUserService);
+        serviceMap.put("userdata",userDataService);
+        serviceMap.put("datagroupData".toLowerCase(),datagroupDataService);
+        serviceMap.put("datagroup".toLowerCase(),datagroupService);
+        serviceMap.put("userDatagroup".toLowerCase(),userDatagroupService);
     }
 
     public IBaseService get(String mainObj){
