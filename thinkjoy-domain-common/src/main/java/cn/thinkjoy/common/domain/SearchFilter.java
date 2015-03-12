@@ -16,11 +16,16 @@ public class SearchFilter {
 	 * 多个条件的并列关系 and or
 	 */
 	private String groupOp;
-
 	/**
 	 * 搜索条件集合
 	 */
 	private List<SearchField> rules = new ArrayList<>();
+	/** 排序规则集合 */
+	private List<OrderField> orders = new ArrayList<>();
+	/** 当前页 */
+	private Integer curPage;
+	/** 每页显示条数 */
+	private Integer num;
 
 	public String getGroupOp() {
 		return groupOp;
@@ -38,4 +43,27 @@ public class SearchFilter {
 		this.rules = rules;
 	}
 
+	public List<OrderField> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<OrderField> orders) {
+		this.orders = orders;
+	}
+
+	public Integer getCurPage() {
+		return curPage;
+	}
+
+	public void setCurPage(Integer curPage) {
+		this.curPage = curPage;
+	}
+
+	public Integer getNum() {
+		return num;
+	}
+
+	public void setNum(Integer num) {
+		this.num = num;
+	}
 }

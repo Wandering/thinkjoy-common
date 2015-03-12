@@ -14,6 +14,7 @@ allprojects {
     druidVersion = "1.0.7"
 
     gsonVersion = "2.3"
+    retrofitVersion = "1.8.0"
     okhttpVersion = "2.0.0"
     rxjavaVersion = "1.0.0"
 

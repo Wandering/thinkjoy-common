@@ -14,3 +14,5 @@ include 'thinkjoy-protocol-common'
 
 include 'thinkjoy-domain-common'
 
+include 'thinkjoy-android-protocol-common'
+

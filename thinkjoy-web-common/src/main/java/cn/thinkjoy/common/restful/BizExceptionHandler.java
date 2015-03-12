@@ -27,7 +27,7 @@ public class BizExceptionHandler implements RestExceptionHandler {
         }
 //        Response response = new Response.ResponseBuilder((BizException) exception).build();
         ResponseT<String> responseT = ResponseTs.<String>newResponseException((BizException) exception, isDebug);
-        logger.error(((BizException) exception).getMsg(), exception);
+        logger.error(((BizException) exception).getMsg());
 
         return new ResponseEntity<>(responseT, HttpStatus.OK);
         //return null;
