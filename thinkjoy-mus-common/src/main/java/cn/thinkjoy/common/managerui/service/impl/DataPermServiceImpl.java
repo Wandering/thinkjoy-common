@@ -39,7 +39,7 @@ public class DataPermServiceImpl implements IDataPermService {
     public String makeDataPermSql(String resUrl) {
         UserDomain user = UserContext.getCurrentUser();
 
-        Resource resource = resourceDAO.findOne("url", resUrl);
+        Resource resource = resourceDAO.findOne("url", resUrl, null, null);
 
         int modelId = 0;
         if(resource != null && resource.getModelId() != null){
@@ -48,7 +48,7 @@ public class DataPermServiceImpl implements IDataPermService {
             //没有主模型，说明没有数据权限设置
             return null;
         }
-        DataModel dataModel = dataModelDAO.findOne("modelId", modelId); //dataModelDAO.getDataPermSql(modelId);
+        DataModel dataModel = dataModelDAO.findOne("modelId", modelId, null, null); //dataModelDAO.getDataPermSql(modelId);
         if(dataModel == null){
             return null;
         }
