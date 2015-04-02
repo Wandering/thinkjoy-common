@@ -3,6 +3,7 @@ package cn.thinkjoy.common.service;
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.domain.view.BizData4Page;
+import cn.thinkjoy.common.utils.SqlOrderEnum;
 
 import java.util.Map;
 
@@ -25,4 +26,17 @@ public interface IPageService<D extends IBaseDAO,T extends BaseDomain> {
      * @return
      */
     public BizData4Page queryPageByDataPerm(String resUri, Map<String, Object> conditions, int curPage, int offset, int rows);
+
+    /**
+     * 具有排序的分页
+     * @param resUri
+     * @param conditions
+     * @param curPage
+     * @param offset
+     * @param rows
+     * @param orderBy
+     * @param sqlOrderEnum
+     * @return
+     */
+    public BizData4Page queryPageByDataPerm(String resUri, Map<String, Object> conditions, int curPage, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum);
 }

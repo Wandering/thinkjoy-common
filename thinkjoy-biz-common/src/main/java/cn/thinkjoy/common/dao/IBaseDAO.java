@@ -90,7 +90,17 @@ public interface IBaseDAO<T extends BaseDomain> {
      *            进行对象匹配的属性值
      * @return 返回泛型参数类型对象，如何取到泛型类型参数，请参看{@link #getEntityClass()}
      */
-    public T findOne(@Param("property") String property, @Param("value") Object value);
+//    public T findOne(@Param("property") String property, @Param("value") Object value);
+
+    /**
+     * 增加排序支持
+     * @param property
+     * @param value
+     * @param orderBy
+     * @param sortBy
+     * @return
+     */
+    public T findOne(@Param("property") String property, @Param("value") Object value, @Param("orderBy") String orderBy, @Param("sortBy") String sortBy);
 
     /**
      * 根据任意（单一）属性和属性值进行集合查询
@@ -101,15 +111,32 @@ public interface IBaseDAO<T extends BaseDomain> {
      *            进行对象匹配的属性值
      * @return 返回泛型参数类型的对象集合，如何取到泛型类型参数，请参看{@link #getEntityClass()}
      */
-    public List<T> findList(@Param("property") String property, @Param("value") Object value);
+//    public List<T> findList(@Param("property") String property, @Param("value") Object value);
+
+    /**
+     * 增加排序支持
+     * @param property
+     * @param value
+     * @param orderBy
+     * @param sortBy
+     * @return
+     */
+    public List<T> findList(@Param("property") String property, @Param("value") Object value, @Param("orderBy") String orderBy, @Param("sortBy") String sortBy);
 
     /**
      * 根据传入的泛型参数类型查询该类型对应表中的所有数据，返回一个集合对象
      *
      * @return 返回泛型参数类型的对象集合，如何取到泛型类型参数，请参看{@link #getEntityClass()}
      */
-    public List<T> findAll();
+//    public List<T> findAll();
 
+    /**
+     * 增加排序支持
+     * @param orderBy
+     * @param sortBy
+     * @return
+     */
+    public List<T> findAll(@Param("orderBy") String orderBy, @Param("sortBy") String sortBy);
     /**
      * 根据条件集合进行分页查询
      *
@@ -121,7 +148,18 @@ public interface IBaseDAO<T extends BaseDomain> {
      *            查询条数
      * @return 返回Pager对象
      */
-    public List<T> queryPage(@Param("condition") Map<String, Object> condition, @Param("offset") int offset, @Param("rows") int rows);
+//    public List<T> queryPage(@Param("condition") Map<String, Object> condition, @Param("offset") int offset, @Param("rows") int rows);
+
+    /**
+     * 增加排序支持
+     * @param condition
+     * @param offset
+     * @param rows
+     * @param orderBy
+     * @param sortBy
+     * @return
+     */
+    public List<T> queryPage(@Param("condition") Map<String, Object> condition, @Param("offset") int offset, @Param("rows") int rows, @Param("orderBy") String orderBy, @Param("sortBy") String sortBy);
 
     /**
      * 根据任意属性和属性值进行对象模糊查询
@@ -132,7 +170,17 @@ public interface IBaseDAO<T extends BaseDomain> {
      *            进行对象匹配的模糊属性值
      * @return
      */
-    public List<T> like(@Param("property") String property, @Param("value") Object value);
+//    public List<T> like(@Param("property") String property, @Param("value") Object value);
+
+    /**
+     * 增加排序支持
+     * @param property
+     * @param value
+     * @param orderBy
+     * @param sortBy
+     * @return
+     */
+    public List<T> like(@Param("condition") Map<String, Object> condition, @Param("orderBy") String orderBy, @Param("sortBy") String sortBy);
 
     /**
      * 根据条件集合进行指定类型对象集合查询
@@ -150,7 +198,8 @@ public interface IBaseDAO<T extends BaseDomain> {
      *            进行查询的条件集合
      * @return 返回泛型参数类型的对象，如何取到泛型类型参数，请参看{@link #getEntityClass()}，
      */
-    public T queryOne(Map<String, Object> condition);
+//    public T queryOne(Map<String, Object> condition);
+    public T queryOne(@Param("condition") Map<String, Object> condition, @Param("orderBy") String orderBy, @Param("sortBy") String sortBy);
 
     /**
      * 根据条件进行数量的查询
@@ -159,6 +208,15 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @return 返回符合条件的泛型参数对应表中的数量
      */
     public int count(Map<String, Object> condition);
+
+    /**
+     * 增加排序支持  和 queryPage匹配
+     * @param condition
+     * @param orderBy
+     * @param sortBy
+     * @return
+     */
+//    public int count(Map<String, Object> condition, @Param("orderBy") String orderBy, @Param("sortBy") String sortBy);
 
     /**
      * 该方法只有在主键为long时才有用，如果主键为其他数据类型进行使用，则会抛出异常
