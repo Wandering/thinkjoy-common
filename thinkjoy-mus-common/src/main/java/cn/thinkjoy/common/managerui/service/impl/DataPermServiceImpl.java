@@ -39,7 +39,7 @@ public class DataPermServiceImpl implements IDataPermService {
     public String makeDataPermSql(String resUrl) {
         UserDomain user = UserContext.getCurrentUser();
 
-        Resource resource = resourceDAO.findOne("url", resUrl);
+        Resource resource = resourceDAO.findOne("url", resUrl, null, null);
 
         int modelId = 0;
         if(resource != null && resource.getModelId() != null){
@@ -48,21 +48,28 @@ public class DataPermServiceImpl implements IDataPermService {
             //没有主模型，说明没有数据权限设置
             return null;
         }
-        DataModel dataModel = dataModelDAO.findOne("modelId", modelId); //dataModelDAO.getDataPermSql(modelId);
+        DataModel dataModel = dataModelDAO.findOne("modelId", modelId, null, null); //dataModelDAO.getDataPermSql(modelId);
         if(dataModel == null){
             return null;
         }
         String formatSql = dataModel.getWhereSql();
-
+        StringBuilder stringBuilder = new StringBuilder("");
         Map<String, Object> paramMap = Maps.newHashMap();
         paramMap.put("dataModelId", dataModel.getModelId());
         paramMap.put("userId", user.getId());
         //List<UserData> dataIds = userDataDAO.queryList(paramMap, null, null);
         List<DatagroupData> dataIds = permissionDAO.getDataByPerm(paramMap);
-        StringBuilder stringBuilder = new StringBuilder();
-        for(DatagroupData userData : dataIds){
-            stringBuilder.append(userData.getDataId()).append(",");
+
+        int size = dataIds.size();
+
+        if(size<=1){
+            return String.format(formatSql, stringBuilder);
+        }else{
+            for (DatagroupData userData : dataIds) {
+                stringBuilder.append(userData.getDataId()).append(",");
+            }
+            return String.format(formatSql, stringBuilder.deleteCharAt(stringBuilder.length() - 1));
         }
-        return String.format(formatSql, stringBuilder.deleteCharAt(stringBuilder.length() - 1));
+
     }
 }

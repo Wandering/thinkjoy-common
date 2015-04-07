@@ -2,6 +2,7 @@ package cn.thinkjoy.common.service;
 
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
+import cn.thinkjoy.common.utils.SqlOrderEnum;
 
 import java.util.List;
 import java.util.Map;
@@ -60,6 +61,7 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      * @return 返回Pager对象
      */
     public List<T> listByPage(Map<String, Object> condition, int offset, int rows);
+    public List<T> listByPage(Map<String, Object> condition, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum);
 
     /**
      * 保存单一对象，如果要保存多个对象集合，请参看{@link #insertList(java.util.List)}
@@ -139,6 +141,7 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      * @return 返回泛型参数类型的对象集合，如何取到泛型类型参数，请参看{@link #getEntityClass()}
      */
     public List<T> findList(String property, Object value);
+    public List<T> findList(String property, Object value, String orderBy, SqlOrderEnum sqlOrderEnum);
 
     /**
      * 根据传入的泛型参数类型查询该类型对应表中的所有数据，返回一个集合对象
@@ -146,6 +149,7 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      * @return 返回泛型参数类型的对象集合，如何取到泛型类型参数，请参看{@link #getEntityClass()}
      */
     public List<T> findAll();
+    public List<T> findAll(String orderBy, SqlOrderEnum sqlOrderEnum);
 
     /**
      * 根据条件集合进行分页查询
@@ -159,6 +163,7 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      * @return 返回Pager对象
      */
     public List<T> queryPage(Map<String, Object> condition, int offset, int rows);
+    public List<T> queryPage(Map<String, Object> condition, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum);
 
     /**
      * 根据任意属性和属性值进行对象模糊查询
@@ -169,7 +174,8 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      *            进行对象匹配的模糊属性值
      * @return
      */
-    public List<T> like(String property, Object value);
+    public List<T> like(Map<String, Object> condition);
+    public List<T> like(Map<String, Object> condition, String orderBy, SqlOrderEnum sqlOrderEnum);
 
     /**
      * 根据条件集合进行指定类型对象集合查询
@@ -188,6 +194,7 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      * @return 返回泛型参数类型的对象，如何取到泛型类型参数，请参看{@link #getEntityClass()}，
      */
     public T queryOne(Map<String, Object> condition);
+    public T queryOne(Map<String, Object> condition, String orderBy, SqlOrderEnum sqlOrderEnum);
 
     /**
      * 根据条件进行数量的查询
@@ -196,6 +203,7 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      * @return 返回符合条件的泛型参数对应表中的数量
      */
     public int count(Map<String, Object> condition);
+//    public int count(Map<String, Object> condition, String orderBy, SqlOrderEnum sqlOrderEnum);
 
     /**
      * 该方法只有在主键为long时才有用，如果主键为其他数据类型进行使用，则会抛出异常

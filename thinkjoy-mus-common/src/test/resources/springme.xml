@@ -49,13 +49,13 @@
         <property name="typeAliasesPackage" value="cn.thinkjoy.common.managerui.domain" />
         <!-- 显式指定Mapper文件位置 -->
         <property name="mapperLocations" value="classpath:/mybatis/*.xml" />
-        <property name="configLocation" value="mybatis-plugin-config.xml" />
+        <!--<property name="configLocation" value="mybatis-plugin-config.xml" />-->
     </bean>
     <!-- 扫描basePackage下接口 自动生成代理实现类 -->
     <mybatis:scan base-package="cn.thinkjoy.common.managerui.dao" factory-ref="sqlSessionFactory" />
 
 
-    <bean id="parentDataSource" abstract="true" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <!-- 基本属性 url、user、password -->
         <property name="url" value="${jdbc_url}" />
         <property name="username" value="${jdbc_user}" />
@@ -88,25 +88,25 @@
         <property name="filters" value="stat" />
     </bean>
 
-    <bean id="ds1" parent="parentDataSource" >
-        <property name="url" value="${jdbc_url}"/>
-    </bean>
+    <!--<bean id="ds1" parent="parentDataSource" >-->
+        <!--<property name="url" value="${jdbc_url}"/>-->
+    <!--</bean>-->
 
-    <bean id="ds2" parent="parentDataSource" >
-        <property name="url" value="${jdbc_url}"/>
-    </bean>
+    <!--<bean id="ds2" parent="parentDataSource" >-->
+        <!--<property name="url" value="${jdbc_url}"/>-->
+    <!--</bean>-->
 
-    <bean id="dataSource" class="cn.thinkjoy.common.managerui.HashedDataSource">
-        <property name="targetDataSources">
-            <map key-type="java.lang.String">
-                <!-- ds1 -->
-                <entry key="ds1" value-ref="ds1"/>
-                <!-- ds2 -->
-                <entry key="ds2" value-ref="ds2"/>
-            </map>
-        </property>
+    <!--<bean id="dataSource" class="cn.thinkjoy.common.managerui.HashedDataSource">-->
+        <!--<property name="targetDataSources">-->
+            <!--<map key-type="java.lang.String">-->
+                <!--&lt;!&ndash; ds1 &ndash;&gt;-->
+                <!--<entry key="ds1" value-ref="ds1"/>-->
+                <!--&lt;!&ndash; ds2 &ndash;&gt;-->
+                <!--<entry key="ds2" value-ref="ds2"/>-->
+            <!--</map>-->
+        <!--</property>-->
 
-        <property name="defaultTargetDataSource" ref="ds1"/>
-    </bean>
+        <!--<property name="defaultTargetDataSource" ref="ds1"/>-->
+    <!--</bean>-->
 
 </beans>
