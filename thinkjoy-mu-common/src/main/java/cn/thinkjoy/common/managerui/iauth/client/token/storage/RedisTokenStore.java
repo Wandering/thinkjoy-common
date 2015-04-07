@@ -29,6 +29,9 @@ public class RedisTokenStore implements TokenStore {
 
     private RedisRepository tokenStorage;
 
+    public RedisRepository getTokenStorage() {
+        return tokenStorage;
+    }
 
     @PostConstruct
     public void init() throws Exception {
