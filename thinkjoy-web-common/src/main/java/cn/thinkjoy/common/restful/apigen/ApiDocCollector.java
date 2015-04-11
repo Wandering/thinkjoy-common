@@ -178,8 +178,8 @@ public class ApiDocCollector {
                     apiSummary.setDesc(mockDoc.value());
                     apiSummary.setOwner(mockDoc.owner());
                     apiDetail.setReturnDesc(mockDoc.returnDesc());
-//                    scanModel.setDoc(mockDoc.value());
-//                    scanModel.setOwner(mockDoc.owner());
+                    apiDetail.setName(mockDoc.value());
+                    apiDetail.setDesc(mockDoc.value());
                 }
 
                 apiDoc.addApiDetail(apiDetail);
