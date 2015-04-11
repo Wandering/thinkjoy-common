@@ -29,6 +29,10 @@ public class RedisUserStore implements UserStore{
 
     private RedisRepository userStorage;
 
+    public RedisRepository getUserStorage() {
+        return userStorage;
+    }
+
     @PostConstruct
     public void init() throws Exception {
         DynConfigClient dynConfigClient = DynConfigClientFactory.getClient();
