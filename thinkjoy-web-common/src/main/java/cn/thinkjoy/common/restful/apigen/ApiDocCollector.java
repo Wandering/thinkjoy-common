@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.util.*;
 
 //import cn.thinkjoy.mock.domain.ScanModel;
@@ -226,7 +227,14 @@ public class ApiDocCollector {
 
             if (annotation instanceof RequestBody) {            //报文结构json化处理
                 //获取RequestT的泛型类说明
-                Class requestClass = ((Class)((ParameterizedTypeImpl)method.getGenericParameterTypes()[i]).getActualTypeArguments()[0]);
+                Type parameterizedType = ((ParameterizedTypeImpl)method.getGenericParameterTypes()[i]).getActualTypeArguments()[0];
+                Class requestClass = null;
+                if(parameterizedType instanceof Class){
+                    requestClass = ((Class)parameterizedType);
+                } else {
+                    requestClass = ((ParameterizedTypeImpl)parameterizedType).getRawType();
+                }
+                //Class requestClass = ((Class));
                 apiDetail.setRequestType(requestClass.getName());
 
                 apiDetail.setRequestDesc(((ApiParam)descAnnotation).desc());
