@@ -1,5 +1,8 @@
 package cn.thinkjoy.common.restful.apigen.annotation;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * TODO 一句话描述该类用途
  * <p/>
@@ -8,6 +11,7 @@ package cn.thinkjoy.common.restful.apigen.annotation;
  * @author qyang
  * @since v0.0.1
  */
+@Retention(RetentionPolicy.RUNTIME)
 public @interface ApiPropDesc {
     /**
      * 属性描述

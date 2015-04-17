@@ -219,6 +219,7 @@ public class ApiDocCollector {
         List<Param> pathVars = new ArrayList<>();
         List<Param> params = new ArrayList<>();
         String paramUrl = "";
+        List<Param> request = new ArrayList<>();
         for(int i = 0; i < parameterAnnotations.length; i++) {
             Class<?> param = paramType[i];
             //肯定有两个annotion 第一个ApiParam，第二个为spring mvc的annotion
@@ -240,20 +241,21 @@ public class ApiDocCollector {
                 apiDetail.setRequestDesc(((ApiParam)descAnnotation).desc());
                 if(requestClass.getName().indexOf(".dto.") != -1) {
                     //dto对象才进行这里的处理
-                    Field[] fields = requestClass.getDeclaredFields();
-                    List<Param> request = new ArrayList<>();
-                    Param param1 = null;
-                    ApiPropDesc apiPropDesc = null;
-                    for (Field field : fields) {
-                        param1 = new Param();
-                        param1.setName(field.getName());
-                        param1.setType(field.getType().toString());
-                        apiPropDesc = field.getAnnotation(ApiPropDesc.class);
-                        if (apiPropDesc != null) {
-                            param1.setDesc(apiPropDesc.value());
-                        }
-                        request.add(param1);
-                    }
+//                    Field[] fields = requestClass.getDeclaredFields();
+
+//                    Param param1 = null;
+//                    ApiPropDesc apiPropDesc = null;
+//                    for (Field field : fields) {
+//                        param1 = new Param();
+//                        param1.setName(field.getName());
+//                        param1.setType(field.getType().toString());
+//                        apiPropDesc = field.getAnnotation(ApiPropDesc.class);
+//                        if (apiPropDesc != null) {
+//                            param1.setDesc(apiPropDesc.value());
+//                        }
+//                        request.add(param1);
+//                    }
+                    handleApiPropDesc(requestClass, request);
                 }
             } else if (annotation instanceof PathVariable) {    //URL路径参数化
                 //拼接完整的url
@@ -282,6 +284,7 @@ public class ApiDocCollector {
 
         apiDetail.setParams(params);
         apiDetail.setPathVar(pathVars);
+        apiDetail.setRequest(request);
 //        scanModel.setParamMap(paramMap);
 //        scanModel.setRequestBody(toJson(requestMap));
     }
@@ -303,34 +306,58 @@ public class ApiDocCollector {
     private void detectResponse(ApiDetail apiDetail, Method method) {
         ResponseBody responseBody = AnnotationUtils.findAnnotation(method, ResponseBody.class);
         if (responseBody != null) {
-            Class<?> clazz = method.getReturnType();
-            String clazzName = clazz.getName();
+            Type type = method.getGenericReturnType();//.getReturnType();
+            Class clazz = null;
+            String clazzName = null;
+            if(type instanceof Class){
+                clazz = (Class)type;
+                clazzName = clazz.getName();
+            } else {
+                clazzName = type.toString().replace("<", "&lt").replace(">", "&gt");
+                clazz = ((ParameterizedTypeImpl)type).getRawType();
+            }
+
+            //String clazzName = clazz.getName();
 
             apiDetail.setResponseType(clazzName);
             //Object
             List<Param> response = new ArrayList<>();
             method.getParameterAnnotations();
-            if(clazzName.indexOf(".dto.") == -1){
+            if("cn.thinkjoy.common.domain.ListWrapper".equals(clazz.getName())) {
+                //对 listwrapper进行特殊处理
+                Type t = ((ParameterizedTypeImpl)type).getActualTypeArguments()[0];
+                t.toString();
+
+                if(t instanceof Class) {
+                    handleApiPropDesc((Class)t, response);
+                }
+            } else if(clazzName.indexOf(".dto.") == -1){
 //                Param param = new Param();
 //                param.setN
 //                response.add(param);
                 apiDetail.setResponse(response);
             } else {
-                //只做一层属性展示，不处理嵌套
-                Param param1 = null;
-                Field[] fields = clazz.getDeclaredFields();
-                ApiPropDesc apiPropDesc = null;
-                for(Field field : fields){
-                    param1 = new Param();
-                    param1.setName(field.getName());
-                    param1.setType(field.getType().toString());
-                    apiPropDesc = field.getAnnotation(ApiPropDesc.class);
-                    if(apiPropDesc != null) {
-                        param1.setDesc(apiPropDesc.value());
-                    }
-                    response.add(param1);
-                }
+                //只做一层属性展示，不处理嵌套  对 listwrapper进行特殊处理
+                handleApiPropDesc(clazz, response);
             }
+
+            apiDetail.setResponse(response);
+        }
+    }
+
+    private void handleApiPropDesc(Class clazz, List<Param> params){
+        Param param1 = null;
+        Field[] fields = clazz.getDeclaredFields();
+        ApiPropDesc apiPropDesc = null;
+        for(Field field : fields){
+            param1 = new Param();
+            param1.setName(field.getName());
+            param1.setType(field.getType().toString());
+            apiPropDesc = field.getAnnotation(ApiPropDesc.class);
+            if(apiPropDesc != null) {
+                param1.setDesc(apiPropDesc.value());
+            }
+            params.add(param1);
         }
     }
 
