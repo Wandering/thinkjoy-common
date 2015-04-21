@@ -326,10 +326,11 @@ public class ApiDocCollector {
             if("cn.thinkjoy.common.domain.ListWrapper".equals(clazz.getName())) {
                 //对 listwrapper进行特殊处理
                 Type t = ((ParameterizedTypeImpl)type).getActualTypeArguments()[0];
-                t.toString();
 
                 if(t instanceof Class) {
-                    handleApiPropDesc((Class)t, response);
+                    if(((Class) t).getName().indexOf("java.") == -1) {
+                        handleApiPropDesc((Class) t, response);
+                    }
                 }
             } else if(clazzName.indexOf(".dto.") == -1){
 //                Param param = new Param();
