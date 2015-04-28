@@ -14,4 +14,12 @@ public class FloatWrapper {
     public FloatWrapper(float f) {
         this.f = f;
     }
+
+    public float getF() {
+        return f;
+    }
+
+    public void setF(float f) {
+        this.f = f;
+    }
 }

@@ -14,4 +14,12 @@ public class LongWrapper {
     public LongWrapper(long l) {
         this.l = l;
     }
+
+    public long getL() {
+        return l;
+    }
+
+    public void setL(long l) {
+        this.l = l;
+    }
 }

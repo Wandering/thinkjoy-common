@@ -14,4 +14,12 @@ public class DoubleWrapper {
     public DoubleWrapper(double d) {
         this.d = d;
     }
+
+    public double getD() {
+        return d;
+    }
+
+    public void setD(double d) {
+        this.d = d;
+    }
 }

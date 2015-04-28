@@ -14,4 +14,12 @@ public class BooleanWrapper {
     public BooleanWrapper(boolean b) {
         this.b = b;
     }
+
+    public boolean isB() {
+        return b;
+    }
+
+    public void setB(boolean b) {
+        this.b = b;
+    }
 }
