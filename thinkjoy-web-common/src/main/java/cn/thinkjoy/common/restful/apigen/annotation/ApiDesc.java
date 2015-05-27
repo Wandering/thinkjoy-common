@@ -14,6 +14,12 @@ import java.lang.annotation.Target;
 public @interface ApiDesc {
 
     /**
+     * 功能所属模块
+     * @return
+     */
+    String module() default "";
+
+    /**
      * 协议描述
      * @return
      */

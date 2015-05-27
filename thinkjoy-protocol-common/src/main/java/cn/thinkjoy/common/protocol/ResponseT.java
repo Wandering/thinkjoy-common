@@ -71,6 +71,14 @@ public class ResponseT<T> implements Serializable {
         this.bizData = bizData;
     }
 
+    /**
+     * @deprecated 应用不要使用，仅供fastjson转换用
+     * @param ts
+     */
+    public void setTs(long ts) {
+        this.ts = ts;
+    }
+
     public long getTs() {
         return ts;
     }

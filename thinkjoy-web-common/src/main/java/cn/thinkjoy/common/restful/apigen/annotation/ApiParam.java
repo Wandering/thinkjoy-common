@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * TODO 一句话描述该类用途
+ * 参数注解
  * <p/>
  * 创建时间: 15/4/5 下午7:13<br/>
  *
