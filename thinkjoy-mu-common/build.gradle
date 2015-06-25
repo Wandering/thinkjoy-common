@@ -35,5 +35,6 @@ dependencies {
 
     compile project(':thinkjoy-web-common')
     compile project(':thinkjoy-mus-common')
+    compile project(':thinkjoy-analytics-common')
 //    compile project(':thinkjoy-security-common')
 }

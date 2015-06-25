@@ -5,6 +5,9 @@ import cn.thinkjoy.cloudstack.dynconfig.DynConfigClient;
 import cn.thinkjoy.cloudstack.dynconfig.DynConfigClientFactory;
 import cn.thinkjoy.cloudstack.dynconfig.IChangeListener;
 import cn.thinkjoy.cloudstack.dynconfig.domain.Configuration;
+import cn.thinkjoy.common.filter.context.DefaultUserContextImpl;
+import cn.thinkjoy.common.filter.context.IUserContext;
+import cn.thinkjoy.common.filter.context.UserContextHolder;
 import cn.thinkjoy.common.managerui.iauth.core.handler.EmbedTokenHandler;
 import cn.thinkjoy.common.managerui.iauth.core.exception.CannotAuthException;
 import cn.thinkjoy.common.managerui.iauth.core.handler.TokenResolver;
@@ -227,6 +230,14 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
         if (principal.getOwner() != null) {
 //            baseRequest.getRequest().setAttribute(HTTP_ATTRIBUTE_USER_DETAIL, principal.getOwner());
             UserContext.setCurrentUser(principal.getOwner());
+
+            //供 analytics filter使用
+            IUserContext userContext = new DefaultUserContextImpl();
+            Map<String, Object> datas = new HashMap<>(4);
+            datas.put(IUserContext.UID, principal.getOwner().getId());
+//            datas.put("", principal.getOwner());
+            ((DefaultUserContextImpl)userContext).setContexts(datas);
+            UserContextHolder.setUserContext(userContext);
         }
         if (principal.getToken() != null) {
             baseRequest.getRequest().setAttribute(HTTP_ATTRIBUTE_ACCESS_TOKEN, principal.getToken());

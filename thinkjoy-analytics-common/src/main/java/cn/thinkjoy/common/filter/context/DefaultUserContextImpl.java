@@ -11,13 +11,15 @@ import java.util.Map;
  * @author qyang
  * @since v0.0.1
  */
-public abstract class AbstractUserContext implements IUserContext {
+public class DefaultUserContextImpl implements IUserContext {
     protected Map<String, Object> contexts = new HashMap<>();
 
     /**
      * 设置上下文，子类重载
      */
-    protected abstract void setContexts();
+    public void setContexts(Map<String, Object> contexts){
+        this.contexts = contexts;
+    }
 
     @Override
     public Map<String, Object> getContexts() {
