@@ -16,3 +16,7 @@ include 'thinkjoy-domain-common'
 
 include 'thinkjoy-http-protocol-common'
 
+include 'thinkjoy-analytics-common'
+
+include 'thinkjoy-rmq-common'
+

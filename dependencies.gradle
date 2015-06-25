@@ -26,4 +26,8 @@ allprojects {
     dubboZKClientVersion = "0.4"
 
     apacheCommonsVersion = "2.6"
+
+    rocketMQVersion = "3.2.6"
+
+    servletVersion = "3.1.0"
 }
