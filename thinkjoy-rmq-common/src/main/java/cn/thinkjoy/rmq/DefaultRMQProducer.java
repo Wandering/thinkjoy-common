@@ -33,7 +33,7 @@ public class DefaultRMQProducer{
     private static class DefaultRMQProducerHolder{
         private static DefaultRMQProducer instance = new DefaultRMQProducer();
     }
-    private void DefaultRMQProducer(){
+    private DefaultRMQProducer(){
         producer = RocketMQSingleton.getInstance();
     }
 

@@ -87,6 +87,9 @@ public class AnalyticsDataMapper {
 
 	private void setResponseHeaders(Response responseHar) {
 		Collection<String> headers = response.getHeaderNames();
+        if(headers == null){
+            return;
+        }
 		List<NameValuePair> headerList = responseHar.getHeaders();
 		int size = 2; // 2 for CRLF
 		for (String name : headers) {
