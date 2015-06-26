@@ -23,7 +23,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package cn.thinkjoy.common.filter.mapper;
 
-import cn.thinkjoy.common.filter.model.*;
+import cn.thinkjoy.common.dap.model.webfilter.*;
 import cn.thinkjoy.common.filter.wrapper.RequestInterceptorWrapper;
 import cn.thinkjoy.common.filter.wrapper.ResponseInterceptorWrapper;
 import com.google.common.io.BaseEncoding;

@@ -6,29 +6,26 @@
 //
 
 
-package cn.thinkjoy.common.filter.model;
-
-import cn.thinkjoy.common.filter.context.IUserContext;
+package cn.thinkjoy.common.dap.model.webfilter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Map;
 
 
 /**
- * <p>Message complex type的 Java 类。
+ * <p>NameValuePair complex type的 Java 类。
  * 
  * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
- * &lt;complexType name="Message">
+ * &lt;complexType name="NameValuePair">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="serviceToken" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="har" type="{http://www.mashape.com/analytics}Har"/>
+ *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="value" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -38,71 +35,63 @@ import java.util.Map;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Message", propOrder = {
-    "serviceToken",
-    "har"
+@XmlType(name = "NameValuePair", propOrder = {
+    "name",
+    "value"
 })
-public class Message {
+public class NameValuePair {
 
     @XmlElement(required = true)
-    protected String serviceToken;
+    protected String name;
     @XmlElement(required = true)
-    protected Har har;
-    @XmlElement(required = true)
-    protected Map userContext;
+    protected String value;
+
     /**
-     * 获取serviceToken属性的值。
+     * 获取name属性的值。
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getServiceToken() {
-        return serviceToken;
+    public String getName() {
+        return name;
     }
 
     /**
-     * 设置serviceToken属性的值。
+     * 设置name属性的值。
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setServiceToken(String value) {
-        this.serviceToken = value;
+    public void setName(String value) {
+        this.name = value;
     }
 
     /**
-     * 获取har属性的值。
+     * 获取value属性的值。
      * 
      * @return
      *     possible object is
-     *     {@link Har }
+     *     {@link String }
      *     
      */
-    public Har getHar() {
-        return har;
+    public String getValue() {
+        return value;
     }
 
     /**
-     * 设置har属性的值。
+     * 设置value属性的值。
      * 
      * @param value
      *     allowed object is
-     *     {@link Har }
+     *     {@link String }
      *     
      */
-    public void setHar(Har value) {
-        this.har = value;
+    public void setValue(String value) {
+        this.value = value;
     }
 
-    public Map getUserContext() {
-        return userContext;
-    }
-
-    public void setUserContext(Map userContext) {
-        this.userContext = userContext;
-    }
 }

@@ -6,7 +6,7 @@
 //
 
 
-package cn.thinkjoy.common.filter.model;
+package cn.thinkjoy.common.dap.model.webfilter;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;

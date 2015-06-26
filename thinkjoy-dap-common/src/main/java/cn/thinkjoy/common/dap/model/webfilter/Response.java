@@ -6,7 +6,7 @@
 //
 
 
-package cn.thinkjoy.common.filter.model;
+package cn.thinkjoy.common.dap.model.webfilter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

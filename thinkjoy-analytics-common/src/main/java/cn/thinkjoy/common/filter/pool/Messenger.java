@@ -25,17 +25,12 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 package cn.thinkjoy.common.filter.pool;
 
 import cn.thinkjoy.cloudstack.context.CloudContextFactory;
-import cn.thinkjoy.common.filter.context.IUserContext;
-import cn.thinkjoy.common.filter.model.*;
-import cn.thinkjoy.common.filter.model.Message;
+import cn.thinkjoy.common.dap.model.webfilter.*;
 import cn.thinkjoy.rmq.DefaultRMQProducer;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.rocketmq.client.producer.DefaultMQProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import static cn.thinkjoy.common.filter.AnalyticsConstants.*;

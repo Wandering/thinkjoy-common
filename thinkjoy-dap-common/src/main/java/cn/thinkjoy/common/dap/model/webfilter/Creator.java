@@ -6,7 +6,7 @@
 //
 
 
-package cn.thinkjoy.common.filter.model;
+package cn.thinkjoy.common.dap.model.webfilter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -15,17 +15,17 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>NameValuePair complex type的 Java 类。
+ * <p>Creator complex type的 Java 类。
  * 
  * <p>以下模式片段指定包含在此类中的预期内容。
  * 
  * <pre>
- * &lt;complexType name="NameValuePair">
+ * &lt;complexType name="Creator">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="value" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="version" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -35,16 +35,16 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "NameValuePair", propOrder = {
+@XmlType(name = "Creator", propOrder = {
     "name",
-    "value"
+    "version"
 })
-public class NameValuePair {
+public class Creator {
 
     @XmlElement(required = true)
     protected String name;
     @XmlElement(required = true)
-    protected String value;
+    protected String version;
 
     /**
      * 获取name属性的值。
@@ -71,27 +71,27 @@ public class NameValuePair {
     }
 
     /**
-     * 获取value属性的值。
+     * 获取version属性的值。
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getValue() {
-        return value;
+    public String getVersion() {
+        return version;
     }
 
     /**
-     * 设置value属性的值。
+     * 设置version属性的值。
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setValue(String value) {
-        this.value = value;
+    public void setVersion(String value) {
+        this.version = value;
     }
 
 }

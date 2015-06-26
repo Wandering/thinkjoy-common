@@ -20,3 +20,5 @@ include 'thinkjoy-analytics-common'
 
 include 'thinkjoy-rmq-common'
 
+include 'thinkjoy-dap-common'
+
