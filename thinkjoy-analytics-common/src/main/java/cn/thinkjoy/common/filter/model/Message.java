@@ -8,6 +8,8 @@
 
 package cn.thinkjoy.common.filter.model;
 
+import cn.thinkjoy.common.filter.context.IUserContext;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -45,7 +47,8 @@ public class Message {
     protected String serviceToken;
     @XmlElement(required = true)
     protected Har har;
-
+    @XmlElement(required = true)
+    protected IUserContext userContext;
     /**
      * 获取serviceToken属性的值。
      * 
@@ -94,4 +97,11 @@ public class Message {
         this.har = value;
     }
 
+    public IUserContext getUserContext() {
+        return userContext;
+    }
+
+    public void setUserContext(IUserContext userContext) {
+        this.userContext = userContext;
+    }
 }

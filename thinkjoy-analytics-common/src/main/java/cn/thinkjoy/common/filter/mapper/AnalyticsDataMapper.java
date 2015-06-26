@@ -183,9 +183,10 @@ public class AnalyticsDataMapper {
 			content.setMimeType(mimeType);
 		}
 		content.setSize(response.getClone().length);
-		if (response.getClone().length > 0) {
-			content.setText(BaseEncoding.base64().encode(response.getClone()));
-		}
+        //modify qyang 暂时屏蔽response body
+//		if (response.getClone().length > 0) {
+//			content.setText(BaseEncoding.base64().encode(response.getClone()));
+//		}
 		return content;
 	}
 
