@@ -47,7 +47,7 @@ public class AnalyticsFilter implements Filter {
 //    private String analyticsServerPort;
 //    private String analyticsToken;
     private ObjectPool<Work> pool;
-    private boolean isAnlayticsEnabled = false;
+    private boolean isAnlayticsEnabled = true;
 
     @Override
     public void destroy() {
