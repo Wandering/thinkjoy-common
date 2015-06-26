@@ -50,7 +50,7 @@ public class Messenger implements Work {
 	public void execute(Map<String, Object> analyticsData) {
 		Entry entry = (Entry) analyticsData.get(ANALYTICS_DATA);
 		//String token = analyticsData.get(ANALYTICS_TOKEN).toString();
-		Message msg = getMessage(entry, null, (IUserContext) analyticsData.get(USER_CONTEXT));
+		Message msg = getMessage(entry, null, (Map) analyticsData.get(USER_CONTEXT));
 		String data = JSON.toJSONString(msg);
 //		String analyticsServerUrl = analyticsData.get(ANALYTICS_SERVER_URL).toString();
 //		String port = analyticsData.get(ANALYTICS_SERVER_PORT).toString();
@@ -67,7 +67,7 @@ public class Messenger implements Work {
         DefaultRMQProducer.getInstance().stop();
 	}
 
-	public Message getMessage(Entry entry, String token, IUserContext userContext) {
+	public Message getMessage(Entry entry, String token, Map userContext) {
 		Message message = new Message();
 		message.setHar(setHar(entry));
 		message.setServiceToken(token);

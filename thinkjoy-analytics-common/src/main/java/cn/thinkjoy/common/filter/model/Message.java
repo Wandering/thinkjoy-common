@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.Map;
 
 
 /**
@@ -48,7 +49,7 @@ public class Message {
     @XmlElement(required = true)
     protected Har har;
     @XmlElement(required = true)
-    protected IUserContext userContext;
+    protected Map userContext;
     /**
      * 获取serviceToken属性的值。
      * 
@@ -97,11 +98,11 @@ public class Message {
         this.har = value;
     }
 
-    public IUserContext getUserContext() {
+    public Map getUserContext() {
         return userContext;
     }
 
-    public void setUserContext(IUserContext userContext) {
+    public void setUserContext(Map userContext) {
         this.userContext = userContext;
     }
 }
