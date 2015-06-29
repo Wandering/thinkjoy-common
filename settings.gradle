@@ -8,6 +8,7 @@ include 'thinkjoy-mus-common'
 include 'thinkjoy-mu-common'
 
 include 'thinkjoy-security-common'
+
 include 'thinkjoy-web-common'
 
 include 'thinkjoy-protocol-common'
@@ -21,4 +22,6 @@ include 'thinkjoy-analytics-common'
 include 'thinkjoy-rmq-common'
 
 include 'thinkjoy-dap-common'
+
+include 'thinkjoy-analytics-common'
 

@@ -128,7 +128,7 @@ public class AnalyticsFilter implements Filter {
      */
     @Override
     public void init(FilterConfig config) throws ServletException {
-        if (isAnlayticsEnabled = isAnalyticsFlagEnabled()) {
+        if (isAnlayticsEnabled) {
 //            if (!(Util.notBlank(analyticsServerUrl = config
 //                    .getInitParameter(ANALYTICS_SERVER_URL))
 //                    && Util.notBlank(analyticsServerPort = config
