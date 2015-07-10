@@ -28,6 +28,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -185,6 +186,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
         tokenHandlers.clear();
     }
 
+    @Override
     public void redirectTologin(BaseRequest baseRequest, RuntimeException ex) throws IOException {
         if(((DefaultAuthRequest) baseRequest).isDebug()) {
             throw ex;
@@ -212,6 +214,8 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
         redirectTologinWithParams(baseRequest.getResponse(), params);
 
     }
+
+
 
     @Override
     public void redirectTologout(BaseRequest baseRequest) throws IOException {
@@ -256,10 +260,46 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
 
     }
 
+    @Override
+    public void setResponseForAjax(BaseRequest baseRequest) {
+        // TODO
+        try {
+            
+            String url = baseRequest.getRequest().getRequestURL().toString();
+            baseRequest.getResponse().setHeader("sessionstatus", "timeout");
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("from", url);
+
+            DefaultAuthRequest request = (DefaultAuthRequest) baseRequest;
+            if (request.getPrincipal() != null && request.getPrincipal().getOwner() != null) {
+                User user = request.getPrincipal().getOwner();
+                params.put("username", user.getName());
+            }
+
+            String appKey = CloudContextFactory.getCloudContext().getApplicationName();
+
+            params.put("appKey",appKey);
+
+            String paramsString = UrlStringUtil.paramsMapToURLString(params);
+
+            String result = redirect_url + (paramsString.length() > 1 ? paramsString.toString() : "");
+
+            PrintWriter out = baseRequest.getResponse().getWriter();
+            out.println(result);
+            out.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @Override
     public void callWhenAuthenticatiornError(BaseRequest baseRequest, RuntimeException ex) throws IOException {
         logger.error("拒绝访问。验证出现异常: "+ex.getMessage(), ex);
+        String requestType = baseRequest.getRequest().getHeader("X-Requested-With");
+        if(requestType!=null && requestType.equals("XMLHttpRequest"))
+            baseRequest.getAuthenticator().setResponseForAjax(baseRequest);
         redirectTologin(baseRequest, ex);
     }
 

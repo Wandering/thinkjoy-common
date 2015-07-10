@@ -175,6 +175,13 @@ public abstract class Authenticator {
 
 
     /**
+     * for ajax request auth response
+     * @param baseRequest
+     */
+    public abstract void setResponseForAjax(BaseRequest baseRequest);
+
+
+    /**
      * 登出后进行需要的跳转
      *
      * @param baseRequest

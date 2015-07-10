@@ -172,6 +172,9 @@ public class AccessTokenHandler extends AbstractTokenHandler {
     @Override
     public void callWhenAuthenticationError(BaseRequest baseRequest, RuntimeException ex) throws IOException {
         logger.error("访问失败。访问出现异常:" + ex.getMessage(), ex);
+        String requestType = baseRequest.getRequest().getHeader("X-Requested-With");
+        if(requestType!=null && !requestType.equals(""))
+            baseRequest.getAuthenticator().setResponseForAjax(baseRequest);
         baseRequest.getAuthenticator().redirectTologin(baseRequest, ex);
     }
 
