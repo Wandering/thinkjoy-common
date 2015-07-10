@@ -264,7 +264,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
     public void setResponseForAjax(BaseRequest baseRequest) {
         // TODO
         try {
-            
+
             String url = baseRequest.getRequest().getRequestURL().toString();
             baseRequest.getResponse().setHeader("sessionstatus", "timeout");
             Map<String, String> params = new HashMap<String, String>();
