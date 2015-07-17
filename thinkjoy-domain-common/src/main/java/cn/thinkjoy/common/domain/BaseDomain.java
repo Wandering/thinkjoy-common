@@ -18,6 +18,18 @@ public class BaseDomain implements Serializable {
     // ID
     private Long              id;
 
+    private String            sId;
+
+
+    public String getsId() {
+        return sId;
+    }
+
+    public void setsId(String sId) {
+        this.sId = sId;
+    }
+
+
     public Long getId() {
         return id;
     }
