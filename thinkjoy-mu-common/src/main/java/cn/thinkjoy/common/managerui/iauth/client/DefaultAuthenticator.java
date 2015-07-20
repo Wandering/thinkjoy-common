@@ -249,7 +249,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
         }
         // 对token进行延期
         tokenStore.postpone(principal.getToken().getValue());
-        userStore.postpone((Long)principal.getOwner().getId());
+        userStore.postpone(Long.valueOf(String.valueOf(principal.getOwner().getId())));
 
     }
 

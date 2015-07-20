@@ -134,7 +134,7 @@ public class AccessTokenHandler extends AbstractTokenHandler {
         }
 
         AccessToken accessToken = new AccessToken();
-        accessToken.setUserId((Long)user.getId());
+        accessToken.setUserId(Long.valueOf(String.valueOf(user.getId())));
 
         tokenStore.store(accessToken.getValue(), accessToken);
 
