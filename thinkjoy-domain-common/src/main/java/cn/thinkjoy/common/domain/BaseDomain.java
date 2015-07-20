@@ -16,26 +16,13 @@ public class BaseDomain implements Serializable {
 
     private static final long serialVersionUID = 6667600871541308622L;
     // ID
-    private Long              id;
+    private Object              id;
 
-    private String            sId;
-
-
-    public String getsId() {
-        return sId;
-    }
-
-    public void setsId(String sId) {
-        this.sId = sId;
-    }
-
-
-    public Long getId() {
+    public Object getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Object id) {
         this.id = id;
     }
-
 }

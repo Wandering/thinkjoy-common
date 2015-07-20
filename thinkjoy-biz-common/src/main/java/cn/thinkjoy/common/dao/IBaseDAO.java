@@ -79,7 +79,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @param id
      * @return
      */
-    public T fetch(Long id);
+    public T fetch(Object id);
 
     /**
      * 根据任意属性和属性值进行对象查询，如果返回多个对象，将抛出异常
