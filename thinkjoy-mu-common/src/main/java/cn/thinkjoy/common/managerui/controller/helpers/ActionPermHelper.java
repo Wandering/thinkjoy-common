@@ -30,10 +30,10 @@ public class ActionPermHelper {
     public final Set<String> getActionPerm(String mainObj) {
         Resource resource = resourceService.findOne("bizModelName", mainObj);
 
-        return actionPermService.getActionPermsByRes(UserContext.getCurrentUser().getId(), resource.getId());
+        return actionPermService.getActionPermsByRes((Long)UserContext.getCurrentUser().getId(), (Long)resource.getId());
     }
 
     public final List<Resource> getResourcePerm() {
-        return actionPermService.getResourcePerms(UserContext.getCurrentUser().getId());
+        return actionPermService.getResourcePerms((Long)UserContext.getCurrentUser().getId());
     }
 }
