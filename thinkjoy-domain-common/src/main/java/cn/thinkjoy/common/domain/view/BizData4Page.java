@@ -1,5 +1,6 @@
 package cn.thinkjoy.common.domain.view;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,7 @@ public class BizData4Page<T> {
     private int records=0;
     /** 具体数据 */
     private List<T> rows;
-    private Map<String,Object> conditions;
+    private Map<String,Object> conditions = new HashMap<String,Object>();
 
     public Map<String, Object> getConditions() {
         return conditions;
