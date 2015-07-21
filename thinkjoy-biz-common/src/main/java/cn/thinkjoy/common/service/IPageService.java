@@ -28,6 +28,12 @@ public interface IPageService<D extends IBaseDAO,T extends BaseDomain> {
     public BizData4Page queryPageByDataPerm(String resUri, Map<String, Object> conditions, int curPage, int offset, int rows);
 
     /**
+     * 条件查询包含各种查询
+     * @return
+     */
+    public void queryPageByDataPerm(BizData4Page bizData4Page);
+
+    /**
      * 具有排序的分页
      * @param resUri
      * @param conditions

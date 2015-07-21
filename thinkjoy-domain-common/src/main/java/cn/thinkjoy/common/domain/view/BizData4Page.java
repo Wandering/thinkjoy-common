@@ -13,13 +13,25 @@ import java.util.Map;
  */
 public class BizData4Page<T> {
     /** 当前页 */
-    private int page;
+    private int page=1;
     /** 总页数 */
-    private int total;
+    private int total=0;
+    /** 分页数 */
+    private int pagesize=10;
     /** 总记录数 */
-    private int records;
+    private int records=0;
     /** 具体数据 */
     private List<T> rows;
+    private Map<String,Object> conditions;
+
+    public Map<String, Object> getConditions() {
+        return conditions;
+    }
+
+    public void setConditions(Map<String, Object> conditions) {
+        this.conditions = conditions;
+    }
+
     /** 返回的用户自定义数据 例如总计行？ */
     private Map<List,Object> userdata;
 
@@ -61,5 +73,13 @@ public class BizData4Page<T> {
 
     public void setUserdata(Map<List, Object> userdata) {
         this.userdata = userdata;
+    }
+
+    public int getPagesize() {
+        return pagesize;
+    }
+
+    public void setPagesize(int pagesize) {
+        this.pagesize = pagesize;
     }
 }
