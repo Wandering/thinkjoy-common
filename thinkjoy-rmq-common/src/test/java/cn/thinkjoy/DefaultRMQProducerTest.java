@@ -15,7 +15,7 @@ public class DefaultRMQProducerTest {
     @Test
     public void test(){
         try {
-            DefaultRMQProducer.getInstance().send("","","","","");
+//            DefaultRMQProducer.getInstance().send("","","","","");
         } catch (Exception e) {
             e.printStackTrace();
         }
