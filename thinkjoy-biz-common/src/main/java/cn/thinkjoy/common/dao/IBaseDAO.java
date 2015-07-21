@@ -56,7 +56,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      *
      * @param id
      */
-    public int deleteById(Long id);
+    public int deleteById(Object id);
 
     /**
      * 根据条件集合删除对象
@@ -227,7 +227,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @exception/throws 如果主键类型不为long，会抛出类型转换异常
      * @return 返回泛型参数对应表的主键最大值
      */
-    public Long selectMaxId();
+    public Object selectMaxId();
 
     /**
      * 更新或保存，涉及到Mabatis使用的bean只是一个简单的值对象，不能进行id的注解，不知道哪个是主键，所以，必须同时指定t的主键值

@@ -46,13 +46,13 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
 
     @Override
     @CacheEvict(key = "#id")
-    public final int delete(Long id) {
+    public final int delete(Object id) {
         return getDao().deleteById(id);
     }
 
     @Override
     @Cacheable(key = "#id")
-    public final T view(Long id) {
+    public final T view(Object id) {
         return (T)getDao().fetch(id);
     }
 
@@ -81,7 +81,7 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
 
     @Override
     @CacheEvict(key = "#entity.id")
-    public final int deleteById(Long id) {
+    public final int deleteById(Object id) {
 
         return getDao().deleteById(id);
     }
@@ -95,7 +95,7 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
 
     @Override
     @Cacheable(key = "#id")
-    public final T fetch(Long id) {
+    public final T fetch(Object id) {
         return (T)getDao().fetch(id);
     }
 
@@ -140,13 +140,13 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
     }
 
     @Override
-    public final Long selectMaxId() {
+    public final Object selectMaxId() {
         return getDao().selectMaxId();
     }
 
     @Override
     @CacheEvict(key = "#id")
-    public final void updateOrSave(T entity, Long id) {
+    public final void updateOrSave(T entity, Object id) {
         if(id!=null&&!StringUtils.isEmpty(id)){
             enhanceCreateBaseDomain(entity);
             getDao().update(entity);
