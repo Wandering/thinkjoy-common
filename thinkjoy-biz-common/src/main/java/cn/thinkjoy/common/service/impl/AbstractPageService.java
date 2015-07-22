@@ -71,6 +71,29 @@ public abstract class AbstractPageService<D extends IBaseDAO,T extends BaseDomai
      * 条件查询包含各种查询
      * @return
      */
+    public void queryPageByDataPerm(BizData4Page bizData4Page, String orderBy, SqlOrderEnum sqlOrderEnum)
+    {
+        int offset = (bizData4Page.getPage()-1)*bizData4Page.getPagesize();
+        int rows = bizData4Page.getPagesize();
+        List<T> mainData = getDao().queryPage(bizData4Page.getConditions(), offset, rows, orderBy, sqlOrderEnum.getAction());
+        int records =  getDao().count(bizData4Page.getConditions());
+
+        bizData4Page.setRows(mainData);
+        bizData4Page.setPage(bizData4Page.getPage());
+        bizData4Page.setRecords(records);
+
+        int total = records / rows;
+        int mod = records % rows;
+        if(mod > 0){
+            total = total + 1;
+        }
+        bizData4Page.setTotal(total);
+    }
+
+    /**
+     * 条件查询包含各种查询
+     * @return
+     */
     public void queryPageByDataPerm(BizData4Page bizData4Page)
     {
         int offset = (bizData4Page.getPage()-1)*bizData4Page.getPagesize();
@@ -91,3 +114,5 @@ public abstract class AbstractPageService<D extends IBaseDAO,T extends BaseDomai
     }
 
 }
+
+

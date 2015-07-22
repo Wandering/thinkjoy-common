@@ -34,6 +34,13 @@ public interface IPageService<D extends IBaseDAO,T extends BaseDomain> {
     public void queryPageByDataPerm(BizData4Page bizData4Page);
 
     /**
+     * 条件查询包含各种查询
+     * @return
+     */
+    public void queryPageByDataPerm(BizData4Page bizData4Page, String orderBy, SqlOrderEnum sqlOrderEnum);
+
+
+    /**
      * 具有排序的分页
      * @param resUri
      * @param conditions
