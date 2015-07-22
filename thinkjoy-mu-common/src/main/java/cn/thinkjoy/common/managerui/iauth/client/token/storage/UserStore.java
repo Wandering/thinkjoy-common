@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserStore {
 
-    User storeUser(long key, User user);
+    User storeUser(Object key, User user);
 
-    User readUser(long key);
+    User readUser(Object key);
 
-    void postpone(long key);
+    void postpone(Object key);
 }

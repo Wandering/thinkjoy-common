@@ -66,19 +66,19 @@ public class RedisUserStore implements UserStore{
 
 
     @Override
-    public User storeUser(long key, User user) {
+    public User storeUser(Object key, User user) {
         String userJson = JSON.toJSONString(user);
         userStorage.set(PREFIX+key, userJson, USER_EXPIRE_TIME, TimeUnit.SECONDS);
         return null;
     }
 
     @Override
-    public User readUser(long key) {
+    public User readUser(Object key) {
         return JSON.parseObject((String)userStorage.get(PREFIX+key), User.class);
     }
 
     @Override
-    public void postpone(long key) {
+    public void postpone(Object key) {
         userStorage.expire(PREFIX+key, USER_EXPIRE_TIME, TimeUnit.SECONDS);
     }
 }

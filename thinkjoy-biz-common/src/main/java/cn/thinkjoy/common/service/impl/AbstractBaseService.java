@@ -51,6 +51,12 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
     }
 
     @Override
+//    @CacheEvict(key = "#id")
+    public final int deleteByIds(List list) {
+        return getDao().deleteByIds(list);
+    }
+
+    @Override
     @Cacheable(key = "#id")
     public final T view(Object id) {
         return (T)getDao().fetch(id);

@@ -59,6 +59,13 @@ public interface IBaseDAO<T extends BaseDomain> {
     public int deleteById(Object id);
 
     /**
+     * 根据list(ids)删除对象
+     *
+     * @param list
+     */
+    public int deleteByIds(List list);
+
+    /**
      * 根据条件集合删除对象
      *
      * @param condition
