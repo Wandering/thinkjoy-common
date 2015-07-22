@@ -106,7 +106,7 @@ public class ExtFastJsonHttpMessageConverter<T> extends AbstractHttpMessageConve
         response.setBizData(t);
 
         OutputStream out = outputMessage.getBody();
-        String text = JSON.toJSONString(response, features);
+        String text = JSON.toJSONString(response,  SerializerFeature.DisableCircularReferenceDetect);
         byte[] bytes = text.getBytes(charset);
         out.write(bytes);
     }
