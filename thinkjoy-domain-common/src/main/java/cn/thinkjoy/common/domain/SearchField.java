@@ -16,6 +16,19 @@ public class SearchField {
 	/* 值 */
 	private String data;
 
+	public SearchField(String field,String op,String data)
+	{
+		this.field = field;
+		this.op = op;
+		this.data = data;
+
+	}
+
+	public SearchField()
+	{
+
+	}
+
 	public String getField() {
 		return field;
 	}
