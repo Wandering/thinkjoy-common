@@ -110,7 +110,7 @@ public class AccessTokenHandler extends AbstractTokenHandler {
         EmbedToken embedToken = (EmbedToken) baseRequest.getToken();
 
         // 获取用户
-        Long userId = (Long) embedToken.getAdditionalInformation().get("userId");
+        Object userId = embedToken.getAdditionalInformation().get("userId");
         User user = null;
         try {
             user = userStore.readUser(userId);
@@ -128,10 +128,10 @@ public class AccessTokenHandler extends AbstractTokenHandler {
 //        }
         //
 
-        if (user.getBizDimension() == null || user.getBizDimension() == 0) {
-            logger.info("该用户{0}({1})没有权限登录。", user.getName(), user.getBizDimension());
-            throw new AuthNotPassException(String.format("该用户%s(%s)没有权限登录，请联系管理员授权。", user.getName(), user.getBizDimension()));
-        }
+//        if (user.getBizDimension() == null || user.getBizDimension() == 0) {
+//            logger.info("该用户{0}({1})没有权限登录。", user.getName(), user.getBizDimension());
+//            throw new AuthNotPassException(String.format("该用户%s(%s)没有权限登录，请联系管理员授权。", user.getName(), user.getBizDimension()));
+//        }
 
         AccessToken accessToken = new AccessToken();
         accessToken.setUserId(Long.valueOf(String.valueOf(user.getId())));
