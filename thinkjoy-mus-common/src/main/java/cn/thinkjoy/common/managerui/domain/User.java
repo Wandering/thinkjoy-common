@@ -23,6 +23,16 @@ public class User extends UserDomain {
 
     private Integer employeeId;
 
+	private Object object;
+
+	public Object getObject() {
+		return object;
+	}
+
+	public void setObject(Object object) {
+		this.object = object;
+	}
+
 	public User(){
 	}
     public void setIsAdmin(Integer value) {
