@@ -14,9 +14,9 @@ public class SearchField {
 	private String op;
 
 	/* 值 */
-	private String data;
+	private Object data;
 
-	public SearchField(String field,String op,String data)
+	public SearchField(String field,String op,Object data)
 	{
 		this.field = field;
 		this.op = op;
@@ -45,11 +45,11 @@ public class SearchField {
 		this.op = op;
 	}
 
-	public String getData() {
+	public Object getData() {
 		return data;
 	}
 
-	public void setData(String data) {
+	public void setData(Object data) {
 		this.data = data;
 	}
 
