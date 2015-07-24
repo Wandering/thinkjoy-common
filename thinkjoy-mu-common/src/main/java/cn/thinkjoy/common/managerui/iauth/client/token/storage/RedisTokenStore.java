@@ -1,5 +1,6 @@
 package cn.thinkjoy.common.managerui.iauth.client.token.storage;
 
+import cn.thinkjoy.cloudstack.cache.IRedisRepository;
 import cn.thinkjoy.cloudstack.cache.RedisRepository;
 import cn.thinkjoy.cloudstack.cache.RedisRepositoryFactory;
 import cn.thinkjoy.cloudstack.dynconfig.DynConfigClient;
@@ -27,9 +28,9 @@ public class RedisTokenStore implements TokenStore {
     public int TOKEN_EXPIRE_TIME = 60*10;    // second default
     public static final String PREFIX = "token:";
 
-    private RedisRepository tokenStorage;
+    private IRedisRepository tokenStorage;
 
-    public RedisRepository getTokenStorage() {
+    public IRedisRepository getTokenStorage() {
         return tokenStorage;
     }
 
