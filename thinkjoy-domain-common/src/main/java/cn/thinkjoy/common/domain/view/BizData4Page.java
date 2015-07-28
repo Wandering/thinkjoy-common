@@ -1,5 +1,6 @@
 package cn.thinkjoy.common.domain.view;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.Map;
  * @author qyang
  * @since v0.0.1
  */
-public class BizData4Page<T> {
+public class BizData4Page<T> implements Serializable {
     /** 当前页 */
     private int page=1;
     /** 总页数 */
