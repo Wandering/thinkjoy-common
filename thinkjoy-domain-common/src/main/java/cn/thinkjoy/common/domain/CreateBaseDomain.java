@@ -19,19 +19,19 @@ import java.util.Date;
  */
 public class CreateBaseDomain<T> extends BaseDomain<T> {
     /** 创建人及创建时间 */
-    private Long              creator;
+    private T              creator;
     private Long              createDate;
 
     /** 最后修改人及最后修改时间 */
-    private Long              lastModifier;
+    private T              lastModifier;
     private Long              lastModDate = System.currentTimeMillis();
     private Integer               status;
 
-    public Long getCreator() {
+    public T getCreator() {
         return creator;
     }
 
-    public void setCreator(Long creator) {
+    public void setCreator(T creator) {
         this.creator = creator;
     }
 
@@ -43,11 +43,11 @@ public class CreateBaseDomain<T> extends BaseDomain<T> {
         this.createDate = createDate;
     }
 
-    public Long getLastModifier() {
+    public T getLastModifier() {
         return lastModifier;
     }
 
-    public void setLastModifier(Long lastModifier) {
+    public void setLastModifier(T lastModifier) {
         this.lastModifier = lastModifier;
     }
 
