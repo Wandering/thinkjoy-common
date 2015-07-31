@@ -35,7 +35,7 @@ public class RestContextConfig extends WebMvcConfigurerAdapter {
                 .messageSource(messageSource())
                 .defaultContentType(MediaType.APPLICATION_JSON)
                 .addErrorMessageHandler(EmptyResultDataAccessException.class, HttpStatus.NOT_FOUND)
-                .addHandler(BizException.class, new BizExceptionHandler())
+                .addHandler(Exception.class, new BizExceptionHandler())
                 .build();
     }
 

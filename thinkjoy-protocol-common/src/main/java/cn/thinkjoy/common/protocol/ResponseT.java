@@ -71,6 +71,18 @@ public class ResponseT<T> implements Serializable {
         this.bizData = bizData;
     }
 
+    public String getDevelopMsg() {
+        return developMsg;
+    }
+
+    /**
+     * @deprecated 应用不要使用，仅供fastjson转换用
+     * @param developMsg
+     */
+    public void setDevelopMsg(String developMsg) {
+        this.developMsg = developMsg;
+    }
+
     /**
      * @deprecated 应用不要使用，仅供fastjson转换用
      * @param ts
