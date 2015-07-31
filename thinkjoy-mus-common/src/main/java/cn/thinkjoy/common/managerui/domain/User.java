@@ -23,8 +23,9 @@ public class User extends UserDomain<Long> {
 	private Integer bizDimension;
     //
     private Integer employeeId;
-
+    //产品线
 	private String product;
+
 	//扩展字段可以添加想要的个性化属性
 	private Object object;
 
@@ -38,6 +39,7 @@ public class User extends UserDomain<Long> {
 
 	public User(){
 	}
+
 
 	public String getProduct() {
 		return product;
