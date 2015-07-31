@@ -17,7 +17,7 @@ import cn.thinkjoy.common.domain.CreateBaseDomain;
 
 import java.util.*;
 
-public class Resource extends CreateBaseDomain{
+public class Resource extends CreateBaseDomain<Long>{
     private String url;
     private Integer orderNum;
     private Integer parentId;

@@ -17,7 +17,7 @@ import cn.thinkjoy.common.domain.CreateBaseDomain;
 
 import java.util.*;
 
-public class RoleUser extends CreateBaseDomain{
+public class RoleUser extends CreateBaseDomain<Long>{
     private Integer userId;
     private Integer roleId;
 

@@ -96,7 +96,7 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
         //按钮功能权限处理
         mav.addObject("actions", actionPermHelper.getActionPerm(getMainObjName()));
 
-        enhanceModelAndView(mav);
+        enhanceModelAndView(request,mav);
 
         return mav;
     }
@@ -105,7 +105,7 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
      * 子类重载, 注入业务数据给 ModelAndView
      * @param mav
      */
-    protected void enhanceModelAndView(final ModelAndView mav){
+    protected void enhanceModelAndView(final HttpServletRequest request, final ModelAndView mav){
 
     }
 

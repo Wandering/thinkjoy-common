@@ -17,7 +17,7 @@ import cn.thinkjoy.common.domain.CreateBaseDomain;
 
 import java.util.*;
 
-public class DataModel extends CreateBaseDomain{
+public class DataModel extends CreateBaseDomain<Long>{
     private Integer priority;
     private Integer modelId;
     private String assignUrl;

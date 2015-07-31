@@ -17,7 +17,7 @@ import cn.thinkjoy.common.domain.CreateBaseDomain;
 
 import java.util.*;
 
-public class UserDatagroup extends CreateBaseDomain{
+public class UserDatagroup extends CreateBaseDomain<Long>{
     private Integer datagroupId;
     private Integer userId;
 

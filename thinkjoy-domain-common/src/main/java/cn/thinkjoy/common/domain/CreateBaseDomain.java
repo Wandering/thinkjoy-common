@@ -17,7 +17,7 @@ import java.util.Date;
  * @version
  * @since v0.0.1
  */
-public class CreateBaseDomain extends BaseDomain {
+public class CreateBaseDomain<T> extends BaseDomain<T> {
     /** 创建人及创建时间 */
     private Long              creator;
     private Long              createDate;

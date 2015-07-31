@@ -17,7 +17,7 @@ import cn.thinkjoy.common.domain.CreateBaseDomain;
 
 import java.util.*;
 
-public class ResourceAction extends CreateBaseDomain{
+public class ResourceAction extends CreateBaseDomain<Long>{
     private Integer resourceId;
     private String divId;
     private String actionScript;

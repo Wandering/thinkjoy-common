@@ -17,7 +17,7 @@ import cn.thinkjoy.common.domain.CreateBaseDomain;
 
 import java.util.*;
 
-public class ResourceGrid extends CreateBaseDomain{
+public class ResourceGrid extends CreateBaseDomain<Long>{
     private Integer resId;
     private String displayName;
     private String colId;

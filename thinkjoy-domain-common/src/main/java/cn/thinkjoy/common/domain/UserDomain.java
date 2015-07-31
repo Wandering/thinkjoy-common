@@ -8,8 +8,10 @@ package cn.thinkjoy.common.domain;
  * @author qyang
  * @since v0.0.1
  */
-public class UserDomain extends CreateBaseDomain {
+public class UserDomain<T> extends CreateBaseDomain<T> {
+    //用户名
     private String name;
+    //密码
     private String password;
 
     public String getName() {

@@ -39,6 +39,8 @@ public class ExtFastJsonHttpMessageConverter<T> extends AbstractHttpMessageConve
 
     public ExtFastJsonHttpMessageConverter(){
         super(new MediaType("application", "json", UTF8), new MediaType("application", "*+json", UTF8));
+        features = new SerializerFeature[1];
+        features[0] = SerializerFeature.DisableCircularReferenceDetect;
     }
 
     private ITypeReference iTypeReference;
@@ -106,7 +108,7 @@ public class ExtFastJsonHttpMessageConverter<T> extends AbstractHttpMessageConve
         response.setBizData(t);
 
         OutputStream out = outputMessage.getBody();
-        String text = JSON.toJSONString(response,  SerializerFeature.DisableCircularReferenceDetect);
+        String text = JSON.toJSONString(response,  features);
         byte[] bytes = text.getBytes(charset);
         out.write(bytes);
     }

@@ -17,7 +17,7 @@ import cn.thinkjoy.common.domain.CreateBaseDomain;
 
 import java.util.*;
 
-public class RoleResource extends CreateBaseDomain{
+public class RoleResource extends CreateBaseDomain<Long>{
     private Integer resourceId;
     private Integer resourceActionId;
     private Integer roleId;

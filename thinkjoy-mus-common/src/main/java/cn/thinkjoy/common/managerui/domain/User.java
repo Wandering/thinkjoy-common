@@ -16,13 +16,16 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class User extends UserDomain {
+public class User extends UserDomain<Long> {
+	//是否管理员
     private Integer isAdmin;
-
+	//权限
 	private Integer bizDimension;
-
+    //
     private Integer employeeId;
 
+	private String product;
+	//扩展字段可以添加想要的个性化属性
 	private Object object;
 
 	public Object getObject() {
@@ -35,7 +38,16 @@ public class User extends UserDomain {
 
 	public User(){
 	}
-    public void setIsAdmin(Integer value) {
+
+	public String getProduct() {
+		return product;
+	}
+
+	public void setProduct(String product) {
+		this.product = product;
+	}
+
+	public void setIsAdmin(Integer value) {
         this.isAdmin = value;
     }
 

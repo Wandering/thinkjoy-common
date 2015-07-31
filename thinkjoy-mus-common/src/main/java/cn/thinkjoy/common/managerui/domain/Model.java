@@ -17,7 +17,7 @@ import cn.thinkjoy.common.domain.CreateBaseDomain;
 
 import java.util.*;
 
-public class Model extends CreateBaseDomain{
+public class Model extends CreateBaseDomain<Long>{
     private String name;
     private String tblName;
     private String description;

@@ -12,17 +12,17 @@ import java.io.Serializable;
  * @version 
  * @since v0.0.1
  */
-public class BaseDomain implements Serializable {
+public class BaseDomain<T> implements Serializable {
 
     private static final long serialVersionUID = 6667600871541308622L;
     // ID
-    private Object              id;
+    private T              id;
 
-    public Object getId() {
+    public T getId() {
         return id;
     }
 
-    public void setId(Object id) {
+    public void setId(T id) {
         this.id = id;
     }
 }
