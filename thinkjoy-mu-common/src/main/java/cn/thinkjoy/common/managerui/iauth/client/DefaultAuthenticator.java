@@ -8,14 +8,17 @@ import cn.thinkjoy.cloudstack.dynconfig.domain.Configuration;
 import cn.thinkjoy.common.filter.context.DefaultUserContextImpl;
 import cn.thinkjoy.common.filter.context.IUserContext;
 import cn.thinkjoy.common.filter.context.UserContextHolder;
-import cn.thinkjoy.common.managerui.iauth.core.handler.EmbedTokenHandler;
-import cn.thinkjoy.common.managerui.iauth.core.exception.CannotAuthException;
-import cn.thinkjoy.common.managerui.iauth.core.handler.TokenResolver;
+import cn.thinkjoy.common.managerui.domain.User;
 import cn.thinkjoy.common.managerui.iauth.client.token.AccessToken;
 import cn.thinkjoy.common.managerui.iauth.client.token.storage.UserStore;
-import cn.thinkjoy.common.managerui.iauth.core.*;
-import cn.thinkjoy.common.managerui.domain.User;
+import cn.thinkjoy.common.managerui.iauth.core.Authenticator;
+import cn.thinkjoy.common.managerui.iauth.core.BaseRequest;
+import cn.thinkjoy.common.managerui.iauth.core.BaseRequestFactory;
+import cn.thinkjoy.common.managerui.iauth.core.Principal;
+import cn.thinkjoy.common.managerui.iauth.core.exception.CannotAuthException;
+import cn.thinkjoy.common.managerui.iauth.core.handler.EmbedTokenHandler;
 import cn.thinkjoy.common.managerui.iauth.core.handler.TokenHandler;
+import cn.thinkjoy.common.managerui.iauth.core.handler.TokenResolver;
 import cn.thinkjoy.common.managerui.iauth.core.token.storage.TokenStore;
 import cn.thinkjoy.common.managerui.iauth.utils.HttpRequestConstant;
 import cn.thinkjoy.common.managerui.iauth.utils.LogErrorUtil;
@@ -92,7 +95,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
         try {
             SECRET_KEY = dynConfigClient.getConfig("ucm", "common", "secretKey");
         } catch (Exception e) {
-            logger.info("SECRET_KEY没有进行配置，采用默认值: "+SECRET_KEY);
+            logger.info("SECRET_KEY没有进行配置，采用默认值: " + SECRET_KEY);
         }
         dynConfigClient.registerListeners("ucm", "common", "tokenExpireTime", new IChangeListener() {
             @Override
@@ -119,7 +122,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
     public boolean isLogout(BaseRequest baseRequest) {
 //        if ()
         String uri = baseRequest.getRequest().getRequestURI();
-        if (uri .endsWith("/logout")) {
+        if (uri.endsWith("/logout")) {
 
             return true;
         }
@@ -145,7 +148,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
         if (SECRET_KEY == null) {
             return true;
         }
-        if(SECRET_KEY.equals(debugKey)) {
+        if (SECRET_KEY.equals(debugKey)) {
             return false;
         }
 
@@ -158,7 +161,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
         try {
             redirect_url = dynConfigClient.getConfig("ucm", "common", "uchost");
         } catch (Exception e) {
-            logger.info("uchost没有进行配置，采用默认值: "+redirect_url);
+            logger.info("uchost没有进行配置，采用默认值: " + redirect_url);
         }
         dynConfigClient.registerListeners("ucm", "common", "uchost", new IChangeListener() {
             @Override
@@ -188,7 +191,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
 
     @Override
     public void redirectTologin(BaseRequest baseRequest, RuntimeException ex) throws IOException {
-        if(((DefaultAuthRequest) baseRequest).isDebug()) {
+        if (((DefaultAuthRequest) baseRequest).isDebug()) {
             throw ex;
         }
 
@@ -208,13 +211,14 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
         }
 
         String appKey = CloudContextFactory.getCloudContext().getApplicationName();
+        String prodcut = CloudContextFactory.getCloudContext().getProduct();
 
-        params.put("appKey",appKey);
+        params.put("appKey", appKey);
+        params.put("product", prodcut);
 
         redirectTologinWithParams(baseRequest.getResponse(), params);
 
     }
-
 
 
     @Override
@@ -240,7 +244,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
             Map<String, Object> datas = new HashMap<>(4);
             datas.put(IUserContext.UID, principal.getOwner().getId());
 //            datas.put("", principal.getOwner());
-            ((DefaultUserContextImpl)userContext).setContexts(datas);
+            ((DefaultUserContextImpl) userContext).setContexts(datas);
             UserContextHolder.setUserContext(userContext);
         }
         if (principal.getToken() != null) {
@@ -277,8 +281,10 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
             }
 
             String appKey = CloudContextFactory.getCloudContext().getApplicationName();
+            String prodcut = CloudContextFactory.getCloudContext().getProduct();
 
-            params.put("appKey",appKey);
+            params.put("appKey", appKey);
+            params.put("prodcut", prodcut);
 
             String paramsString = UrlStringUtil.paramsMapToURLString(params);
 
@@ -296,13 +302,12 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
 
     @Override
     public void callWhenAuthenticatiornError(BaseRequest baseRequest, RuntimeException ex) throws IOException {
-        logger.error("拒绝访问。验证出现异常: "+ex.getMessage(), ex);
+        logger.error("拒绝访问。验证出现异常: " + ex.getMessage(), ex);
         String requestType = baseRequest.getRequest().getHeader("X-Requested-With");
-        if(requestType!=null && requestType.equals("XMLHttpRequest"))
+        if (requestType != null && requestType.equals("XMLHttpRequest"))
             baseRequest.getAuthenticator().setResponseForAjax(baseRequest);
         redirectTologin(baseRequest, ex);
     }
-
 
 
     private void redirectTologinWithParams(HttpServletResponse res, Map<String, String> params) throws IOException {
