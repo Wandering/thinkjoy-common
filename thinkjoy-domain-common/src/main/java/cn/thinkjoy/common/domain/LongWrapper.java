@@ -8,7 +8,7 @@ package cn.thinkjoy.common.domain;
  * @author qyang
  * @since v0.0.1
  */
-public class LongWrapper {
+public class LongWrapper extends BaseWrapper {
     private long l;
 
     public LongWrapper(long l) {

@@ -8,7 +8,7 @@ package cn.thinkjoy.common.domain;
  * @author qyang
  * @since v0.0.1
  */
-public class BooleanWrapper {
+public class BooleanWrapper extends BaseWrapper {
     private boolean b;
 
     public BooleanWrapper(boolean b) {

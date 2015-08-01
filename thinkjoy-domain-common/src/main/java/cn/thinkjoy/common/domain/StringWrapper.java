@@ -8,7 +8,7 @@ package cn.thinkjoy.common.domain;
  * @author qyang
  * @since v0.0.1
  */
-public class StringWrapper {
+public class StringWrapper extends BaseWrapper {
     private String s;
 
     public StringWrapper(String s) {

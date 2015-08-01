@@ -8,7 +8,7 @@ package cn.thinkjoy.common.domain;
  * @author qyang
  * @since v0.0.1
  */
-public class OrderField {
+public class OrderField extends BaseWrapper {
     /* 排序字段名称 */
     private String field;
 

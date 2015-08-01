@@ -10,7 +10,7 @@ import java.util.List;
  * @author qyang
  * @since v0.0.1
  */
-public class ListWrapper<T> {
+public class ListWrapper<T> extends BaseWrapper{
     private List<T> lists;
 
     public List<T> getLists() {

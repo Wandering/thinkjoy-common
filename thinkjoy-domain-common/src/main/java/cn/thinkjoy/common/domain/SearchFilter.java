@@ -10,7 +10,7 @@ import java.util.List;
  * @author xjli
  * 
  */
-public class SearchFilter {
+public class SearchFilter extends BaseWrapper {
 
 	/**
 	 * 多个条件的并列关系 and or

@@ -6,7 +6,7 @@ package cn.thinkjoy.common.domain;
  * @author xjli
  * 
  */
-public class SearchField {
+public class SearchField extends BaseWrapper {
 	/* 搜索字段名称 */
 	private String field;
 
