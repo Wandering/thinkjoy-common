@@ -1,6 +1,7 @@
 package cn.thinkjoy.common.domain;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
 /**
  * 
@@ -19,7 +20,10 @@ public class BaseDomain<T> implements Serializable {
     private T              id;
 
     public T getId() {
-        return id;
+        if( id instanceof BigInteger)
+            return (T)Long.valueOf(String.valueOf(this.id));
+        else
+            return this.id;
     }
 
     public void setId(T id) {

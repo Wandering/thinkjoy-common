@@ -25,7 +25,7 @@ sonarRunner {
 }
 
 buildscript{
-    repositories { maven { url 'http://repo.thinkjoy.local/content/groups/public/' } }
+    repositories { maven { url 'http://repo.thinkjoy.cn/content/groups/public/' } }
 
     dependencies{
         classpath 'cn.thinkjoy.gradle.plugins:gradle-gitflow-plugin:1.0.1+'
@@ -41,7 +41,7 @@ tasks.withType(Compile) {
 /** 此闭包内的声明子类皆可使用 */
 allprojects {
     group = 'cn.thinkjoy.common'
-    version = '0.0.97-SNAPSHOT'
+    version = '0.0.98-SNAPSHOT'
 
 
     apply plugin: 'java'
@@ -51,7 +51,7 @@ allprojects {
     apply plugin: 'maven-publish-auth'
 
     repositories {
-        repositories { maven { url 'http://repo.thinkjoy.local/content/groups/public/' } }
+        repositories { maven { url 'http://repo.thinkjoy.cn/content/groups/public/' } }
         mavenLocal()
         mavenCentral()
     }
@@ -64,7 +64,7 @@ allprojects {
         repositories {
             maven {
                 name = 'thinkjoy'
-                url "http://repo.thinkjoy.local/content/repositories/${project.version.endsWith('-SNAPSHOT') ? 'snapshots' : 'releases'}"
+                url "http://repo.thinkjoy.cn/content/repositories/${project.version.endsWith('-SNAPSHOT') ? 'snapshots' : 'releases'}"
             }
         }
     }
