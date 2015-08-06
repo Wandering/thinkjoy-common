@@ -47,7 +47,7 @@ public class CreateBaseDomain<T> extends BaseDomain<T> {
         return lastModifier;
     }
 
-    public void setLastModifier(T lastModifier) {
+    public void setLastModifier(Object lastModifier) {
         this.lastModifier = lastModifier;
     }
 
