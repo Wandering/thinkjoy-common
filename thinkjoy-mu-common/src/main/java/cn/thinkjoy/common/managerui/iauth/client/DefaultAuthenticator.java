@@ -243,6 +243,7 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
             IUserContext userContext = new DefaultUserContextImpl();
             Map<String, Object> datas = new HashMap<>(4);
             datas.put(IUserContext.UID, principal.getOwner().getId());
+            datas.put("product", principal.getOwner().getProduct());
 //            datas.put("", principal.getOwner());
             ((DefaultUserContextImpl) userContext).setContexts(datas);
             UserContextHolder.setUserContext(userContext);
