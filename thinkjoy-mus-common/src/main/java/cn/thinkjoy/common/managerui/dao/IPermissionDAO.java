@@ -17,7 +17,7 @@ import java.util.Map;
  * @since v0.0.1
  */
 public interface IPermissionDAO {
-    public List<Resource> getResByPerm(long userId);
+    public List<Resource> getResByPerm(Object userId);
 
     public List<ResourceAction> getResActionByPerm(@Param("condition")Map<String, Object> params);
 

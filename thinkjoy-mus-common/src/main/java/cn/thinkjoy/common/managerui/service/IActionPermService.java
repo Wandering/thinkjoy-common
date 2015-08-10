@@ -20,7 +20,7 @@ public interface IActionPermService {
      * @param userId
      * @return
      */
-    public List<Resource> getResourcePerms(long userId);
+    public List<Resource> getResourcePerms(Object userId);
 
     /**
      * 获取用户特定页面的功能权限
@@ -28,12 +28,12 @@ public interface IActionPermService {
      * @param resourceId     页面资源id
      * @return 页面内的功能权限集合
      */
-    public Set<String> getActionPermsByRes(long userId, long resourceId);
+    public Set<String> getActionPermsByRes(Object userId, Object resourceId);
 
     /**
      * 获取用户的所有功能权限
      * @param userId         用户id
      * @return <页面id, 页面内的功能权限集合>
      */
-    public Map<String, Set<String>> getActionPerms(long userId);
+    public Map<String, Set<String>> getActionPerms(Object userId);
 }

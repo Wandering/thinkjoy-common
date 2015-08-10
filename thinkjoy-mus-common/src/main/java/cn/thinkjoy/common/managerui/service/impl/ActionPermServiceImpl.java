@@ -28,12 +28,12 @@ public class ActionPermServiceImpl implements IActionPermService {
     private IPermissionDAO permissionDAO;
 
     @Override
-    public List<Resource> getResourcePerms(long userId) {
+    public List<Resource> getResourcePerms(Object userId) {
         return permissionDAO.getResByPerm(userId);
     }
 
     @Override
-    public Set<String> getActionPermsByRes(long userId, long resourceId) {
+    public Set<String> getActionPermsByRes(Object userId, Object resourceId) {
         Map<String, Object> params = Maps.newHashMap();
         params.put("userId", userId);
         params.put("resourceId", resourceId);
@@ -46,7 +46,7 @@ public class ActionPermServiceImpl implements IActionPermService {
     }
 
     @Override
-    public Map<String, Set<String>> getActionPerms(long userId) {
+    public Map<String, Set<String>> getActionPerms(Object userId) {
         Map<String, Object> params = Maps.newHashMap();
         params.put("userId", userId);
         List<ResourceAction> resourceActionList = permissionDAO.getResActionByPerm(params);
