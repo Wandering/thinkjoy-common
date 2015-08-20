@@ -45,6 +45,9 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
     /** 当前页面的主业务模型  */
     protected String mainObjName;
 
+    /** 当前页面的路径*/
+    protected String pagePath;
+
     @Autowired
     private ActionPermHelper actionPermHelper;
 
@@ -63,9 +66,18 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
     /** 父菜单title */
     protected abstract String getParentTitle();
 
+    /***
+     * 页面需要业务分类
+     * @return
+     */
+    protected String getPagePath()
+    {
+        return "";
+    }
+
     protected ModelAndView doRenderMainView(HttpServletRequest request,HttpServletResponse response){
         //request.getRequestURI()
-        ModelAndView mav=new ModelAndView("module/"+getMainObjName());
+        ModelAndView mav=new ModelAndView("module/"+getPagePath()+getMainObjName());
 
         ///这里顺便回顾下HashMap的使用方法
         	/*      创建：Map<String,String> map = new HashMap<String,String>();
