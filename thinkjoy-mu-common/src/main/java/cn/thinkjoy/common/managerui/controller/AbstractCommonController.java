@@ -1,5 +1,6 @@
 package cn.thinkjoy.common.managerui.controller;
 
+import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.managerui.controller.helpers.ActionPermHelper;
 import cn.thinkjoy.common.managerui.controller.helpers.BaseServiceMaps;
@@ -9,7 +10,9 @@ import cn.thinkjoy.common.utils.UserContext;
 import com.google.common.collect.Maps;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jeecgframework.poi.excel.ExcelExportUtil;
+import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.entity.ExportParams;
+import org.jeecgframework.poi.excel.entity.ImportParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -178,6 +181,24 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
 
                     //daoMaps.get(mainObj).insert();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                ImportParams params = new ImportParams();
+                params.setTitleRows(2);
+                params.setHeadRows(2);
+                //params.setSheetNum(9);
+                params.setNeedSave(true);
+
+//                long start = new Date().getTime();
+                List<T> lists = ExcelImportUtil.importExcelByIs(file.getInputStream()
+                , getGenericType(0), params);
+
+                for(T t : lists) {
+                    getServiceMaps().get(mainObj).insert((BaseDomain) t);
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
