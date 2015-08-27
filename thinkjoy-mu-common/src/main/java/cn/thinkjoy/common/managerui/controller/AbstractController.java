@@ -59,10 +59,10 @@ public abstract class AbstractController implements IDataPermAware {
             if (!CollectionUtils.isEmpty(searchFilter.getRules())) {
                 conditions.put("groupOp", searchFilter.getGroupOp());
                 for (SearchField field : searchFilter.getRules()) {
-                    field.setOp(SearchEnum.codeOf(field.getOp()).getDes());
                     if(field.getOp().equals(SearchEnum.lk.getCode()))
-                        field.setData("%"+field.getField().trim()+"%");
-                    conditions.put(field.getField(), field);
+                        field.setData("%"+String.valueOf(field.getData()).trim()+"%");
+                    field.setOp(SearchEnum.codeOf(field.getOp()).getDes());
+                    conditions.put(getField(field.getField()), field);
                 }
             }
 
@@ -72,6 +72,14 @@ public abstract class AbstractController implements IDataPermAware {
     }
 
 
+    private String getField(String field)
+    {
+        int intpoint = field.lastIndexOf(".");
+        if(intpoint!=-1)
+            return field.substring(intpoint+1);
+        else
+            return field;
+    }
     /**
      * 增强 或 改变 过滤条件内容
      * @param searchFilter
