@@ -26,6 +26,7 @@ package cn.thinkjoy.common.filter.pool;
 
 import cn.thinkjoy.cloudstack.context.CloudContextFactory;
 import cn.thinkjoy.common.dap.model.webfilter.*;
+import cn.thinkjoy.kafka.DefaultKafkaProducer;
 import cn.thinkjoy.rmq.DefaultRMQProducer;
 import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
@@ -51,7 +52,11 @@ public class Messenger implements Work {
 //		String port = analyticsData.get(ANALYTICS_SERVER_PORT).toString();
 
         try{
-            DefaultRMQProducer.getInstance().send(CloudContextFactory.getCloudContext().getProduct(), CloudContextFactory.getCloudContext().getApplicationName(),
+//            DefaultRMQProducer.getInstance().send(CloudContextFactory.getCloudContext().getProduct(), CloudContextFactory.getCloudContext().getApplicationName(),
+//                    DefaultRMQProducer.HTTP_REQ, DefaultRMQProducer.HTTP_SERVER_FROM, data);
+
+
+            DefaultKafkaProducer.getInstance().send(CloudContextFactory.getCloudContext().getProduct(), CloudContextFactory.getCloudContext().getApplicationName(),
                     DefaultRMQProducer.HTTP_REQ, DefaultRMQProducer.HTTP_SERVER_FROM, data);
         } catch (Exception e) {
             logger.error("rocketMQ producer send data error" + e);;

@@ -25,3 +25,7 @@ include 'thinkjoy-dap-common'
 
 include 'thinkjoy-analytics-common'
 
+include 'thinkjoy-kafka-common'
+
+include 'thinkjoy-context-common'
+

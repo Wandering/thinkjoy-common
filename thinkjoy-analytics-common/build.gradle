@@ -8,8 +8,13 @@ dependencies {
 
     providedCompile "javax.servlet:javax.servlet-api:$servletVersion"
 
+    compile project(":thinkjoy-context-common")
+
     compile project(":thinkjoy-rmq-common")
+    compile project(":thinkjoy-kafka-common")
     compile project(":thinkjoy-dap-common")
+
+    compile("cn.thinkjoy.dap.dataservice:data-access:$dapDataServiceVersion")
 
 //    compile "cn.thinkjoy.cloudstack:cs-dynconfig-client:$thinkjoyCloudstackVersion"
 }

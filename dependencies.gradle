@@ -30,4 +30,6 @@ allprojects {
     rocketMQVersion = "3.2.6"
 
     servletVersion = "3.1.0"
+
+    dapDataServiceVersion = "0.0.27-SNAPSHOT"
 }

@@ -1,7 +1,7 @@
 package cn.thinkjoy.common.filter;
 
 import cn.thinkjoy.common.filter.common.Util;
-import cn.thinkjoy.common.filter.context.UserContextHolder;
+import cn.thinkjoy.common.context.UserContextHolder;
 import cn.thinkjoy.common.filter.mapper.AnalyticsDataMapper;
 import cn.thinkjoy.common.dap.model.webfilter.Entry;
 import cn.thinkjoy.common.filter.pool.Messenger;

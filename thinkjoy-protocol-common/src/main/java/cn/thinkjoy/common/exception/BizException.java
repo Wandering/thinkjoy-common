@@ -67,4 +67,14 @@ public class BizException extends RuntimeException {
     public void setUri(String uri) {
         this.uri = uri;
     }
+
+    @Override
+    public String toString() {
+        return "BizException{" +
+                "errorCode='" + errorCode + '\'' +
+                ", msg='" + msg + '\'' +
+                ", developMsg='" + developMsg + '\'' +
+                ", uri='" + uri + '\'' +
+                '}';
+    }
 }
