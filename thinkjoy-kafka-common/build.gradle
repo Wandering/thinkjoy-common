@@ -1,0 +1,8 @@
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+
+    compile("cn.thinkjoy.dap.dataservice:data-access:$dapDataServiceVersion")
+
+    compile "cn.thinkjoy.cloudstack:cs-dynconfig-client:$thinkjoyCloudstackVersion"
+}
