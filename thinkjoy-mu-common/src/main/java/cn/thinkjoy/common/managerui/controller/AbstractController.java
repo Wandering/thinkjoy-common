@@ -60,6 +60,8 @@ public abstract class AbstractController implements IDataPermAware {
                 conditions.put("groupOp", searchFilter.getGroupOp());
                 for (SearchField field : searchFilter.getRules()) {
                     field.setOp(SearchEnum.codeOf(field.getOp()).getDes());
+                    if(field.getOp().equals(SearchEnum.lk.getCode()))
+                        field.setData("%"+field.getField().trim()+"%");
                     conditions.put(field.getField(), field);
                 }
             }
