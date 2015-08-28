@@ -39,7 +39,7 @@ public class KafkaMQSingleton {
         if(instance == null) {
             String group = CloudContextFactory.getCloudContext().getProduct() + "-" + CloudContextFactory.getCloudContext().getApplicationName();
             //CloudContextFactory.getCloudContext().getApplicationName()
-            String[] ipPorts = new String[]{RMQ_BROKER_URL};
+            String[] ipPorts = RMQ_BROKER_URL.split(",");//   new String[]{RMQ_BROKER_URL, RMQ_BROKER_URL};
             DapConnectInfo dapConnectInfo = new DapConnectInfo(ipPorts);
             try {
                 instance = new DapDataSender(dapConnectInfo);
