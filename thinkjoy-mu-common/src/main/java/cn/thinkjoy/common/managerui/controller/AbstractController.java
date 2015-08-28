@@ -74,11 +74,7 @@ public abstract class AbstractController implements IDataPermAware {
 
     private String getField(String field)
     {
-        int intpoint = field.lastIndexOf(".");
-        if(intpoint!=-1)
-            return field.substring(intpoint+1);
-        else
-            return field;
+        return field.replace(".","");
     }
     /**
      * 增强 或 改变 过滤条件内容
