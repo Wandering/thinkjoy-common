@@ -56,7 +56,7 @@ public class Messenger implements Work {
 //                    DefaultRMQProducer.HTTP_REQ, DefaultRMQProducer.HTTP_SERVER_FROM, data);
 
 
-            DefaultKafkaProducer.getInstance().send(CloudContextFactory.getCloudContext().getProduct(), CloudContextFactory.getCloudContext().getApplicationName(),
+            DefaultKafkaProducer.getInstance().send(CloudContextFactory.getCloudContext().getProductCode(), CloudContextFactory.getCloudContext().getApplicationName(),
                     DefaultRMQProducer.HTTP_REQ, DefaultRMQProducer.HTTP_SERVER_FROM, data);
         } catch (Exception e) {
             logger.error("rocketMQ producer send data error" + e);;
