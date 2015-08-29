@@ -20,14 +20,14 @@ sonarRunner {
 //        properties["sonar.sources"] = android.sourceSets.main.java.srcDirs
 //        properties["sonar.tests"] = android.sourceSets.instrumentTest.java.srcDirs
 //        properties["sonar.binaries"] = file("build/classes/debug")
-        property "sonar.junit.reportsPath","build/test-results/"
+        property "sonar.junit.reportsPath", "build/test-results/"
     }
 }
 
-buildscript{
+buildscript {
     repositories { maven { url 'http://repo.thinkjoy.cn/content/groups/public/' } }
 
-    dependencies{
+    dependencies {
         classpath 'cn.thinkjoy.gradle.plugins:gradle-gitflow-plugin:1.0.1+'
         classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.4'
         classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1+'
@@ -41,7 +41,7 @@ tasks.withType(Compile) {
 /** 此闭包内的声明子类皆可使用 */
 allprojects {
     group = 'cn.thinkjoy.common'
-    version = '0.1.8-SNAPSHOT'
+    version = '0.1.9-SNAPSHOT'
 
 
     apply plugin: 'java'
@@ -70,7 +70,7 @@ allprojects {
     }
 }
 
-subprojects{
+subprojects {
 
     task "createJavaProject" << {
         sourceSets*.java.srcDirs*.each { it.mkdirs() }
@@ -86,7 +86,7 @@ subprojects{
     }
 
     /** 有时候会报错，但需要执行 */
-    task createREADME(){
+    task createREADME() {
         file("README.md").createNewFile()
     }
 
@@ -104,7 +104,7 @@ subprojects{
     }
 }
 
-configure(subprojects.findAll{it.name.contains('war')}){
+configure(subprojects.findAll { it.name.contains('war') }) {
     apply plugin: 'war'
 
     task createWebProject(dependsOn: 'createJavaProject') << {
