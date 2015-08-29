@@ -5,9 +5,9 @@ import cn.thinkjoy.cloudstack.dynconfig.DynConfigClient;
 import cn.thinkjoy.cloudstack.dynconfig.DynConfigClientFactory;
 import cn.thinkjoy.cloudstack.dynconfig.IChangeListener;
 import cn.thinkjoy.cloudstack.dynconfig.domain.Configuration;
-import cn.thinkjoy.common.context.DefaultUserContextImpl;
-import cn.thinkjoy.common.context.IUserContext;
-import cn.thinkjoy.common.context.UserContextHolder;
+import cn.thinkjoy.common.filter.context.DefaultUserContextImpl;
+import cn.thinkjoy.common.filter.context.IUserContext;
+import cn.thinkjoy.common.filter.context.UserContextHolder;
 import cn.thinkjoy.common.managerui.domain.User;
 import cn.thinkjoy.common.managerui.iauth.client.token.AccessToken;
 import cn.thinkjoy.common.managerui.iauth.client.token.storage.UserStore;
@@ -211,10 +211,10 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
         }
 
         String appKey = CloudContextFactory.getCloudContext().getApplicationName();
-        String prodcut = CloudContextFactory.getCloudContext().getProduct();
+        String product = CloudContextFactory.getCloudContext().getProductCode();
 
         params.put("appKey", appKey);
-        params.put("product", prodcut);
+        params.put("product", product);
 
         redirectTologinWithParams(baseRequest.getResponse(), params);
 
@@ -282,10 +282,9 @@ public class DefaultAuthenticator extends Authenticator implements HttpRequestCo
             }
 
             String appKey = CloudContextFactory.getCloudContext().getApplicationName();
-            String prodcut = CloudContextFactory.getCloudContext().getProduct();
-
+            String product = CloudContextFactory.getCloudContext().getProductCode();
             params.put("appKey", appKey);
-            params.put("prodcut", prodcut);
+            params.put("product", product);
 
             String paramsString = UrlStringUtil.paramsMapToURLString(params);
 
