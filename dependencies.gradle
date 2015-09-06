@@ -31,5 +31,5 @@ allprojects {
 
     servletVersion = "3.1.0"
 
-    dapDataServiceVersion = "0.0.27-SNAPSHOT"
+    dapDataServiceVersion = "0.0.28-SNAPSHOT"
 }

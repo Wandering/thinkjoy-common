@@ -22,6 +22,7 @@ public class DefaultKafkaProducer {
      * web filter http请求的tag
      */
     public static final String HTTP_REQ = "httpReq";
+    public static final String KAFKA_PREFIX = "RESOURCE_";
     /**
      * server 采集的数据
      */
@@ -67,7 +68,7 @@ public class DefaultKafkaProducer {
      * @throws Exception
      */
     public void send(String product, String bizSystem, String tag, String from, String data) throws Exception {
-        MessageData messageData = new MessageData(product+STR_APPEND+bizSystem+STR_APPEND+tag, data);
+        MessageData messageData = new MessageData(KAFKA_PREFIX + (product+STR_APPEND+bizSystem+STR_APPEND+tag).toUpperCase(), data);
         dapDataSender.send(messageData);
     }
 

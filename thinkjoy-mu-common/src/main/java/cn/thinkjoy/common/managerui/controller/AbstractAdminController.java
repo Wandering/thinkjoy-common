@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import cn.thinkjoy.common.utils.SqlOrderEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -94,7 +95,7 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
         //屏蔽掉不显示的列
         //condition.put("hide","0");
 
-        List<ResourceGrid> resourceGridList = resourceGridService.queryList(condition, null, null);//resourceGridService.findList("moduleName",getMainObjName());
+        List<ResourceGrid> resourceGridList = resourceGridService.queryList(condition, "orderNum", SqlOrderEnum.ASC.getAction());//resourceGridService.findList("moduleName",getMainObjName());
         mav.addObject("cols", resourceGridList);
 
         mav.addObject("bizSys", getBizSys());

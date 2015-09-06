@@ -1,6 +1,7 @@
 package cn.thinkjoy.common.managerui.controller;
 
 import cn.thinkjoy.common.domain.BaseDomain;
+import cn.thinkjoy.common.domain.BizStatusEnum;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.managerui.controller.helpers.ActionPermHelper;
 import cn.thinkjoy.common.managerui.controller.helpers.BaseServiceMaps;
@@ -107,7 +108,7 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
 
             dataMap.put("lastModifier", UserContext.getCurrentUser().getId());
             dataMap.put("lastModDate", System.currentTimeMillis());
-            long id = Long.parseLong(dataMap.get("id").toString());
+            //long id = Long.parseLong(dataMap.get("id").toString());
             //getMainService(mainObj).delete(id);
             innerHandleDel(mainObj, dataMap);
         } else {
@@ -149,8 +150,11 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
      * @param dataMap
      */
     protected void innerHandleDel(String mainObj, Map<String, Object> dataMap){
-        long id = Long.parseLong(dataMap.get("id").toString());
-        getServiceMaps().get(mainObj).delete(id);
+        //long id = Long.parseLong(dataMap.get("id").toString());
+        //getServiceMaps().get(mainObj).delete(id);
+        dataMap.put("status", BizStatusEnum.D.getCode());
+        // 只做逻辑删除  modify by qyang 2015.9.2
+        getServiceMaps().get(mainObj).updateMap(dataMap);
     }
 
     @RequestMapping(value="/import/{mainObj}")
