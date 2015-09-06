@@ -5,9 +5,13 @@ import cn.thinkjoy.common.domain.BizStatusEnum;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.managerui.controller.helpers.ActionPermHelper;
 import cn.thinkjoy.common.managerui.controller.helpers.BaseServiceMaps;
+import cn.thinkjoy.common.managerui.domain.ResourceGrid;
+import cn.thinkjoy.common.managerui.service.IResourceGridService;
 import cn.thinkjoy.common.service.IBaseService;
 import cn.thinkjoy.common.utils.ActionEnum;
+import cn.thinkjoy.common.utils.SqlOrderEnum;
 import cn.thinkjoy.common.utils.UserContext;
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jeecgframework.poi.excel.ExcelExportUtil;
@@ -51,6 +55,9 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
     @Autowired
     private ActionPermHelper actionPermHelper;
 
+    @Autowired
+    protected IResourceGridService resourceGridService;
+
     @ModelAttribute
     public void setReqAndRes(HttpServletRequest request,
                              HttpServletResponse response) {
@@ -84,6 +91,9 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
                 throw new BizException("", "");
             }
 
+            //做通用校验 TODO 支持全局开启
+            verifyData(dataMap, mainObj);
+
             dataMap.put("lastModifier", UserContext.getCurrentUser().getId());
             dataMap.put("lastModDate", System.currentTimeMillis());
             //getMainService(mainObj).updateMap(dataMap);
@@ -93,6 +103,9 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
                 //无业务权限的异常
                 throw new BizException("", "");
             }
+
+            //做通用校验 TODO 支持全局开启
+            verifyData(dataMap, mainObj);
 
             dataMap.put("creator", UserContext.getCurrentUser().getId());
             dataMap.put("createDate", System.currentTimeMillis());
@@ -116,6 +129,48 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
         }
 
         return "true";
+    }
+
+    private void verifyData(Map<String, Object> dataMap, String mainObj) {
+        Map<String, Object> condition = Maps.newHashMap();
+        condition.put("moduleName", mainObj);
+        List<ResourceGrid> resourceGridList = resourceGridService.queryList(condition, "orderNum", SqlOrderEnum.ASC.getAction());
+
+        String editRules = null;
+        Map<String, Object> rules = null;
+        for(ResourceGrid resourceGrid : resourceGridList){
+            editRules = resourceGrid.getEditrules();
+            rules = JSON.parseObject(editRules, Map.class);
+
+
+            if(rules.get("required") != null && (Boolean)rules.get("required")){//required
+                if(dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0){
+                    throw new BizException("0008888", resourceGrid.getDisplayName() + "不能为空");
+                }
+            }
+
+            if(rules.get("maxLength") != null && (String.valueOf(rules.get("maxLength"))).trim().length() > 0){//长度校验
+                if(dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0){
+                    throw new BizException("0008888", resourceGrid.getDisplayName() + "不能为空");
+                } else {
+                    if(((String)dataMap.get(resourceGrid.getColId())).trim().length() > (Integer) rules.get("maxLength")){
+                        throw new BizException("0009999", resourceGrid.getDisplayName() + "不能超过长度："+rules.get("maxLength"));
+                    }
+                }
+            }
+
+            if(rules.get("length") != null && (String.valueOf(rules.get("length"))).trim().length() > 0){//长度校验
+                if(dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0){
+                    throw new BizException("0008888", resourceGrid.getDisplayName() + "不能为空");
+                } else {
+                    if(((String)dataMap.get(resourceGrid.getColId())).trim().length() != (Integer) rules.get("length")){
+                        throw new BizException("0007777", resourceGrid.getDisplayName() + "长度必须为："+rules.get("length"));
+                    }
+                }
+            }
+
+        }
+
     }
 
     /**
