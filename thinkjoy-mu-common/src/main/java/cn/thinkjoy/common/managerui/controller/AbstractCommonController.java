@@ -144,26 +144,26 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
 
 
             if(rules.get("required") != null && (Boolean)rules.get("required")){//required
-                if(dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0){
+                if(dataMap.containsKey(resourceGrid.getColId()) && (dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0)){
                     throw new BizException("0008888", resourceGrid.getDisplayName() + "不能为空");
                 }
             }
 
             if(rules.get("maxLength") != null && (String.valueOf(rules.get("maxLength"))).trim().length() > 0){//长度校验
-                if(dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0){
+                if(dataMap.containsKey(resourceGrid.getColId()) && (dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0)){
                     throw new BizException("0008888", resourceGrid.getDisplayName() + "不能为空");
                 } else {
-                    if(((String)dataMap.get(resourceGrid.getColId())).trim().length() > (Integer) rules.get("maxLength")){
+                    if(dataMap.containsKey(resourceGrid.getColId()) && (((String)dataMap.get(resourceGrid.getColId())).trim().length() > (Integer) rules.get("maxLength"))){
                         throw new BizException("0009999", resourceGrid.getDisplayName() + "不能超过长度："+rules.get("maxLength"));
                     }
                 }
             }
 
             if(rules.get("length") != null && (String.valueOf(rules.get("length"))).trim().length() > 0){//长度校验
-                if(dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0){
+                if(dataMap.containsKey(resourceGrid.getColId()) && (dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0)){
                     throw new BizException("0008888", resourceGrid.getDisplayName() + "不能为空");
                 } else {
-                    if(((String)dataMap.get(resourceGrid.getColId())).trim().length() != (Integer) rules.get("length")){
+                    if(dataMap.containsKey(resourceGrid.getColId()) && (((String)dataMap.get(resourceGrid.getColId())).trim().length() != (Integer) rules.get("length"))){
                         throw new BizException("0007777", resourceGrid.getDisplayName() + "长度必须为："+rules.get("length"));
                     }
                 }
