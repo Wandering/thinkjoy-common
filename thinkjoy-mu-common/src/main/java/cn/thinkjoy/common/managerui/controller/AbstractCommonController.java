@@ -3,6 +3,7 @@ package cn.thinkjoy.common.managerui.controller;
 import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.domain.BizStatusEnum;
 import cn.thinkjoy.common.exception.BizException;
+import cn.thinkjoy.common.exception.BizExceptions;
 import cn.thinkjoy.common.managerui.controller.helpers.ActionPermHelper;
 import cn.thinkjoy.common.managerui.controller.helpers.BaseServiceMaps;
 import cn.thinkjoy.common.managerui.domain.ResourceGrid;
@@ -12,6 +13,7 @@ import cn.thinkjoy.common.utils.ActionEnum;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
 import cn.thinkjoy.common.utils.UserContext;
 import com.alibaba.fastjson.JSON;
+import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jeecgframework.poi.excel.ExcelExportUtil;
@@ -92,7 +94,7 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
             }
 
             //做通用校验 TODO 支持全局开启
-            verifyData(dataMap, mainObj);
+            verifyData(dataMap, mainObj, true);
 
             dataMap.put("lastModifier", UserContext.getCurrentUser().getId());
             dataMap.put("lastModDate", System.currentTimeMillis());
@@ -105,12 +107,15 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
             }
 
             //做通用校验 TODO 支持全局开启
-            verifyData(dataMap, mainObj);
+            verifyData(dataMap, mainObj, false);
 
             dataMap.put("creator", UserContext.getCurrentUser().getId());
             dataMap.put("createDate", System.currentTimeMillis());
             dataMap.put("lastModifier", UserContext.getCurrentUser().getId());
             dataMap.put("lastModDate", System.currentTimeMillis());
+            if(dataMap.get("status") == null || ((String)dataMap.get("status")).trim().length() == 0){
+                dataMap.put("status", BizStatusEnum.N.getCode());
+            }
             //getMainService(mainObj).insertMap(dataMap);
             innerHandleAdd(mainObj, dataMap);
         } else if(ActionEnum.DEL.getAction().equals(operValue)){//删除
@@ -131,46 +136,76 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
         return "true";
     }
 
-    private void verifyData(Map<String, Object> dataMap, String mainObj) {
+    /**
+     *
+     * @param dataMap
+     * @param mainObj
+     * @param isEdit  true 编辑； false 新增         true，检查重复性 需要排除自己本身
+     */
+    private void verifyData(Map<String, Object> dataMap, String mainObj,  boolean isEdit) {
         Map<String, Object> condition = Maps.newHashMap();
         condition.put("moduleName", mainObj);
         List<ResourceGrid> resourceGridList = resourceGridService.queryList(condition, "orderNum", SqlOrderEnum.ASC.getAction());
 
         String editRules = null;
         Map<String, Object> rules = null;
+        //"a,b,c" 这样的设置方式
+        String existRules = null;
         for(ResourceGrid resourceGrid : resourceGridList){
             editRules = resourceGrid.getEditrules();
             rules = JSON.parseObject(editRules, Map.class);
-
+            if(rules.get("exists") != null && (String.valueOf(rules.get("exists"))).trim().length() > 0) {//唯一性校验
+                existRules = (String)rules.get("exists");
+            }
 
             if(rules.get("required") != null && (Boolean)rules.get("required")){//required
                 if(dataMap.containsKey(resourceGrid.getColId()) && (dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0)){
-                    throw new BizException("0008888", resourceGrid.getDisplayName() + "不能为空");
+                    throw new BizException(BizExceptions.REQUIRED_CODE, resourceGrid.getDisplayName() + "不能为空");
                 }
             }
 
-            if(rules.get("maxLength") != null && (String.valueOf(rules.get("maxLength"))).trim().length() > 0){//长度校验
+            if(rules.get("maxLength") != null && (String.valueOf(rules.get("maxLength"))).trim().length() > 0){//最大长度校验
                 if(dataMap.containsKey(resourceGrid.getColId()) && (dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0)){
-                    throw new BizException("0008888", resourceGrid.getDisplayName() + "不能为空");
+                    throw new BizException(BizExceptions.REQUIRED_CODE, resourceGrid.getDisplayName() + "不能为空");
                 } else {
                     if(dataMap.containsKey(resourceGrid.getColId()) && (((String)dataMap.get(resourceGrid.getColId())).trim().length() > (Integer) rules.get("maxLength"))){
-                        throw new BizException("0009999", resourceGrid.getDisplayName() + "不能超过长度："+rules.get("maxLength"));
+                        throw new BizException(BizExceptions.MAXLENGTH_CODE, resourceGrid.getDisplayName() + "不能超过长度："+rules.get("maxLength"));
                     }
                 }
             }
 
             if(rules.get("length") != null && (String.valueOf(rules.get("length"))).trim().length() > 0){//长度校验
                 if(dataMap.containsKey(resourceGrid.getColId()) && (dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0)){
-                    throw new BizException("0008888", resourceGrid.getDisplayName() + "不能为空");
+                    throw new BizException(BizExceptions.REQUIRED_CODE, resourceGrid.getDisplayName() + "不能为空");
                 } else {
                     if(dataMap.containsKey(resourceGrid.getColId()) && (((String)dataMap.get(resourceGrid.getColId())).trim().length() != (Integer) rules.get("length"))){
-                        throw new BizException("0007777", resourceGrid.getDisplayName() + "长度必须为："+rules.get("length"));
+                        throw new BizException(BizExceptions.LENGTH_CODE, resourceGrid.getDisplayName() + "长度必须为："+rules.get("length"));
                     }
                 }
             }
-
         }
 
+        //全局 做唯一性校验
+        if(!Strings.isNullOrEmpty(existRules)){//唯一性校验
+            String[] fields = existRules.split(",");
+            Map<String, Object> conditions = new HashMap<>();
+            for(String field : fields) {
+                conditions.put(field, dataMap.get(field));
+            }
+            if(isEdit){ //编辑
+                conditions.put("id", dataMap.get("id"));
+
+                List existObjList = getServiceMaps().get(mainObj).queryList(conditions, null, null);
+                if(existObjList != null && existObjList.size() > 1){
+                    throw new BizException(BizExceptions.EXISTS_CODE, existRules + " 所填写信息不唯一");
+                }
+            } else {
+                Object existObj = getServiceMaps().get(mainObj).queryOne(conditions);
+                if(existObj != null){
+                    throw new BizException(BizExceptions.EXISTS_CODE, existRules + " 所填写信息不唯一");
+                }
+            }
+        }
     }
 
     /**

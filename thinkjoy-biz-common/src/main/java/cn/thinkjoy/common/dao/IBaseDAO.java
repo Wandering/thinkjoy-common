@@ -166,7 +166,12 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @param sortBy
      * @return
      */
-    public List<T> queryPage(@Param("condition") Map<String, Object> condition, @Param("offset") int offset, @Param("rows") int rows, @Param("orderBy") String orderBy, @Param("sortBy") String sortBy);
+    public List<T> queryPage(@Param("condition") Map<String, Object> condition, @Param("offset") int offset, @Param("rows") int rows,
+                             @Param("orderBy") String orderBy, @Param("sortBy") String sortBy);
+
+
+    public List<T> queryPage(@Param("condition") Map<String, Object> condition, @Param("offset") int offset, @Param("rows") int rows,
+                             @Param("orderBy") String orderBy, @Param("sortBy") String sortBy, @Param("selector")Map<String, Object> selector);
 
     /**
      * 根据任意属性和属性值进行对象模糊查询
@@ -188,6 +193,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @return
      */
     public List<T> like(@Param("condition") Map<String, Object> condition, @Param("orderBy") String orderBy, @Param("sortBy") String sortBy);
+    public List<T> like(@Param("condition") Map<String, Object> condition, @Param("orderBy") String orderBy, @Param("sortBy") String sortBy, @Param("selector")Map<String, Object> selector);
 
     /**
      * 根据条件集合进行指定类型对象集合查询
@@ -198,6 +204,8 @@ public interface IBaseDAO<T extends BaseDomain> {
      */
     public List<T> queryList(@Param("condition") Map<String, Object> condition, @Param("orderBy") String orderBy, @Param("sortBy") String sortBy);
 
+    public List<T> queryList(@Param("condition") Map<String, Object> condition, @Param("orderBy") String orderBy, @Param("sortBy") String sortBy, @Param("selector")Map<String, Object> selector);
+
     /**
      * 根据条件集合进行指定类型单一对象查询
      *
@@ -207,6 +215,16 @@ public interface IBaseDAO<T extends BaseDomain> {
      */
 //    public T queryOne(Map<String, Object> condition);
     public T queryOne(@Param("condition") Map<String, Object> condition, @Param("orderBy") String orderBy, @Param("sortBy") String sortBy);
+
+    /**
+     *
+     * @param condition
+     * @param orderBy
+     * @param sortBy
+     * @param selector  查询器，不进行不必要字段的查询，这样 生成的 model  在http传递给客户端时依赖fastjson的特性 就不会传递出去，减少带宽依赖
+     * @return
+     */
+    public T queryOne(@Param("condition") Map<String, Object> condition, @Param("orderBy") String orderBy, @Param("sortBy") String sortBy, @Param("selector")Map<String, Object> selector);
 
     /**
      * 根据条件进行数量的查询
