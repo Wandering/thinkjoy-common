@@ -3,7 +3,7 @@ package cn.thinkjoy.common.managerui.controller;
 import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.domain.BizStatusEnum;
 import cn.thinkjoy.common.exception.BizException;
-import cn.thinkjoy.common.exception.BizExceptions;
+import cn.thinkjoy.common.exception.BizExceptionEnum;
 import cn.thinkjoy.common.managerui.controller.helpers.ActionPermHelper;
 import cn.thinkjoy.common.managerui.controller.helpers.BaseServiceMaps;
 import cn.thinkjoy.common.managerui.domain.ResourceGrid;
@@ -23,7 +23,6 @@ import org.jeecgframework.poi.excel.entity.ImportParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -160,26 +158,26 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
 
             if(rules.get("required") != null && (Boolean)rules.get("required")){//required
                 if(dataMap.containsKey(resourceGrid.getColId()) && (dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0)){
-                    throw new BizException(BizExceptions.REQUIRED_CODE, resourceGrid.getDisplayName() + "不能为空");
+                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
                 }
             }
 
             if(rules.get("maxLength") != null && (String.valueOf(rules.get("maxLength"))).trim().length() > 0){//最大长度校验
                 if(dataMap.containsKey(resourceGrid.getColId()) && (dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0)){
-                    throw new BizException(BizExceptions.REQUIRED_CODE, resourceGrid.getDisplayName() + "不能为空");
+                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
                 } else {
                     if(dataMap.containsKey(resourceGrid.getColId()) && (((String)dataMap.get(resourceGrid.getColId())).trim().length() > (Integer) rules.get("maxLength"))){
-                        throw new BizException(BizExceptions.MAXLENGTH_CODE, resourceGrid.getDisplayName() + "不能超过长度："+rules.get("maxLength"));
+                        throw new BizException(BizExceptionEnum.MAXLENGTH.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.MAXLENGTH.getDesc()+rules.get("maxLength"));
                     }
                 }
             }
 
             if(rules.get("length") != null && (String.valueOf(rules.get("length"))).trim().length() > 0){//长度校验
                 if(dataMap.containsKey(resourceGrid.getColId()) && (dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0)){
-                    throw new BizException(BizExceptions.REQUIRED_CODE, resourceGrid.getDisplayName() + "不能为空");
+                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
                 } else {
                     if(dataMap.containsKey(resourceGrid.getColId()) && (((String)dataMap.get(resourceGrid.getColId())).trim().length() != (Integer) rules.get("length"))){
-                        throw new BizException(BizExceptions.LENGTH_CODE, resourceGrid.getDisplayName() + "长度必须为："+rules.get("length"));
+                        throw new BizException(BizExceptionEnum.LENGTH.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.LENGTH.getDesc()+rules.get("length"));
                     }
                 }
             }
@@ -197,12 +195,12 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
 
                 List existObjList = getServiceMaps().get(mainObj).queryList(conditions, null, null);
                 if(existObjList != null && existObjList.size() > 1){
-                    throw new BizException(BizExceptions.EXISTS_CODE, existRules + " 所填写信息不唯一");
+                    throw new BizException(BizExceptionEnum.EXISTS.getCode(), existRules + BizExceptionEnum.EXISTS.getDesc());
                 }
             } else {
                 Object existObj = getServiceMaps().get(mainObj).queryOne(conditions);
                 if(existObj != null){
-                    throw new BizException(BizExceptions.EXISTS_CODE, existRules + " 所填写信息不唯一");
+                    throw new BizException(BizExceptionEnum.EXISTS.getCode(), existRules + BizExceptionEnum.EXISTS.getDesc());
                 }
             }
         }
