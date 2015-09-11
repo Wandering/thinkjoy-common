@@ -64,7 +64,7 @@ public class Messenger implements Work {
 	}
 
 	public void terminate() {
-        DefaultRMQProducer.getInstance().stop();
+        DefaultKafkaProducer.getInstance().stop();
 	}
 
 	public Message getMessage(Entry entry, String token, Map userContext) {

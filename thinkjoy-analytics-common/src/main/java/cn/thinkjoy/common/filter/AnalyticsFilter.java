@@ -114,7 +114,9 @@ public class AnalyticsFilter implements Filter {
             analyticsData.setTime((recvEndTime - recvStartTime) + sendTime
                     + waitTime);
             messageProperties.put(ANALYTICS_DATA, analyticsData);
-            messageProperties.put(USER_CONTEXT, UserContextHolder.getUserContext().getContexts());
+            if(UserContextHolder.getUserContext() != null) { //部分页面不进行 用户身份验证
+                messageProperties.put(USER_CONTEXT, UserContextHolder.getUserContext().getContexts());
+            }
 //            messageProperties.put(ANALYTICS_TOKEN, analyticsToken);
             analyticsServicexeExecutor.execute(new SendAnalyticsTask(pool,
                     messageProperties));

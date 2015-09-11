@@ -275,4 +275,25 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
 
         return entityMap;
     }
+
+    // ---------------- 后加接口，在这里默认做空实现，避免实现类报错，如果需要使用这些特性，需要重载 -----------------//
+    @Override
+    public List<T> queryPage(Map<String, Object> condition, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selectorpage) {
+        return null;
+    }
+
+    @Override
+    public List<T> like(Map<String, Object> condition, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selector) {
+        return null;
+    }
+
+    @Override
+    public List<T> queryList(Map<String, Object> condition, String orderBy, String sortBy, Map<String, Object> selector) {
+        return null;
+    }
+
+    @Override
+    public T queryOne(Map<String, Object> condition, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selector) {
+        return null;
+    }
 }
