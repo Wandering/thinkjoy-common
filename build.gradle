@@ -10,8 +10,8 @@ delete "${buildDir}/classes/test"
 
 sonarRunner {
     sonarProperties {
-        property "sonar.host.url", "http://sonar.thinkjoy.local"
-        property "sonar.jdbc.url", "jdbc:mysql://sonar.thinkjoy.local:3306/sonar?useUnicode=true&characterEncoding=utf8"
+        property "sonar.host.url", "http://sonar.thinkjoy.cn"
+        property "sonar.jdbc.url", "jdbc:mysql://sonar.thinkjoy.cn:3306/sonar?useUnicode=true&characterEncoding=utf8"
         property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
         property "sonar.jdbc.username", "sonar"
         property "sonar.jdbc.password", "sonar!@#\$%^&*()_+"
@@ -41,7 +41,7 @@ tasks.withType(Compile) {
 /** 此闭包内的声明子类皆可使用 */
 allprojects {
     group = 'cn.thinkjoy.common'
-    version = '0.1.18-SNAPSHOT'
+    version = '0.1.19-SNAPSHOT'
 
 
     apply plugin: 'java'
