@@ -11,6 +11,9 @@ package cn.thinkjoy.common.domain;
 public class LongWrapper extends BaseWrapper {
     private long l;
 
+    public LongWrapper() {
+    }
+
     public LongWrapper(long l) {
         this.l = l;
     }

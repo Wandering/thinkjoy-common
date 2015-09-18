@@ -11,6 +11,9 @@ package cn.thinkjoy.common.domain;
 public class FloatWrapper extends BaseWrapper {
     private float f;
 
+    public FloatWrapper() {
+
+    }
     public FloatWrapper(float f) {
         this.f = f;
     }

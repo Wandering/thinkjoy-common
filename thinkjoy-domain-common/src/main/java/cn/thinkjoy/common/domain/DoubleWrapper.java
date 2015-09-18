@@ -11,6 +11,11 @@ package cn.thinkjoy.common.domain;
 public class DoubleWrapper extends BaseWrapper {
     private double d;
 
+
+    public DoubleWrapper() {
+
+    }
+
     public DoubleWrapper(double d) {
         this.d = d;
     }

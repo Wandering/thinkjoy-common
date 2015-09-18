@@ -11,6 +11,9 @@ package cn.thinkjoy.common.domain;
 public class IntegerWrapper extends BaseWrapper {
     private int i;
 
+    public IntegerWrapper() {
+    }
+
     public IntegerWrapper(int i) {
         this.i = i;
     }

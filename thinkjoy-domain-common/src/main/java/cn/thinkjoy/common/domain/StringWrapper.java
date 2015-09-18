@@ -11,6 +11,9 @@ package cn.thinkjoy.common.domain;
 public class StringWrapper extends BaseWrapper {
     private String s;
 
+    public StringWrapper() {
+    }
+
     public StringWrapper(String s) {
         this.s = s;
     }

@@ -11,6 +11,9 @@ package cn.thinkjoy.common.domain;
 public class BooleanWrapper extends BaseWrapper {
     private boolean b;
 
+    public BooleanWrapper() {
+    }
+
     public BooleanWrapper(boolean b) {
         this.b = b;
     }
