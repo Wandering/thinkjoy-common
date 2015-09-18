@@ -171,6 +171,7 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      */
     public List<T> queryPage(Map<String, Object> condition, int offset, int rows);
     public List<T> queryPage(Map<String, Object> condition, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum);
+    public List<T> queryPage(Map<String, Object> condition, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selectorpage);
 
     /**
      * 根据任意属性和属性值进行对象模糊查询
@@ -183,6 +184,7 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      */
     public List<T> like(Map<String, Object> condition);
     public List<T> like(Map<String, Object> condition, String orderBy, SqlOrderEnum sqlOrderEnum);
+    public List<T> like(Map<String, Object> condition, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selector);
 
     /**
      * 根据条件集合进行指定类型对象集合查询
@@ -192,6 +194,7 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      * @return 返回泛型参数类型的对象集合，如何取到泛型类型参数，请参看{@link #getEntityClass()}
      */
     public List<T> queryList(Map<String, Object> condition, String orderBy, String sortBy);
+    public List<T> queryList(Map<String, Object> condition, String orderBy, String sortBy, Map<String, Object> selector);
 
     /**
      * 根据条件集合进行指定类型单一对象查询
@@ -202,6 +205,7 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      */
     public T queryOne(Map<String, Object> condition);
     public T queryOne(Map<String, Object> condition, String orderBy, SqlOrderEnum sqlOrderEnum);
+    public T queryOne(Map<String, Object> condition, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selector);
 
     /**
      * 根据条件进行数量的查询

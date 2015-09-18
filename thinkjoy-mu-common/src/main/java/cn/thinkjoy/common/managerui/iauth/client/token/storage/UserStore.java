@@ -14,4 +14,6 @@ public interface UserStore {
     User readUser(Object key);
 
     void postpone(Object key);
+
+    void removeUser(String key);
 }

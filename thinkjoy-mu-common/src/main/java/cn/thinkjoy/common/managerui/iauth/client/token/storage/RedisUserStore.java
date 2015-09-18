@@ -82,4 +82,9 @@ public class RedisUserStore implements UserStore{
     public void postpone(Object key) {
         userStorage.expire(PREFIX+key, USER_EXPIRE_TIME, TimeUnit.SECONDS);
     }
+
+    @Override
+    public void removeUser(String key) {
+        userStorage.del(PREFIX+key);
+    }
 }
