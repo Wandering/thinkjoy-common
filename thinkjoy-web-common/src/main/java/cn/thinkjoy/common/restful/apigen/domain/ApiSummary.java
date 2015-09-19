@@ -1,5 +1,7 @@
 package cn.thinkjoy.common.restful.apigen.domain;
 
+import java.io.Serializable;
+
 /**
  * TODO 一句话描述该类用途
  * <p/>
@@ -8,7 +10,7 @@ package cn.thinkjoy.common.restful.apigen.domain;
  * @author qyang
  * @since v0.0.1
  */
-public class ApiSummary {
+public class ApiSummary implements Serializable {
     private int seq;
     private String name;
     private String url;

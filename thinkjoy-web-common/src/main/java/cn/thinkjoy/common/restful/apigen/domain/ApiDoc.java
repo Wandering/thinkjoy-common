@@ -1,5 +1,6 @@
 package cn.thinkjoy.common.restful.apigen.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * @author qyang
  * @since v0.0.1
  */
-public class ApiDoc {
+public class ApiDoc implements Serializable {
     private List<ApiSummary> apiSummaryList = new ArrayList<>();
 
     private List<ApiDetail> apiDetailList = new ArrayList<>();

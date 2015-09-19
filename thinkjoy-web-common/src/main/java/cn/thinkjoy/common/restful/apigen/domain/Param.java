@@ -1,5 +1,7 @@
 package cn.thinkjoy.common.restful.apigen.domain;
 
+import java.io.Serializable;
+
 /**
  * 参数模型
  * <p/>
@@ -8,7 +10,7 @@ package cn.thinkjoy.common.restful.apigen.domain;
  * @author qyang
  * @since v0.0.1
  */
-public class Param {
+public class Param implements Serializable {
     private String name;
     private String type;
     private boolean required;

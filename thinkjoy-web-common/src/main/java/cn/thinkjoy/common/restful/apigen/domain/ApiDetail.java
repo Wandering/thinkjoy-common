@@ -1,5 +1,6 @@
 package cn.thinkjoy.common.restful.apigen.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * @author qyang
  * @since v0.0.1
  */
-public class ApiDetail {
+public class ApiDetail implements Serializable {
     private String url;
     private String name;
     private String desc;
