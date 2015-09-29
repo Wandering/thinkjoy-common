@@ -279,21 +279,33 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
     // ---------------- 后加接口，在这里默认做空实现，避免实现类报错，如果需要使用这些特性，需要重载 -----------------//
     @Override
     public List<T> queryPage(Map<String, Object> condition, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selectorpage) {
-        return null;
+        return getDao().queryPage(condition,offset,rows,orderBy,sqlOrderEnum.getAction(),selectorpage);
     }
 
     @Override
     public List<T> like(Map<String, Object> condition, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selector) {
-        return null;
+        return getDao().like(condition,orderBy,sqlOrderEnum.getAction(),selector);
     }
 
     @Override
     public List<T> queryList(Map<String, Object> condition, String orderBy, String sortBy, Map<String, Object> selector) {
-        return null;
+        return getDao().queryList(condition,orderBy,sortBy,selector);
     }
 
     @Override
     public T queryOne(Map<String, Object> condition, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selector) {
-        return null;
+        return (T)getDao().queryOne(condition,orderBy,sqlOrderEnum.getAction(),selector);
     }
+
+
+    /**
+     * 通用的更新操作
+     * @param updateMap 需要更新的值
+     * @param conditionMap 需要被更新的条件
+     */
+    public int updateByCondition(Map<String, Object> updateMap, Map<String, Object> conditionMap)
+    {
+        return getDao().updateByCondition(updateMap,conditionMap);
+    }
+
 }

@@ -61,4 +61,28 @@ public interface IPageService<D extends IBaseDAO,T extends BaseDomain> {
      * @return
      */
     public BizData4Page queryPageByDataPerm(String resUri, Map<String, Object> conditions, int curPage, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum);
+
+
+
+    /**
+     * 条件查询包含各种查询
+     * @return
+     */
+    public void queryPageByDataPerm(BizData4Page bizData4Page, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selector);
+    
+    public void queryPageByDataPerm(IBaseDAO dao,BizData4Page bizData4Page, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selector);
+
+    /**
+     * 具有排序的分页
+     * @param dao
+     * @param conditions
+     * @param curPage
+     * @param offset
+     * @param rows
+     * @param orderBy
+     * @param sqlOrderEnum
+     * @return
+     */
+    public BizData4Page queryPageByDataPerm(IBaseDAO dao, Map<String, Object> conditions, int curPage, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selector);
+
 }

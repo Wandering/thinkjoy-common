@@ -3,6 +3,7 @@ package cn.thinkjoy.common.service;
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -261,4 +262,13 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      * @return 返回泛型类型对象集合，如果要返回单个结果对象，请参看{@link #selectOne(String, Object)}
      */
     public List<T> selectList(String mapperId, Object obj);
+
+
+    /**
+     * 通用的更新操作
+     * @param updateMap 需要更新的值
+     * @param conditionMap 需要被更新的条件
+     */
+    public int updateByCondition(Map<String, Object> updateMap, Map<String, Object> conditionMap);
+
 }
