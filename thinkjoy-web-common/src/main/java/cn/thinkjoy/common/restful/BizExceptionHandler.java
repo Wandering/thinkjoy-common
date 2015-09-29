@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 public class BizExceptionHandler implements RestExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(BizExceptionHandler.class);
+    public static final String errorMsgPattern = "invoke {} error: {} ";
 
     @Override
     public ResponseEntity handleException(Exception exception, HttpServletRequest request) {
@@ -30,7 +31,7 @@ public class BizExceptionHandler implements RestExceptionHandler {
         ResponseT<String> responseT = null;
         if(exception instanceof BizException){ //业务预知的异常
             responseT = ResponseTs.<String>newResponseException((BizException) exception, isDebug);
-            logger.error(((BizException) exception).getMsg());
+            logger.error(errorMsgPattern, request.getRequestURL(), ((BizException) exception).getMsg());
         } else {
             //构造 BizException
             BizException bizException = null;
@@ -40,7 +41,7 @@ public class BizExceptionHandler implements RestExceptionHandler {
                 bizException = new BizException(RtnCodeEnum.UNKNOW.getValue(), RtnCodeEnum.UNKNOW.getDesc());
             }
             responseT = ResponseTs.<String>newResponseException(bizException, isDebug);
-            logger.error(exception.getMessage());
+            logger.error(errorMsgPattern, request.getRequestURL(), exception.getMessage());
         }
 
 
