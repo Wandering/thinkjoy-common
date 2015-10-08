@@ -88,7 +88,7 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
         if(ActionEnum.EDIT.getAction().equals(operValue)) { //修改
             if(!actionSet.contains(ActionEnum.EDIT.getAction())){
                 //无业务权限的异常
-                throw new BizException("", "");
+                throw new BizException(BizExceptionEnum.NOTEXISTS.getCode(), "没有新增权限");
             }
 
             //做通用校验 TODO 支持全局开启
