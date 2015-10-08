@@ -136,13 +136,13 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
     @Override
     @Cacheable()
     public final List like(Map<String, Object> condition) {
-        return getDao().like(condition, null, null);
+        return getDao().like(condition, null, null,null);
     }
 
     @Override
     @Cacheable()
     public final List like(Map<String, Object> condition, String orderBy, SqlOrderEnum sqlOrderEnum) {
-        return getDao().like(condition, orderBy, sqlOrderEnum.getAction());
+        return getDao().like(condition, orderBy, sqlOrderEnum.getAction(),null);
     }
 
     @Override
@@ -179,26 +179,26 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
 
     @Override
     public final T queryOne(Map condition) {
-        return (T)getDao().queryOne(condition, null, null);
+        return (T)getDao().queryOne(condition, null, null,null);
     }
 
     @Override
     public final T queryOne(Map condition, String orderBy, SqlOrderEnum sqlOrderEnum) {
-        return (T)getDao().queryOne(condition, orderBy, sqlOrderEnum.getAction());
+        return (T)getDao().queryOne(condition, orderBy, sqlOrderEnum.getAction(),null);
     }
 
     @Override
     public final List queryList(Map condition, String orderBy, String sortBy) {
-        return getDao().queryList(condition, orderBy, sortBy);
+        return getDao().queryList(condition, orderBy, sortBy,null);
     }
 
     @Override
     public final List queryPage(Map condition, int offset, int rows) {
-       return getDao().queryPage(condition, offset, rows, null, null);
+       return getDao().queryPage(condition, offset, rows, null, null,null);
     }
 
     public List<T> queryPage(Map<String, Object> condition, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum){
-        return getDao().queryPage(condition, offset, rows, orderBy, sqlOrderEnum.getAction());
+        return getDao().queryPage(condition, offset, rows, orderBy, sqlOrderEnum.getAction(),null);
     }
 
     @Override
@@ -223,12 +223,12 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
 
     @Override
     public final List listByPage(Map condition, int offset, int rows) {
-        return getDao().queryPage(condition, offset, rows, null, null);
+        return getDao().queryPage(condition, offset, rows, null, null,null);
     }
 
     @Override
     public final List listByPage(Map condition, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum) {
-        return getDao().queryPage(condition, offset, rows, orderBy, sqlOrderEnum.getAction());
+        return getDao().queryPage(condition, offset, rows, orderBy, sqlOrderEnum.getAction(),null);
     }
 
     private final T enhanceCreateBaseDomain(T entity){
