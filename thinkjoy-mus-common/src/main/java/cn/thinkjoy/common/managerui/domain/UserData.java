@@ -20,7 +20,7 @@ import java.util.*;
 public class UserData extends CreateBaseDomain<Long>{
     private Integer dataModelId;
     private Integer dataId;
-    private Integer userId;
+    private Object userId;
 
 	public UserData(){
 	}
@@ -39,11 +39,11 @@ public class UserData extends CreateBaseDomain<Long>{
     public Integer getDataId() {
         return this.dataId;
     }
-    public void setUserId(Integer value) {
+    public void setUserId(Object value) {
         this.userId = value;
     }
 
-    public Integer getUserId() {
+    public Object getUserId() {
         return this.userId;
     }
 
