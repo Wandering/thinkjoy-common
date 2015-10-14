@@ -122,6 +122,7 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
 
     }
 
+
     protected BizData4Page doPage(HttpServletRequest request,HttpServletResponse response){
         Integer page = 1;
         if(request.getParameter("page") != null) {
@@ -136,7 +137,17 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
         //获取参数
         Map<String, Object> conditions = makeQueryCondition(request, response, uri);
 
+        enhancePageConditions(conditions);
+
         return getMainService().queryPageByDataPerm(uri, conditions, page, (page-1)*rows, rows);
+    }
+
+    /***
+     * 添加查询条件
+     * @param conditions
+     */
+    protected void enhancePageConditions(Map<String, Object> conditions){
+
     }
 
 }
