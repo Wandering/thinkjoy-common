@@ -146,7 +146,7 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
      * 添加查询条件
      * @param conditions
      */
-    protected void enhancePageConditions(Map<String, Object> conditions){
+    protected void enhancePageConditions(final Map<String, Object> conditions){
 
     }
 
