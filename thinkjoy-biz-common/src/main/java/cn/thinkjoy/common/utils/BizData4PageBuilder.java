@@ -26,7 +26,7 @@ public class BizData4PageBuilder {
      * @return
      */
     public static BizData4Page createBizData4Page(IBaseDAO dao, Map<String, Object> conditions, int curPage, int offset, int rows){
-        List mainData = dao.queryPage(conditions, offset, rows, null, null);
+        List mainData = dao.queryPage(conditions, offset, rows, null, null,null);
         int records = dao.count(conditions);
 
         BizData4Page bizData4Page = new BizData4Page();

@@ -42,7 +42,7 @@ public abstract class AbstractPageService<D extends IBaseDAO,T extends BaseDomai
     {
         int offset = (bizData4Page.getPage()-1)*bizData4Page.getPagesize();
         int rows = bizData4Page.getPagesize();
-        List<T> mainData = getDao().queryPage(bizData4Page.getConditions(), offset, rows, orderBy, sqlOrderEnum.getAction());
+        List<T> mainData = getDao().queryPage(bizData4Page.getConditions(), offset, rows, orderBy, sqlOrderEnum.getAction(),null);
         int records =  getDao().count(bizData4Page.getConditions());
 
         bizData4Page.setRows(mainData);
@@ -65,7 +65,7 @@ public abstract class AbstractPageService<D extends IBaseDAO,T extends BaseDomai
     {
         int offset = (bizData4Page.getPage()-1)*bizData4Page.getPagesize();
         int rows = bizData4Page.getPagesize();
-        List<T> mainData = getDao().queryPage(bizData4Page.getConditions(), offset, rows, null, null);
+        List<T> mainData = getDao().queryPage(bizData4Page.getConditions(), offset, rows, null, null,null);
         int records =  getDao().count(bizData4Page.getConditions());
 
         bizData4Page.setRows(mainData);
@@ -91,7 +91,7 @@ public abstract class AbstractPageService<D extends IBaseDAO,T extends BaseDomai
     {
         int offset = (bizData4Page.getPage()-1)*bizData4Page.getPagesize();
         int rows = bizData4Page.getPagesize();
-        List<T> mainData = baseDAO.queryPage(bizData4Page.getConditions(), offset, rows, null, null);
+        List<T> mainData = baseDAO.queryPage(bizData4Page.getConditions(), offset, rows, null, null,null);
         int records =  baseDAO.count(bizData4Page.getConditions());
 
         bizData4Page.setRows(mainData);
@@ -116,7 +116,7 @@ public abstract class AbstractPageService<D extends IBaseDAO,T extends BaseDomai
     {
         int offset = (bizData4Page.getPage()-1)*bizData4Page.getPagesize();
         int rows = bizData4Page.getPagesize();
-        List<T> mainData = baseDAO.queryPage(bizData4Page.getConditions(), offset, rows, orderBy, sqlOrderEnum.getAction());
+        List<T> mainData = baseDAO.queryPage(bizData4Page.getConditions(), offset, rows, orderBy, sqlOrderEnum.getAction(),null);
         int records =  baseDAO.count(bizData4Page.getConditions());
 
         bizData4Page.setRows(mainData);
