@@ -41,7 +41,7 @@ tasks.withType(Compile) {
 /** 此闭包内的声明子类皆可使用 */
 allprojects {
     group = 'cn.thinkjoy.common'
-    version = '0.1.26-SNAPSHOT'
+    version = '0.1.27-SNAPSHOT'
 
 
     apply plugin: 'java'
