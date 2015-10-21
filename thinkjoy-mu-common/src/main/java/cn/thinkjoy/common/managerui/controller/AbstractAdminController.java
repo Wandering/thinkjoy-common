@@ -109,7 +109,7 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
         mav.addObject("current_userName", UserContext.getCurrentUser().getName());
 
         //按钮功能权限处理
-        mav.addObject("actions", actionPermHelper.getActionPerm(getMainObjName()));
+        mav.addObject("actions", actionPermHelper.getActionPerm(getMainObjName(),getAbsroduct()));
 
         enhanceModelAndView(request,mav);
 
