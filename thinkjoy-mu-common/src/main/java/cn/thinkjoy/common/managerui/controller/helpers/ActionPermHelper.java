@@ -46,8 +46,8 @@ public class ActionPermHelper {
         return actionPermService.getActionPermsByRes(uid,resource.getId());
     }
 
-    public final List<Resource> getResourcePerm(String uid,String product,String bizSys) {
-        return actionPermService.getResourcePerms( uid, product, bizSys);
+    public final List<Resource> getResourcePerm(String uid,String product) {
+        return actionPermService.getResourcePerms( uid, product);
     }
 
 }

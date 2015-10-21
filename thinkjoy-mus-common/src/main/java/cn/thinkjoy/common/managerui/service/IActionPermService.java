@@ -22,7 +22,7 @@ public interface IActionPermService {
      */
     public List<Resource> getResourcePerms(Object userId);
 
-    List<Resource> getResourcePerms(Object userId,String product,String bizSys);
+    List<Resource> getResourcePerms(Object userId,String product);
 
     /**
      * 获取用户特定页面的功能权限
