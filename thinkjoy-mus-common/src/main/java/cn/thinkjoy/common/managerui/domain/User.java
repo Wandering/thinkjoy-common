@@ -25,6 +25,9 @@ public class User extends UserDomain<Long> {
     private Integer employeeId;
     //产品线
 	private String product;
+	//产品线
+	private String realName;
+
 
 	//扩展字段可以添加想要的个性化属性
 	private Object object;
@@ -68,7 +71,7 @@ public class User extends UserDomain<Long> {
 	public String toString() {
 		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
 			.append("Id",getId())
-			.append("IsAdmin",getIsAdmin())
+			.append("IsAdmin", getIsAdmin())
 			.append("Name",getName())
 			.append("Password",getPassword())
 			.append("Creator",getCreator())
@@ -77,6 +80,7 @@ public class User extends UserDomain<Long> {
 			.append("LastModDate",getLastModDate())
 			.append("Status",getStatus())
 			.append("EmployeeId",getEmployeeId())
+			.append("RealName",getRealName())
 			.toString();
 	}
 	
@@ -93,6 +97,14 @@ public class User extends UserDomain<Long> {
 		return new EqualsBuilder()
 			.append(getId(),other.getId())
 			.isEquals();
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
 	}
 
 	public Integer getBizDimension() {
