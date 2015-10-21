@@ -34,7 +34,12 @@ public class ActionPermServiceImpl implements IActionPermService {
 
     @Override
     public List<Resource> getResourcePerms(Object userId,String product) {
-        return permissionDAO.getResByPerm(userId,product);
+        return permissionDAO.getResByPerm(userId,product,null);
+    }
+
+    @Override
+    public List<Resource> getResourcePerms(Object userId,String product,String hide) {
+        return permissionDAO.getResByPerm(userId,product,hide);
     }
 
     @Override

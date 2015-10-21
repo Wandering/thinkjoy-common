@@ -21,6 +21,8 @@ public interface IPermissionDAO {
 
     public List<Resource> getResByPerm(@Param("userId")Object userId,@Param("product")String product);
 
+    public List<Resource> getResByPerm(@Param("userId")Object userId,@Param("product")String product, @Param("hide")String hide);
+
     public List<ResourceAction> getResActionByPerm(@Param("condition")Map<String, Object> params);
 
     public List<DatagroupData> getDataByPerm(@Param("condition")Map<String, Object> params);

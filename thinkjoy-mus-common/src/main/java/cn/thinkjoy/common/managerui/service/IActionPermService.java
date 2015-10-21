@@ -24,6 +24,8 @@ public interface IActionPermService {
 
     List<Resource> getResourcePerms(Object userId,String product);
 
+    List<Resource> getResourcePerms(Object userId,String product,String hide);
+
     /**
      * 获取用户特定页面的功能权限
      * @param userId         用户id
