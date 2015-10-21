@@ -31,6 +31,7 @@ public class LogLevelChangeListener {
         DynConfigClient dynConfigClient = DynConfigClientFactory.getClient();
 
         oldLevel = dynConfigClient.getConfig("common", "logLevel");
+        setLogLevel();
 
         dynConfigClient.registerListeners("common", "logLevel", new IChangeListener() {
             @Override
@@ -47,11 +48,18 @@ public class LogLevelChangeListener {
                     public void run() {
                         oldLevel = configuration.getConfig();
                         //目前只对我们业务系统的日志级别改变进行监听
-                        ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger("cn.thinkjoy");
-                        root.setLevel(Level.toLevel(oldLevel));
+                        setLogLevel();
                     }
                 });
             }
         });
+    }
+
+    private void setLogLevel(){
+        if(oldLevel != null) {
+            ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory.getLogger("cn.thinkjoy");
+            root.setLevel(Level.toLevel(oldLevel));
+            logger.warn(" ===== do setLogLevel =====");
+        }
     }
 }
