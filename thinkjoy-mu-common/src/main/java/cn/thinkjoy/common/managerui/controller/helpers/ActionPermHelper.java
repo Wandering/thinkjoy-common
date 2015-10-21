@@ -34,15 +34,18 @@ public class ActionPermHelper {
         return actionPermService.getActionPermsByRes(UserContext.getCurrentUser().getId(),resource.getId());
     }
 
-    public final List<Resource> getResourcePerm(String product) {
-        return getResourcePerm(UserContext.getCurrentUser().getId(), product);
+    public final Set<String> getActionPerm(String mainObj,String product) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("bizModelName", mainObj);
+        map.put("product", product);
+        Resource resource = resourceService.queryOne(map);
+        if(resource==null)
+            return null;
+        return actionPermService.getActionPermsByRes(UserContext.getCurrentUser().getId(),resource.getId());
     }
 
-    public final Set<String> getActionPerm(String uid,String mainObj) {
-        Map<String,Object> map = new HashMap<>();
-        Resource resource = resourceService.findOne("bizModelName", mainObj);
-
-        return actionPermService.getActionPermsByRes(uid,resource.getId());
+    public final List<Resource> getResourcePerm(String product) {
+        return getResourcePerm(UserContext.getCurrentUser().getId(), product);
     }
 
     public final List<Resource> getResourcePerm(Object uid,String product) {
