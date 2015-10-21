@@ -9,10 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 功能权限助手类
@@ -32,7 +29,8 @@ public class ActionPermHelper {
 
     public final Set<String> getActionPerm(String mainObj) {
         Resource resource = resourceService.findOne("bizModelName", mainObj);
-
+        if(resource==null)
+            return null;
         return actionPermService.getActionPermsByRes(UserContext.getCurrentUser().getId(),resource.getId());
     }
 
