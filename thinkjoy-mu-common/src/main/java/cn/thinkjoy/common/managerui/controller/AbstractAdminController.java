@@ -49,6 +49,9 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
     /** 当前页面的路径*/
     protected String pagePath;
 
+    /** 当前页面的路径*/
+    public String absroduct;
+
     @Autowired
     private ActionPermHelper actionPermHelper;
 
@@ -79,14 +82,13 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
     protected ModelAndView doRenderMainView(HttpServletRequest request,HttpServletResponse response){
         //request.getRequestURI()
         ModelAndView mav=new ModelAndView("module/"+getPagePath()+getMainObjName());
-
         ///这里顺便回顾下HashMap的使用方法
         	/*      创建：Map<String,String> map = new HashMap<String,String>();
         	        插入元素：map.put("1","a");
         	        移除元素: map.remove("1");
         	        清空: map.clear();*/
-
-        List<Resource> resourceList = actionPermHelper.getResourcePerm();
+        enhancePreModelAndView(request, mav);
+        List<Resource> resourceList = actionPermHelper.getResourcePerm(getAbsroduct());
         mav.addObject("resources", resourceList);
 
 //        List<ResourceGrid> resourceGridList = resourceGridService.findAll();
@@ -112,6 +114,13 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
         enhanceModelAndView(request,mav);
 
         return mav;
+    }
+    /**
+     * 在方法前加载重载子类重载, 注入业务数据给 ModelAndView
+     * @param mav
+     */
+    protected void enhancePreModelAndView(final HttpServletRequest request, final ModelAndView mav){
+
     }
 
     /**
@@ -150,4 +159,11 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
 
     }
 
+    public String getAbsroduct() {
+        return StringUtils.isEmpty(absroduct)?null:absroduct;
+    }
+
+    public void setAbsroduct(String absroduct) {
+        this.absroduct = absroduct;
+    }
 }

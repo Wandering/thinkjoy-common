@@ -5,6 +5,7 @@ import cn.thinkjoy.common.managerui.service.IResourceService;
 import cn.thinkjoy.common.managerui.service.IActionPermService;
 
 import cn.thinkjoy.common.utils.UserContext;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +36,8 @@ public class ActionPermHelper {
         return actionPermService.getActionPermsByRes(UserContext.getCurrentUser().getId(),resource.getId());
     }
 
-    public final List<Resource> getResourcePerm() {
-        return actionPermService.getResourcePerms(UserContext.getCurrentUser().getId());
+    public final List<Resource> getResourcePerm(String product) {
+        return getResourcePerm(UserContext.getCurrentUser().getId(), product);
     }
 
     public final Set<String> getActionPerm(String uid,String mainObj) {
@@ -46,7 +47,7 @@ public class ActionPermHelper {
         return actionPermService.getActionPermsByRes(uid,resource.getId());
     }
 
-    public final List<Resource> getResourcePerm(String uid,String product) {
+    public final List<Resource> getResourcePerm(Object uid,String product) {
         return actionPermService.getResourcePerms( uid, product);
     }
 
