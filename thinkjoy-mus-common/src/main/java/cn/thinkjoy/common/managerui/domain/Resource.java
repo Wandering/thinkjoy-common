@@ -1,32 +1,45 @@
 /*
  * Copyright (c) 2013-2014, thinkjoy Inc. All Rights Reserved.
  *
- * Project Name: ehr
- * $Id:  Resource.java 2014-10-03 16:39:52 $
+ * Project Name: ucm
+ * $Id:  Resource.java 2015-10-20 13:46:35 $
  */
+
+
 
 
 
 package cn.thinkjoy.common.managerui.domain;
 
+import cn.thinkjoy.common.domain.CreateBaseDomain;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import cn.thinkjoy.common.domain.CreateBaseDomain;
 
-import java.util.*;
-
-public class Resource extends CreateBaseDomain<Long>{
+public class Resource extends CreateBaseDomain<Long> {
+    /** 页面url */
     private String url;
+    /** 顺序 */
     private Integer orderNum;
+    /** 父页面,null为顶层页面 */
     private Integer parentId;
+    /** 编码 */
     private String number;
+    /** 长编码 */
     private String longNumber;
+    /** 资源名称 */
     private String name;
+    /** 描述 */
     private String description;
+    /** 主模型id  和 数据权限相关 */
     private Integer modelId;
+    /** 业务模型名称|在同一个业务系统里不允许有同名的业务模型 */
     private String bizModelName;
+    /** 产品线 */
+    private String product;
+    /** 是否在系统显示 */
+    private Integer hide;
 
 	public Resource(){
 	}
@@ -93,6 +106,20 @@ public class Resource extends CreateBaseDomain<Long>{
     public String getBizModelName() {
         return this.bizModelName;
     }
+    public void setProduct(String value) {
+        this.product = value;
+    }
+
+    public String getProduct() {
+        return this.product;
+    }
+    public void setHide(Integer value) {
+        this.hide = value;
+    }
+
+    public Integer getHide() {
+        return this.hide;
+    }
 
 	public String toString() {
 		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -110,6 +137,9 @@ public class Resource extends CreateBaseDomain<Long>{
 			.append("Description",getDescription())
 			.append("ModelId",getModelId())
 			.append("BizModelName",getBizModelName())
+			.append("Status",getStatus())
+			.append("Product",getProduct())
+			.append("Hide",getHide())
 			.toString();
 	}
 	

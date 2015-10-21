@@ -1,26 +1,30 @@
 /*
  * Copyright (c) 2013-2014, thinkjoy Inc. All Rights Reserved.
  *
- * Project Name: cmc
- * $Id:  Datagroup.java 2014-10-27 10:37:54 $
+ * Project Name: ucm
+ * $Id:  Datagroup.java 2015-10-20 14:26:58 $
  */
+
+
 
 
 
 package cn.thinkjoy.common.managerui.domain;
 
+import cn.thinkjoy.common.domain.CreateBaseDomain;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import cn.thinkjoy.common.domain.CreateBaseDomain;
-
-import java.util.*;
 
 public class Datagroup extends CreateBaseDomain<Long>{
     private String name;
+    /** 编码 */
     private String number;
+    /** 描述 */
     private String description;
+    /** 产品线 */
+    private String product;
 
 	public Datagroup(){
 	}
@@ -45,6 +49,13 @@ public class Datagroup extends CreateBaseDomain<Long>{
     public String getDescription() {
         return this.description;
     }
+    public void setProduct(String value) {
+        this.product = value;
+    }
+
+    public String getProduct() {
+        return this.product;
+    }
 
 	public String toString() {
 		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -57,6 +68,7 @@ public class Datagroup extends CreateBaseDomain<Long>{
 			.append("CreateDate",getCreateDate())
 			.append("LastModifier",getLastModifier())
 			.append("LastModDate",getLastModDate())
+			.append("Product",getProduct())
 			.toString();
 	}
 	

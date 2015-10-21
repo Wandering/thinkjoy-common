@@ -8,7 +8,9 @@ import cn.thinkjoy.common.utils.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -36,4 +38,16 @@ public class ActionPermHelper {
     public final List<Resource> getResourcePerm() {
         return actionPermService.getResourcePerms(UserContext.getCurrentUser().getId());
     }
+
+    public final Set<String> getActionPerm(String uid,String mainObj) {
+        Map<String,Object> map = new HashMap<>();
+        Resource resource = resourceService.findOne("bizModelName", mainObj);
+
+        return actionPermService.getActionPermsByRes(uid,resource.getId());
+    }
+
+    public final List<Resource> getResourcePerm(String uid,String product,String bizSys) {
+        return actionPermService.getResourcePerms( uid, product, bizSys);
+    }
+
 }
