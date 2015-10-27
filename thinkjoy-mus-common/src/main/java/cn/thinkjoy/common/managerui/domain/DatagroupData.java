@@ -22,7 +22,7 @@ public class DatagroupData extends CreateBaseDomain<Integer>{
 	/** 数据权限model id */
 	private Integer dataModelId;
 	/** 对应id */
-	private Integer dataId;
+	private Object dataId;
 	/** 数据组id */
 	private Integer groupId;
 	/** 数据维度 */
@@ -37,11 +37,11 @@ public class DatagroupData extends CreateBaseDomain<Integer>{
 	public Integer getDataModelId() {
 		return this.dataModelId;
 	}
-	public void setDataId(Integer value) {
+	public void setDataId(Object value) {
 		this.dataId = value;
 	}
 
-	public Integer getDataId() {
+	public Object getDataId() {
 		return this.dataId;
 	}
 	public void setGroupId(Integer value) {

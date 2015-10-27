@@ -18,14 +18,23 @@ import cn.thinkjoy.common.domain.CreateBaseDomain;
 import java.util.*;
 
 public class DataModel extends CreateBaseDomain<Long>{
+    /** 优先级 */
     private Integer priority;
+    /** 其对应的模型主体id */
     private Integer modelId;
+    /** 分配的url */
     private String assignUrl;
+    /** 追加数据权限的sql */
     private String whereSql;
+    /** 按**维度设置 */
     private String name;
+    /** 主键名称 */
+    private String keyName;
+    /** 字段值 */
+    private String valueName;
 
-	public DataModel(){
-	}
+    public DataModel(){
+    }
     public void setPriority(Integer value) {
         this.priority = value;
     }
@@ -61,36 +70,52 @@ public class DataModel extends CreateBaseDomain<Long>{
     public String getName() {
         return this.name;
     }
+    public void setKeyName(String value) {
+        this.keyName = value;
+    }
 
-	public String toString() {
-		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-			.append("Id",getId())
-			.append("Creator",getCreator())
-			.append("CreateDate",getCreateDate())
-			.append("LastModifier",getLastModifier())
-			.append("LastModDate",getLastModDate())
-			.append("Status",getStatus())
-			.append("Priority",getPriority())
-			.append("ModelId",getModelId())
-			.append("AssignUrl",getAssignUrl())
-			.append("WhereSql",getWhereSql())
-			.append("Name",getName())
-			.toString();
-	}
-	
-	public int hashCode() {
-		return new HashCodeBuilder()
-			.append(getId())
-			.toHashCode();
-	}
-	
-	public boolean equals(Object obj) {
-		if(obj instanceof DataModel == false) return false;
-		if(this == obj) return true;
-		DataModel other = (DataModel)obj;
-		return new EqualsBuilder()
-			.append(getId(),other.getId())
-			.isEquals();
-	}
+    public String getKeyName() {
+        return this.keyName;
+    }
+    public void setValueName(String value) {
+        this.valueName = value;
+    }
+
+    public String getValueName() {
+        return this.valueName;
+    }
+
+    public String toString() {
+        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+                .append("Id",getId())
+                .append("Creator",getCreator())
+                .append("CreateDate", getCreateDate())
+                .append("LastModifier",getLastModifier())
+                .append("LastModDate",getLastModDate())
+                .append("Status",getStatus())
+                .append("Priority",getPriority())
+                .append("ModelId",getModelId())
+                .append("AssignUrl",getAssignUrl())
+                .append("WhereSql",getWhereSql())
+                .append("Name",getName())
+                .append("KeyName",getKeyName())
+                .append("ValueName",getValueName())
+                .toString();
+    }
+
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(getId())
+                .toHashCode();
+    }
+
+    public boolean equals(Object obj) {
+        if(obj instanceof DataModel == false) return false;
+        if(this == obj) return true;
+        DataModel other = (DataModel)obj;
+        return new EqualsBuilder()
+                .append(getId(),other.getId())
+                .isEquals();
+    }
 }
 

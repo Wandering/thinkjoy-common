@@ -19,7 +19,7 @@ import java.util.*;
 
 public class UserDatagroup extends CreateBaseDomain<Long>{
     private Integer datagroupId;
-    private Integer userId;
+    private Object userId;
 
 	public UserDatagroup(){
 	}
@@ -30,11 +30,11 @@ public class UserDatagroup extends CreateBaseDomain<Long>{
     public Integer getDatagroupId() {
         return this.datagroupId;
     }
-    public void setUserId(Integer value) {
+    public void setUserId(Object value) {
         this.userId = value;
     }
 
-    public Integer getUserId() {
+    public Object getUserId() {
         return this.userId;
     }
 
