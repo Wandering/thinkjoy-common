@@ -290,6 +290,14 @@ public interface IBaseDAO<T extends BaseDomain> {
     public List<T> selectList(@Param("condition") String mapperId, @Param("condition") Object obj);
 
     /**
+     * 根据原生sql查询获取返回的值[模型动态化]
+     * @return
+     */
+    public List<Map> queryBySql(@Param("executeSql") String executeSql);
+
+    public int queryBySqlCount(@Param("executeSqlCount") String executeSql);
+
+    /**
      * 取得泛型类型
      *
      * @return
