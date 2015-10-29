@@ -32,6 +32,8 @@ public class DataModel extends CreateBaseDomain<Long>{
     private String keyName;
     /** 字段值 */
     private String valueName;
+    /** 数据源sql */
+    private String datasourceSql;
 
     public DataModel(){
     }
@@ -84,12 +86,19 @@ public class DataModel extends CreateBaseDomain<Long>{
     public String getValueName() {
         return this.valueName;
     }
+    public void setDatasourceSql(String value) {
+        this.datasourceSql = value;
+    }
+
+    public String getDatasourceSql() {
+        return this.datasourceSql;
+    }
 
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
                 .append("Id",getId())
                 .append("Creator",getCreator())
-                .append("CreateDate", getCreateDate())
+                .append("CreateDate",getCreateDate())
                 .append("LastModifier",getLastModifier())
                 .append("LastModDate",getLastModDate())
                 .append("Status",getStatus())
@@ -100,6 +109,7 @@ public class DataModel extends CreateBaseDomain<Long>{
                 .append("Name",getName())
                 .append("KeyName",getKeyName())
                 .append("ValueName",getValueName())
+                .append("DatasourceSql",getDatasourceSql())
                 .toString();
     }
 
@@ -114,8 +124,7 @@ public class DataModel extends CreateBaseDomain<Long>{
         if(this == obj) return true;
         DataModel other = (DataModel)obj;
         return new EqualsBuilder()
-                .append(getId(),other.getId())
+                .append(getId(), other.getId())
                 .isEquals();
     }
 }
-
