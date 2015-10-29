@@ -295,7 +295,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      */
     public List<Map> queryBySql(@Param("executeSql") String executeSql);
 
-    public int queryBySqlCount(@Param("executeSqlCount") String executeSql);
+    public Long queryBySqlCount(@Param("executeSqlCount") String executeSql);
 
     /**
      * 取得泛型类型
