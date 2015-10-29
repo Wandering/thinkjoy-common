@@ -41,7 +41,7 @@ tasks.withType(Compile) {
 /** 此闭包内的声明子类皆可使用 */
 allprojects {
     group = 'cn.thinkjoy.common'
-    version = '0.1.30-SNAPSHOT'
+    version = '0.1.31-SNAPSHOT'
 
 
     apply plugin: 'java'
@@ -57,8 +57,18 @@ allprojects {
     }
 
     publishing {
+        task sourceJar(type: Jar) {
+            classifier = 'sources'
+            from sourceSets.main.allSource
+        }
+
         publications {
             mavenJava(MavenPublication) { from components.java }
+            mavenJava(MavenPublication) {
+                artifact(sourceJar) {
+                    classifier = "sources"
+                }
+            }
         }
 
         repositories {
