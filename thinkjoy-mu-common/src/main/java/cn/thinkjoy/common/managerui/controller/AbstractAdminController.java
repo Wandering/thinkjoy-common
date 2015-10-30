@@ -146,7 +146,7 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
         //获取参数
         Map<String, Object> conditions = makeQueryCondition(request, response, uri);
 
-        enhancePageConditions(conditions);
+        enhancePageConditions(request,conditions);
 
         return getMainService().queryPageByDataPerm(uri, conditions, page, (page-1)*rows, rows);
     }
@@ -155,7 +155,7 @@ public abstract class AbstractAdminController<T extends IPageService> extends Ab
      * 添加查询条件
      * @param conditions
      */
-    protected void enhancePageConditions(final Map<String, Object> conditions){
+    protected void enhancePageConditions(final HttpServletRequest request,final Map<String, Object> conditions){
 
     }
 
