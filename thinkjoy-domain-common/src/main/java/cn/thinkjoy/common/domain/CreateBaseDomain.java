@@ -27,6 +27,9 @@ public class CreateBaseDomain<T> extends BaseDomain<T> {
     private Long              lastModDate = System.currentTimeMillis();
     private Integer               status;
 
+    private String              creatorName;
+    private String              lastModifierName;
+
     public Object getCreator() {
         return creator;
     }
@@ -79,5 +82,21 @@ public class CreateBaseDomain<T> extends BaseDomain<T> {
             return new Date();
         }
         return lastModDate > 0 ? new Date(lastModDate) : null;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    public String getLastModifierName() {
+        return lastModifierName;
+    }
+
+    public void setLastModifierName(String lastModifierName) {
+        this.lastModifierName = lastModifierName;
     }
 }
