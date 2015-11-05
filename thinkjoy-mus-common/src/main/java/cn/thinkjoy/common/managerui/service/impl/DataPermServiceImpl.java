@@ -5,9 +5,10 @@ import cn.thinkjoy.common.managerui.dao.IDataModelDAO;
 import cn.thinkjoy.common.managerui.dao.IPermissionDAO;
 import cn.thinkjoy.common.managerui.dao.IResourceDAO;
 import cn.thinkjoy.common.managerui.dao.IUserDataDAO;
-import cn.thinkjoy.common.managerui.domain.*;
+import cn.thinkjoy.common.managerui.domain.DataModel;
+import cn.thinkjoy.common.managerui.domain.DatagroupData;
+import cn.thinkjoy.common.managerui.domain.Resource;
 import cn.thinkjoy.common.service.IDataPermService;
-
 import cn.thinkjoy.common.utils.UserContext;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,14 +43,14 @@ public class DataPermServiceImpl implements IDataPermService {
         Resource resource = resourceDAO.findOne("url", resUrl, null, null);
 
         int modelId = 0;
-        if(resource != null && resource.getModelId() != null){
+        if (resource != null && resource.getModelId() != null) {
             modelId = resource.getModelId();
         } else {
             //没有主模型，说明没有数据权限设置
             return null;
         }
         DataModel dataModel = dataModelDAO.findOne("modelId", modelId, null, null); //dataModelDAO.getDataPermSql(modelId);
-        if(dataModel == null){
+        if (dataModel == null) {
             return null;
         }
         String formatSql = dataModel.getWhereSql();
@@ -60,11 +61,12 @@ public class DataPermServiceImpl implements IDataPermService {
         //List<UserData> dataIds = userDataDAO.queryList(paramMap, null, null);
         List<DatagroupData> dataIds = permissionDAO.getDataByPerm(paramMap);
 
+
         int size = dataIds.size();
 
-        if(size<=1){
+        if (size <= 1) {
             return String.format(formatSql, stringBuilder);
-        }else{
+        } else {
             for (DatagroupData userData : dataIds) {
                 stringBuilder.append(userData.getDataId()).append(",");
             }
