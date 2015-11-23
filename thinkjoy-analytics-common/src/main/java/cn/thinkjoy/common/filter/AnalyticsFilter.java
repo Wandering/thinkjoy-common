@@ -64,7 +64,8 @@ public class AnalyticsFilter implements Filter {
     @Override
     public void doFilter(ServletRequest req, ServletResponse res,
                          FilterChain chain) throws IOException, ServletException {
-        if (isAnlayticsEnabled) {
+        String contentType = req.getContentType();
+        if (isAnlayticsEnabled && !contentType.startsWith("multipart")) {
             long sendStartTime = System.currentTimeMillis();
             Date requestReceivedTime = new Date();
             RequestInterceptorWrapper request = new RequestInterceptorWrapper(
