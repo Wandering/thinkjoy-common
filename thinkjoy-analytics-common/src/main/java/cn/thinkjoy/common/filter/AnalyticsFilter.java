@@ -12,6 +12,7 @@ import cn.thinkjoy.common.filter.wrapper.RequestInterceptorWrapper;
 import cn.thinkjoy.common.filter.wrapper.ResponseInterceptorWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -65,7 +66,11 @@ public class AnalyticsFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse res,
                          FilterChain chain) throws IOException, ServletException {
         String contentType = req.getContentType();
-        if (isAnlayticsEnabled && !contentType.startsWith("multipart")) {
+        if(StringUtils.isEmpty(contentType) && !contentType.startsWith("multipart"))
+        {
+            chain.doFilter(req, res);
+        }
+        else if (isAnlayticsEnabled) {
             long sendStartTime = System.currentTimeMillis();
             Date requestReceivedTime = new Date();
             RequestInterceptorWrapper request = new RequestInterceptorWrapper(
