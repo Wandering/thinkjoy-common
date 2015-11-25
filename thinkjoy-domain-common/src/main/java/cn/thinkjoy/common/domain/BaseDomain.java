@@ -15,7 +15,7 @@ import java.math.BigInteger;
  */
 public class BaseDomain<T> implements Serializable {
 
-    private static final long serialVersionUID = 6667600871541308622L;
+    protected static final long serialVersionUID = 6667600871541308622L;
     // ID
     private T              id;
 
