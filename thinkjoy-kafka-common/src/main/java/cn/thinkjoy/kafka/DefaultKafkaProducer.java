@@ -40,6 +40,14 @@ public class DefaultKafkaProducer {
         dapDataSender = KafkaMQSingleton.getInstance();
     }
 
+
+    public static DefaultKafkaProducer getInstance() {
+        if (instance1 == null) {
+            instance1 = new DefaultKafkaProducer(false);
+        }
+        return instance1;
+    }
+
     private DefaultKafkaProducer(boolean isOutNet) {
         if (isOutNet) {
             dapDataSender = KafkaMQSingleton.getInstanceForOutNet();
