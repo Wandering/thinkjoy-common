@@ -5,9 +5,6 @@ import cn.thinkjoy.dap.dataservice.MessageData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * TODO 一句话描述该类用途
  * <p/>
@@ -35,42 +32,52 @@ public class DefaultKafkaProducer {
     private DapDataSender dapDataSender;
 
     private static class DefaultKafkaProducerHolder {
-        private static DefaultKafkaProducer instance = new DefaultKafkaProducer();
+        private static DefaultKafkaProducer instance = new DefaultKafkaProducer(false);
+        private static DefaultKafkaProducer outNetInstance = new DefaultKafkaProducer(true);
     }
 
     private DefaultKafkaProducer() {
         dapDataSender = KafkaMQSingleton.getInstance();
     }
 
+    private DefaultKafkaProducer(boolean isOutNet) {
+        if (isOutNet) {
+            dapDataSender = KafkaMQSingleton.getInstanceForOutNet();
+        } else {
+            dapDataSender = KafkaMQSingleton.getInstance();
+        }
+
+    }
+
     public static DefaultKafkaProducer getInstance() {
         return DefaultKafkaProducerHolder.instance;
     }
 
-    /**
-     * 发送RMQ消息
-     *
-     * @param product   产品线
-     * @param bizSystem 产品线的业务系统
-     * @param tag       消息tag
-     * @param data      消息内容
-     */
-//    public void send(String product, String bizSystem, String tag, String from, String data) throws Exception {
-//        send(product, bizSystem, tag, from, data);
-//    }
+
+    public static DefaultKafkaProducer getInstance(boolean isOutNet) {
+        if (isOutNet) {
+            return DefaultKafkaProducerHolder.outNetInstance;
+        } else {
+            return DefaultKafkaProducerHolder.instance;
+        }
+    }
 
     /**
+     * 内网调用方式
+     *
      * @param product
      * @param bizSystem
      * @param tag
      * @param from
      * @param data
-     *
      * @throws Exception
      */
     public void send(String product, String bizSystem, String tag, String from, String data) throws Exception {
-        MessageData messageData = new MessageData(KAFKA_PREFIX + (product+STR_APPEND+bizSystem+STR_APPEND+tag).toUpperCase(), data);
+        MessageData messageData = new MessageData(KAFKA_PREFIX + (product + STR_APPEND + bizSystem + STR_APPEND + tag).toUpperCase(), data);
         dapDataSender.send(messageData);
     }
+
+
 
     public void stop() {
 

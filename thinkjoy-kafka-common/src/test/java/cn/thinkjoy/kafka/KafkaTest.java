@@ -1,11 +1,11 @@
 package cn.thinkjoy.kafka;
 
-import cn.thinkjoy.dap.dataservice.DapConnectInfo;
-import cn.thinkjoy.dap.dataservice.DapDataSender;
 import cn.thinkjoy.dap.dataservice.MessageData;
+import cn.thinkjoy.dap.dataservice.ResourceListener;
+import com.alibaba.fastjson.JSON;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * TODO 一句话描述该类用途
@@ -18,29 +18,22 @@ import java.util.List;
 public class KafkaTest {
     public static void main(String[] args) {
         try {
-            DefaultKafkaProducer.getInstance().send("weixiao", "weixiao", "httpReq", "httpreq", "data");
+            //       DefaultKafkaProducer.getInstance(true).send("ucenter", "ucenter", "httpReq", "httpreq", "xjli111");
 
-//            //初始化服务连接对象
-//            String[] ipAndPorts = new String[]{
-//                    "123.59.110.72:9092", "123.59.110.72:9092"
-//            };
-//            DapConnectInfo dapConnectInfo = new DapConnectInfo(ipAndPorts);
-//
-////构造数据发送对象
-//            DapDataSender sender = new DapDataSender(dapConnectInfo);
-////资源名称，由大数据分析平台统一提供
-//            String resourceName = "RESOURCE_YZC_XSCJ";
-////组装发送消息
-//            List<MessageData> messageDataList = new ArrayList<MessageData>();
-//            for (int i = 0; i < 1000; i++) {
-////组装一条消息
-//                MessageData messageData = new MessageData(resourceName, "msg" + i);
-//                messageDataList.add(messageData);
-//            }
-////执行发送
-//            sender.send(messageDataList);
-////关闭连接
-//            sender.close();
+            Map<String, Object> map = new HashMap<>();
+            map.put("product", "ucenter");
+            map.put("bizSystem", "ucenter");
+            map.put("tag", "httpReq");
+            map.put("groupId", "1");
+            map.put("isOutNet", true);
+            map.put("auto.offset.reset", "smallest");
+            DefaultKafkaConsumer.getInstance(true).receive(map, new ResourceListener() {
+                @Override
+                public void onEvent(MessageData messageData) {
+                    System.out.println(JSON.toJSONString(messageData));
+
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
