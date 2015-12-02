@@ -31,10 +31,10 @@ public class DefaultKafkaProducer {
     public static final String HTTP_JS_FROM = "jsclient";
     private DapDataSender dapDataSender;
 
-    private static class DefaultKafkaProducerHolder {
-        private static DefaultKafkaProducer instance = new DefaultKafkaProducer(false);
-        private static DefaultKafkaProducer outNetInstance = new DefaultKafkaProducer(true);
-    }
+
+    private static DefaultKafkaProducer instance = null;
+    private static DefaultKafkaProducer instance1 = null;
+
 
     private DefaultKafkaProducer() {
         dapDataSender = KafkaMQSingleton.getInstance();
@@ -46,19 +46,19 @@ public class DefaultKafkaProducer {
         } else {
             dapDataSender = KafkaMQSingleton.getInstance();
         }
-
     }
-
-    public static DefaultKafkaProducer getInstance() {
-        return DefaultKafkaProducerHolder.instance;
-    }
-
 
     public static DefaultKafkaProducer getInstance(boolean isOutNet) {
         if (isOutNet) {
-            return DefaultKafkaProducerHolder.outNetInstance;
+            if (instance == null) {
+                instance = new DefaultKafkaProducer(isOutNet);
+            }
+            return instance;
         } else {
-            return DefaultKafkaProducerHolder.instance;
+            if (instance1 == null) {
+                instance1 = new DefaultKafkaProducer(isOutNet);
+            }
+            return instance1;
         }
     }
 
@@ -76,7 +76,6 @@ public class DefaultKafkaProducer {
         MessageData messageData = new MessageData(KAFKA_PREFIX + (product + STR_APPEND + bizSystem + STR_APPEND + tag).toUpperCase(), data);
         dapDataSender.send(messageData);
     }
-
 
 
     public void stop() {

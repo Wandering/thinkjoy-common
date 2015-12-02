@@ -17,23 +17,23 @@ import java.util.Map;
  */
 public class KafkaTest {
     public static void main(String[] args) {
-        try {
-            //       DefaultKafkaProducer.getInstance(true).send("ucenter", "ucenter", "httpReq", "httpreq", "xjli111");
+        try {                   DefaultKafkaProducer.getInstance(false).send("ucenter", "ucenter", "httpReq", "httpreq", "xjli111");
 
-            Map<String, Object> map = new HashMap<>();
-            map.put("product", "ucenter");
-            map.put("bizSystem", "ucenter");
-            map.put("tag", "httpReq");
-            map.put("groupId", "1");
-            map.put("isOutNet", true);
-            map.put("auto.offset.reset", "smallest");
-            DefaultKafkaConsumer.getInstance(true).receive(map, new ResourceListener() {
-                @Override
-                public void onEvent(MessageData messageData) {
-                    System.out.println(JSON.toJSONString(messageData));
-
-                }
-            });
+//            Map<String, Object> map = new HashMap<>();
+//            map.put("product", "ucenter");
+//            map.put("bizSystem", "ucenter");
+//            map.put("tag", "httpReq");
+//            map.put("groupId", "1");
+//            map.put("isOutNet", false);
+//            map.put("auto.commit.intervals.ms", "1000");
+//            map.put("auto.offset.reset", "smallest");
+//            DefaultKafkaConsumer.getInstance(false).receive(map, new ResourceListener() {
+//                @Override
+//                public void onEvent(MessageData messageData) {
+//                    System.out.println(JSON.toJSONString(messageData) + "===");
+//
+//                }
+//            });
         } catch (Exception e) {
             e.printStackTrace();
         }

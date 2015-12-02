@@ -27,7 +27,6 @@ public class KafkaMQSingleton {
     private static DapDataReceiver outNetReceiverInstance = null;
     private static DapDataReceiver receiverInstance = null;
     private static String REVEIVER_RMQ_BROKER_URL_OUT_NET = null;
-    private static String REVEIVER_RMQ_BROKER_URL = null;
 
 
     private KafkaMQSingleton() {
@@ -126,23 +125,9 @@ public class KafkaMQSingleton {
 
 
     public static synchronized DapDataReceiver getReceiverInstance() {
-        if (REVEIVER_RMQ_BROKER_URL == null || REVEIVER_RMQ_BROKER_URL.length() == 0) {
+        if (receiverInstance == null) {
             try {
-                REVEIVER_RMQ_BROKER_URL = DynConfigClientFactory.getClient().getConfig("cmc", "cmc", "common", "kafkaConsumer");
-            } catch (Exception e) {
-                logger.error("init RMQ broker url config error!", e);
-                System.exit(-1);
-            }
-        }
-        if (REVEIVER_RMQ_BROKER_URL == null || REVEIVER_RMQ_BROKER_URL.length() == 0) {
-            logger.error("init RMQ broker url config error! namesrvAddr is empty.");
-            System.exit(-1);
-        }
-        if (outNetReceiverInstance == null) {
-            String[] ipPorts = REVEIVER_RMQ_BROKER_URL.split(",");//   new String[]{RMQ_BROKER_URL, RMQ_BROKER_URL};
-            DapConnectInfo dapConnectInfo = new DapConnectInfo(ipPorts);
-            try {
-                receiverInstance = new DapDataReceiver(dapConnectInfo);
+                receiverInstance = new DapDataReceiver(null);
             } catch (Exception e) {
                 logger.error("init kafka error", e);
                 System.exit(-1);

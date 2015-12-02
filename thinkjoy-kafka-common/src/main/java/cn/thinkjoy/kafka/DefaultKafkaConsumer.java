@@ -1,5 +1,6 @@
 package cn.thinkjoy.kafka;
 
+import cn.thinkjoy.cloudstack.dynconfig.DynConfigClientFactory;
 import cn.thinkjoy.dap.dataservice.DapDataReceiver;
 import cn.thinkjoy.dap.dataservice.MessageData;
 import cn.thinkjoy.dap.dataservice.ResourceListener;
@@ -27,11 +28,8 @@ public class DefaultKafkaConsumer {
     public static final String STR_APPEND = "_";
     private DapDataReceiver dapDataReceiver;
 
-
-    private static class DefaultKafkaConsumerHolder {
-        private static DefaultKafkaConsumer instance = new DefaultKafkaConsumer(false);
-        private static DefaultKafkaConsumer outNetInstance = new DefaultKafkaConsumer(true);
-    }
+    private static DefaultKafkaConsumer instance = null;
+    private static DefaultKafkaConsumer instance1 = null;
 
 
     private DefaultKafkaConsumer(boolean isOutNet) {
@@ -45,9 +43,15 @@ public class DefaultKafkaConsumer {
 
     public static DefaultKafkaConsumer getInstance(boolean isOutNet) {
         if (isOutNet) {
-            return DefaultKafkaConsumerHolder.outNetInstance;
+            if (instance == null) {
+                instance = new DefaultKafkaConsumer(isOutNet);
+            }
+            return instance;
         } else {
-            return DefaultKafkaConsumerHolder.instance;
+            if (instance1 == null) {
+                instance1 = new DefaultKafkaConsumer(isOutNet);
+            }
+            return instance1;
         }
     }
 
@@ -96,16 +100,17 @@ public class DefaultKafkaConsumer {
 
         } else {
             props.put("group.id", group); ////消息接收端唯一标识，可保证接收端重启后根据上次接收位置读取数据。命名格式（group_产品名称_子产品名称_...)保证不同产品线group.id不同（必填）
+            props.put("zookeeper.connect", DynConfigClientFactory.getClient().getConfig("cmc", "cmc", "common", "kafkaConsumer"));
             dapDataReceiver.registerListener(props, new ResourceListener() {
                 @Override
                 public void onEvent(MessageData messageData) {
+                    System.out.println(messageData.getData());
                 }
             });
             dapDataReceiver.start();
         }
 
     }
-
 
     public void stop() {
 
