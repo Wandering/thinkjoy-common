@@ -60,14 +60,18 @@ public class DefaultKafkaProducer {
         if (isOutNet) {
             if (instance == null) {
                 synchronized (DefaultKafkaProducer.class) {
-                    instance = new DefaultKafkaProducer(isOutNet);
+                    if (instance == null) {
+                        instance = new DefaultKafkaProducer(isOutNet);
+                    }
                 }
             }
             return instance;
         } else {
             if (instance1 == null) {
                 synchronized (DefaultKafkaProducer.class) {
-                    instance1 = new DefaultKafkaProducer(isOutNet);
+                    if (instance1 == null) {
+                        instance1 = new DefaultKafkaProducer(isOutNet);
+                    }
                 }
             }
             return instance1;

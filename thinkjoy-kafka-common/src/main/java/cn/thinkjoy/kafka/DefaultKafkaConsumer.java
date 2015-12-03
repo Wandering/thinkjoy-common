@@ -45,14 +45,18 @@ public class DefaultKafkaConsumer {
         if (isOutNet) {
             if (instance == null) {
                 synchronized (DefaultKafkaConsumer.class) {
-                    instance = new DefaultKafkaConsumer(isOutNet);
+                    if (instance == null) {
+                        instance = new DefaultKafkaConsumer(isOutNet);
+                    }
                 }
             }
             return instance;
         } else {
             if (instance1 == null) {
                 synchronized (DefaultKafkaConsumer.class) {
-                    instance1 = new DefaultKafkaConsumer(isOutNet);
+                    if (instance1 == null) {
+                        instance1 = new DefaultKafkaConsumer(isOutNet);
+                    }
                 }
             }
             return instance1;
