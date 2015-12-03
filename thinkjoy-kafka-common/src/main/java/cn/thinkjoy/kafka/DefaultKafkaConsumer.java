@@ -28,8 +28,8 @@ public class DefaultKafkaConsumer {
     public static final String STR_APPEND = "_";
     private DapDataReceiver dapDataReceiver;
 
-    private static DefaultKafkaConsumer instance = null;
-    private static DefaultKafkaConsumer instance1 = null;
+    private volatile static DefaultKafkaConsumer instance = null;
+    private volatile static DefaultKafkaConsumer instance1 = null;
 
 
     private DefaultKafkaConsumer(boolean isOutNet) {
@@ -44,12 +44,16 @@ public class DefaultKafkaConsumer {
     public static synchronized DefaultKafkaConsumer getInstance(boolean isOutNet) {
         if (isOutNet) {
             if (instance == null) {
-                instance = new DefaultKafkaConsumer(isOutNet);
+                synchronized (DefaultKafkaConsumer.class) {
+                    instance = new DefaultKafkaConsumer(isOutNet);
+                }
             }
             return instance;
         } else {
             if (instance1 == null) {
-                instance1 = new DefaultKafkaConsumer(isOutNet);
+                synchronized (DefaultKafkaConsumer.class) {
+                    instance1 = new DefaultKafkaConsumer(isOutNet);
+                }
             }
             return instance1;
         }

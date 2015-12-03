@@ -32,8 +32,8 @@ public class DefaultKafkaProducer {
     private DapDataSender dapDataSender;
 
 
-    private static DefaultKafkaProducer instance = null;
-    private static DefaultKafkaProducer instance1 = null;
+    private volatile static DefaultKafkaProducer instance = null;
+    private volatile static DefaultKafkaProducer instance1 = null;
 
 
     private DefaultKafkaProducer() {
@@ -59,12 +59,16 @@ public class DefaultKafkaProducer {
     public static synchronized DefaultKafkaProducer getInstance(boolean isOutNet) {
         if (isOutNet) {
             if (instance == null) {
-                instance = new DefaultKafkaProducer(isOutNet);
+                synchronized (DefaultKafkaProducer.class) {
+                    instance = new DefaultKafkaProducer(isOutNet);
+                }
             }
             return instance;
         } else {
             if (instance1 == null) {
-                instance1 = new DefaultKafkaProducer(isOutNet);
+                synchronized (DefaultKafkaProducer.class) {
+                    instance1 = new DefaultKafkaProducer(isOutNet);
+                }
             }
             return instance1;
         }
