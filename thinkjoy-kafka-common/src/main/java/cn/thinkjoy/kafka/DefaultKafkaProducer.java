@@ -56,7 +56,7 @@ public class DefaultKafkaProducer {
         }
     }
 
-    public static DefaultKafkaProducer getInstance(boolean isOutNet) {
+    public static synchronized DefaultKafkaProducer getInstance(boolean isOutNet) {
         if (isOutNet) {
             if (instance == null) {
                 instance = new DefaultKafkaProducer(isOutNet);

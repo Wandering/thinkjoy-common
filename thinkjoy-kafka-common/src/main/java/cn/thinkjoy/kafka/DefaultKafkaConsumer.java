@@ -41,7 +41,7 @@ public class DefaultKafkaConsumer {
 
     }
 
-    public static DefaultKafkaConsumer getInstance(boolean isOutNet) {
+    public static synchronized DefaultKafkaConsumer getInstance(boolean isOutNet) {
         if (isOutNet) {
             if (instance == null) {
                 instance = new DefaultKafkaConsumer(isOutNet);
