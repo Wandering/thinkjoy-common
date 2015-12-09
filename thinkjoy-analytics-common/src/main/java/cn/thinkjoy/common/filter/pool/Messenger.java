@@ -41,58 +41,59 @@ import static cn.thinkjoy.common.filter.AnalyticsConstants.*;
  */
 //@Component
 public class Messenger implements Work {
-	public static final Logger logger = LoggerFactory.getLogger(Messenger.class);
+    public static final Logger logger = LoggerFactory.getLogger(Messenger.class);
 
-	public void execute(Map<String, Object> analyticsData) {
-		Entry entry = (Entry) analyticsData.get(ANALYTICS_DATA);
-		//String token = analyticsData.get(ANALYTICS_TOKEN).toString();
-		Message msg = getMessage(entry, null, (Map) analyticsData.get(USER_CONTEXT));
-		String data = JSON.toJSONString(msg);
+    public void execute(Map<String, Object> analyticsData) {
+        Entry entry = (Entry) analyticsData.get(ANALYTICS_DATA);
+        //String token = analyticsData.get(ANALYTICS_TOKEN).toString();
+        Message msg = getMessage(entry, null, (Map) analyticsData.get(USER_CONTEXT));
+        String data = JSON.toJSONString(msg);
 //		String analyticsServerUrl = analyticsData.get(ANALYTICS_SERVER_URL).toString();
 //		String port = analyticsData.get(ANALYTICS_SERVER_PORT).toString();
 
-        try{
+        try {
 //            DefaultRMQProducer.getInstance().send(CloudContextFactory.getCloudContext().getProduct(), CloudContextFactory.getCloudContext().getApplicationName(),
 //                    DefaultRMQProducer.HTTP_REQ, DefaultRMQProducer.HTTP_SERVER_FROM, data);
 
 
-            DefaultKafkaProducer.getInstance().send(CloudContextFactory.getCloudContext().getProductCode(), CloudContextFactory.getCloudContext().getApplicationName(),
+            DefaultKafkaProducer.getInstance(false).send(CloudContextFactory.getCloudContext().getProductCode(), CloudContextFactory.getCloudContext().getApplicationName(),
                     DefaultRMQProducer.HTTP_REQ, DefaultRMQProducer.HTTP_SERVER_FROM, data);
         } catch (Exception e) {
-            logger.error("rocketMQ producer send data error" + e);;
+            logger.error("rocketMQ producer send data error" + e);
+            ;
         }
-	}
+    }
 
-	public void terminate() {
-        DefaultKafkaProducer.getInstance().stop();
-	}
+    public void terminate() {
+        DefaultKafkaProducer.getInstance(false).stop();
+    }
 
-	public Message getMessage(Entry entry, String token, Map userContext) {
-		Message message = new Message();
-		message.setHar(setHar(entry));
-		message.setServiceToken(token);
+    public Message getMessage(Entry entry, String token, Map userContext) {
+        Message message = new Message();
+        message.setHar(setHar(entry));
+        message.setServiceToken(token);
         message.setUserContext(userContext);
-		return message;
-	}
+        return message;
+    }
 
-	private Har setHar(Entry entry) {
-		Har har = new Har();
-		har.setLog(setLog(entry));
-		return har;
-	}
+    private Har setHar(Entry entry) {
+        Har har = new Har();
+        har.setLog(setLog(entry));
+        return har;
+    }
 
-	private Log setLog(Entry entry) {
-		Log log = new Log();
-		log.setVersion(HAR_VERSION);
-		log.setCreator(setCreator());
-		log.getEntries().add(entry);
-		return log;
-	}
+    private Log setLog(Entry entry) {
+        Log log = new Log();
+        log.setVersion(HAR_VERSION);
+        log.setCreator(setCreator());
+        log.getEntries().add(entry);
+        return log;
+    }
 
-	private Creator setCreator() {
-		Creator creator = new Creator();
-		creator.setName(AGENT_NAME);
-		creator.setVersion(AGENT_VERSION);
-		return creator;
-	}
+    private Creator setCreator() {
+        Creator creator = new Creator();
+        creator.setName(AGENT_NAME);
+        creator.setVersion(AGENT_VERSION);
+        return creator;
+    }
 }

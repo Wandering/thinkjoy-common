@@ -1,5 +1,6 @@
 package cn.thinkjoy.kafka;
 
+import cn.thinkjoy.ReadEnv;
 import cn.thinkjoy.dap.dataservice.DapDataSender;
 import cn.thinkjoy.dap.dataservice.MessageData;
 import org.slf4j.Logger;
@@ -34,19 +35,6 @@ public class DefaultKafkaProducer {
 
     private volatile static DefaultKafkaProducer instance = null;
     private volatile static DefaultKafkaProducer instanceOut = null;
-
-
-    private DefaultKafkaProducer() {
-        dapDataSender = KafkaMQSingleton.getInstance();
-    }
-
-
-    public static DefaultKafkaProducer getInstance() {
-        if (instance == null) {
-            instance = new DefaultKafkaProducer(false);
-        }
-        return instance;
-    }
 
     private DefaultKafkaProducer(boolean isOutNet) {
         if (isOutNet) {
@@ -89,7 +77,7 @@ public class DefaultKafkaProducer {
      * @throws Exception
      */
     public void send(String product, String bizSystem, String tag, String from, String data) throws Exception {
-        MessageData messageData = new MessageData(KAFKA_PREFIX + (product + STR_APPEND + bizSystem + STR_APPEND + tag).toUpperCase(), data);
+        MessageData messageData = new MessageData(KAFKA_PREFIX + (product + STR_APPEND + bizSystem + STR_APPEND + tag + STR_APPEND + ReadEnv.readEnv()).toUpperCase(), data);
         dapDataSender.send(messageData);
     }
 

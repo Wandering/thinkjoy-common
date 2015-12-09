@@ -1,5 +1,6 @@
 package cn.thinkjoy.kafka;
 
+import cn.thinkjoy.ReadEnv;
 import cn.thinkjoy.cloudstack.dynconfig.DynConfigClientFactory;
 import cn.thinkjoy.dap.dataservice.DapDataReceiver;
 import cn.thinkjoy.dap.dataservice.MessageData;
@@ -29,7 +30,7 @@ public class DefaultKafkaConsumer {
     private DapDataReceiver dapDataReceiver;
 
     private volatile static DefaultKafkaConsumer instance = null;
-    private volatile static DefaultKafkaConsumer instance1 = null;
+    private volatile static DefaultKafkaConsumer instanceInner = null;
 
 
     private DefaultKafkaConsumer(boolean isOutNet) {
@@ -52,14 +53,14 @@ public class DefaultKafkaConsumer {
             }
             return instance;
         } else {
-            if (instance1 == null) {
+            if (instanceInner == null) {
                 synchronized (DefaultKafkaConsumer.class) {
-                    if (instance1 == null) {
-                        instance1 = new DefaultKafkaConsumer(isOutNet);
+                    if (instanceInner == null) {
+                        instanceInner = new DefaultKafkaConsumer(isOutNet);
                     }
                 }
             }
-            return instance1;
+            return instanceInner;
         }
     }
 
@@ -83,7 +84,7 @@ public class DefaultKafkaConsumer {
             isOutNet = (Boolean) param.get("isOutNet");
         }
 
-        String resourceName = KAFKA_PREFIX + (product + STR_APPEND + bizSystem + STR_APPEND + tag).toUpperCase();
+        String resourceName = KAFKA_PREFIX + (product + STR_APPEND + bizSystem + STR_APPEND + tag + STR_APPEND + ReadEnv.readEnv()).toUpperCase();
         String clientId = CLIENT_PREFIX + (product + STR_APPEND + bizSystem + STR_APPEND + groupId).toUpperCase();
         String group = GROUP_PREFIX + (product + STR_APPEND + bizSystem + STR_APPEND + groupId).toUpperCase();
 
