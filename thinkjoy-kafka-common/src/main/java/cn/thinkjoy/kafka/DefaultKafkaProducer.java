@@ -33,7 +33,7 @@ public class DefaultKafkaProducer {
 
 
     private volatile static DefaultKafkaProducer instance = null;
-    private volatile static DefaultKafkaProducer instance1 = null;
+    private volatile static DefaultKafkaProducer instanceOut = null;
 
 
     private DefaultKafkaProducer() {
@@ -42,10 +42,10 @@ public class DefaultKafkaProducer {
 
 
     public static DefaultKafkaProducer getInstance() {
-        if (instance1 == null) {
-            instance1 = new DefaultKafkaProducer(false);
+        if (instance == null) {
+            instance = new DefaultKafkaProducer(false);
         }
-        return instance1;
+        return instance;
     }
 
     private DefaultKafkaProducer(boolean isOutNet) {
@@ -58,6 +58,15 @@ public class DefaultKafkaProducer {
 
     public static synchronized DefaultKafkaProducer getInstance(boolean isOutNet) {
         if (isOutNet) {
+            if (instanceOut == null) {
+                synchronized (DefaultKafkaProducer.class) {
+                    if (instanceOut == null) {
+                        instanceOut = new DefaultKafkaProducer(isOutNet);
+                    }
+                }
+            }
+            return instanceOut;
+        } else {
             if (instance == null) {
                 synchronized (DefaultKafkaProducer.class) {
                     if (instance == null) {
@@ -66,15 +75,6 @@ public class DefaultKafkaProducer {
                 }
             }
             return instance;
-        } else {
-            if (instance1 == null) {
-                synchronized (DefaultKafkaProducer.class) {
-                    if (instance1 == null) {
-                        instance1 = new DefaultKafkaProducer(isOutNet);
-                    }
-                }
-            }
-            return instance1;
         }
     }
 
