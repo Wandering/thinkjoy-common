@@ -20,7 +20,7 @@ public class BaseDomain<T> implements Serializable {
     private T              id;
 
     public T getId() {
-        if( id instanceof BigInteger)
+        if( id instanceof BigInteger || id instanceof Integer)
             return (T)Long.valueOf(String.valueOf(this.id));
         else
             return this.id;
