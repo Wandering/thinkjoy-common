@@ -99,23 +99,13 @@ public class DefaultKafkaConsumer {
         if (isOutNet) {
             props.put("clientId", clientId); //消息接收端唯一标识，可保证接收端重启后根据上次接收位置读取数据。命名格式（client_产品名称_子产品名称_...)保证不同产品线clientId不同（必填）
             //注册监听，客户端需实现异步接收接口ResourceListener来接收数据
-            dapDataReceiver.registerListener(props, new ResourceListener() {
-                @Override
-                public void onEvent(MessageData messageData) {
-                }
-            });
-
+            dapDataReceiver.registerListener(props, listener);
             dapDataReceiver.start();
 
         } else {
             props.put("group.id", group); ////消息接收端唯一标识，可保证接收端重启后根据上次接收位置读取数据。命名格式（group_产品名称_子产品名称_...)保证不同产品线group.id不同（必填）
             props.put("zookeeper.connect", DynConfigClientFactory.getClient().getConfig("cmc", "cmc", "common", "kafkaConsumer"));
-            dapDataReceiver.registerListener(props, new ResourceListener() {
-                @Override
-                public void onEvent(MessageData messageData) {
-                    System.out.println(messageData.getData());
-                }
-            });
+            dapDataReceiver.registerListener(props,listener);
             dapDataReceiver.start();
         }
 
