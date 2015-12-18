@@ -26,7 +26,15 @@ public class BizData4PageBuilder {
      * @return
      */
     public static BizData4Page createBizData4Page(IBaseDAO dao, Map<String, Object> conditions, int curPage, int offset, int rows){
-        List mainData = dao.queryPage(conditions, offset, rows, null, null,null);
+        String orderBy = null;
+        String sortBy = null;
+        if (conditions.containsKey("orderBy")) {
+            orderBy = conditions.get("orderBy").toString();
+        }
+        if (conditions.containsKey("sortBy")) {
+            sortBy = conditions.get("sortBy").toString();
+        }
+        List mainData = dao.queryPage(conditions, offset, rows, orderBy, sortBy,null);
         int records = dao.count(conditions);
 
         BizData4Page bizData4Page = new BizData4Page();
