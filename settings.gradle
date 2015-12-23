@@ -29,3 +29,5 @@ include 'thinkjoy-kafka-common'
 
 include 'thinkjoy-context-common'
 
+include 'thinkjoy-db-router-common'
+
