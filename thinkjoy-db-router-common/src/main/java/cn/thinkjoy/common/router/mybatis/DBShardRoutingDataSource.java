@@ -1,4 +1,4 @@
-package cn.thinkjoy.cloudstack.router.mybatis;
+package cn.thinkjoy.common.router.mybatis;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 

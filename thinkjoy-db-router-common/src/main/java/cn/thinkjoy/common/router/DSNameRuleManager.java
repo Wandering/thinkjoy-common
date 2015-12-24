@@ -1,4 +1,4 @@
-package cn.thinkjoy.cloudstack.router;
+package cn.thinkjoy.common.router;
 
 import org.springframework.stereotype.Component;
 

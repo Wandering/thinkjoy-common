@@ -1,9 +1,9 @@
-package cn.thinkjoy.common.managerui.shard.plugins;
+package cn.thinkjoy.common.router.mybatis.plugins;
 
-import cn.thinkjoy.cloudstack.router.DSNameRuleManager;
-import cn.thinkjoy.cloudstack.router.annotation.DBShardAnnotation;
-import cn.thinkjoy.cloudstack.router.mybatis.DataSourceContextHolder;
 import cn.thinkjoy.common.domain.ShardBaseDomain;
+import cn.thinkjoy.common.router.DSNameRuleManager;
+import cn.thinkjoy.common.router.annotation.DBShardAnnotation;
+import cn.thinkjoy.common.router.mybatis.DataSourceContextHolder;
 import cn.thinkjoy.common.utils.ShardDbContext;
 import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.executor.statement.StatementHandler;

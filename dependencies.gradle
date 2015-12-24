@@ -32,4 +32,7 @@ allprojects {
     servletVersion = "3.1.0"
 
     dapDataServiceVersion = "0.0.31-SNAPSHOT"
+
+
+    slf4jVersion = "1.7.7"
 }

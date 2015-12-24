@@ -1,0 +1,13 @@
+tasks.withType(Compile) {
+    options.encoding = "UTF-8"
+}
+dependencies {
+    compile project(':thinkjoy-domain-common')
+    compile project(':thinkjoy-biz-common')
+
+    compile "org.springframework:spring-context:$springVersion"
+    compile "org.springframework:spring-jdbc:$springVersion"
+    compile "org.mybatis:mybatis:3.2.2"
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+    compile "org.slf4j:log4j-over-slf4j:$slf4jVersion"
+}

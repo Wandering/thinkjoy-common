@@ -1,11 +1,8 @@
-package cn.thinkjoy.cloudstack.router.mybatis.plugins;
+package cn.thinkjoy.common.router.mybatis.plugins;
 
-import cn.thinkjoy.cloudstack.dynconfig.DynConfigClientFactory;
-import cn.thinkjoy.cloudstack.dynconfig.IChangeListener;
-import cn.thinkjoy.cloudstack.dynconfig.domain.Configuration;
-import cn.thinkjoy.cloudstack.router.DSNameRuleManager;
-import cn.thinkjoy.cloudstack.router.annotation.DBShardAnnotation;
-import cn.thinkjoy.cloudstack.router.mybatis.DataSourceContextHolder;
+import cn.thinkjoy.common.router.DSNameRuleManager;
+import cn.thinkjoy.common.router.annotation.DBShardAnnotation;
+import cn.thinkjoy.common.router.mybatis.DataSourceContextHolder;
 import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -32,13 +29,13 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 /**
- * 分库 + 读写分离拦截器
- * <p/>
- * 创建时间: 15/4/27 下午8:22<br/>
- *
- * @author qyang
- * @since v0.0.1
- */
+* 分库 + 读写分离拦截器
+* <p/>
+* 创建时间: 15/4/27 下午8:22<br/>
+*
+* @author qyang
+* @since v0.0.1
+*/
 @Intercepts({ @Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class }) })
 @Component
 public class RouterInterceptor implements Interceptor {
@@ -56,34 +53,6 @@ public class RouterInterceptor implements Interceptor {
     private DSNameRuleManager dsNameRuleManager;
     private boolean rwSwitch = true;
 
-//    @PostConstruct
-//    public void init(){
-//        try {
-//            //支持动态关闭 读写分离特性
-//            rwSwitch = Boolean.valueOf(DynConfigClientFactory.getClient().getConfig("cs", "common", "rwSwitch"));
-//
-//            DynConfigClientFactory.getClient().registerListeners("cs", "common", "rwSwitch", new IChangeListener() {
-//                @Override
-//                public Executor getExecutor() {
-//                    return Executors.newSingleThreadExecutor();
-//                }
-//
-//                @Override
-//                public void receiveConfigInfo(final Configuration configuration) {
-//                    getExecutor().execute(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            LOGGER.info("old ccServiceUrl {}, now ccServiceUrl {}", rwSwitch, configuration.getConfig());
-//                            rwSwitch = Boolean.valueOf(configuration.getConfig());
-//                        }
-//                    });
-//                }
-//            });
-//        } catch (Exception e) {
-//            LOGGER.error("inti rwSwitch error, exit!");
-//            System.exit(-1);
-//        }
-//    }
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {

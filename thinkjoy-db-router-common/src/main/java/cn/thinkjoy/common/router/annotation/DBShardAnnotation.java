@@ -1,4 +1,4 @@
-package cn.thinkjoy.cloudstack.router.annotation;
+package cn.thinkjoy.common.router.annotation;
 
 import java.lang.annotation.*;
 
