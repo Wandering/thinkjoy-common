@@ -87,13 +87,12 @@ public class ShardRouterInterceptor implements Interceptor {
                     if (props.size()==0) {
                         props = ShardDbContext.getCurrentShardDbMap();
                     }
-                    //如果没有 对应的参数 或 个数不匹配 不做任何处理 照常进行
-                    if (props.size()==0) {
-                        LOGGER.warn("{} no router handler", mappId);
-                        // 传递给下一个拦截器处理
-                        return invocation.proceed();
-                    }
                 }
+            }
+            if (props==null || props.size()==0 ) {
+                LOGGER.warn("{} no router handler", mappId);
+                // 传递给下一个拦截器处理
+                return invocation.proceed();
             }
             slice = dsNameRuleManager.dsSlice(dbShardAnnotation.ruleKey(), props);
             DataSourceContextHolder.setContextType(slice);
