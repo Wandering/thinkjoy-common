@@ -76,12 +76,10 @@ public class ShardRouterInterceptor implements Interceptor {
 
                 Object object = boundSql.getParameterObject();
                 //对象中获取条件
-                if(object instanceof ShardBaseDomain)
-                {
+                if(object instanceof ShardBaseDomain) {
                     ShardBaseDomain shardBaseDomain = (ShardBaseDomain)object;
                     props = shardBaseDomain.getShardMap();
-                }
-                else {
+                } else {
                     paramMap = ((MapperMethod.ParamMap) ((BoundSql) metaStatementHandler.getValue("delegate.boundSql")).getParameterObject());
                     //单方法中获取
                     for (String key : dbShardAnnotation.ruleProps()) {
@@ -100,9 +98,7 @@ public class ShardRouterInterceptor implements Interceptor {
                         return invocation.proceed();
                     }
                 }
-
             }
-
             slice = dsNameRuleManager.dsSlice(dbShardAnnotation.ruleKey(), props);
             DataSourceContextHolder.setContextType(slice);
         }
