@@ -33,25 +33,21 @@ import java.util.Properties;
 @Component
 public class ShardRouterInterceptor implements Interceptor {
     private static final Logger LOGGER = LoggerFactory.getLogger(ShardRouterInterceptor.class);
-    //    private static final String tag = TableSegInterceptor.class.getName();
     private static final ObjectFactory DEFAULT_OBJECT_FACTORY = new DefaultObjectFactory();
     private static final ObjectWrapperFactory DEFAULT_OBJECT_WRAPPER_FACTORY = new DefaultObjectWrapperFactory();
     public static final String DS_PREFIX = "dataSource-";
 
     @Autowired
     private AbstractRoutingDataSource abstractRoutingDataSource;
+
     @Autowired
     private DSNameRuleManager dsNameRuleManager;
-    private boolean rwSwitch = true;
 
-    private String defaultRuleKey = "default";
 
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
-        if(!rwSwitch){ //关闭
-            return invocation.proceed();
-        }
+
         StatementHandler statementHandler = (StatementHandler) invocation
                 .getTarget();
         MetaObject metaStatementHandler = MetaObject.forObject(
@@ -105,19 +101,6 @@ public class ShardRouterInterceptor implements Interceptor {
         else {
             return invocation.proceed();
         }
-//        else {
-//            Map<String, Object> map = ShardDbContext.getCurrentShardDbMap();
-//
-//            if(map!=null) {
-//                for (Map.Entry<String, Object> entry : map.entrySet()) {
-//                    props.put(entry.getKey(), entry.getValue().toString());
-//                }
-//
-//            }
-//            slice = dsNameRuleManager.dsSlice(defaultRuleKey, props);
-//            DataSourceContextHolder.setContextType(slice);
-//
-//        }
 
         invocation.getArgs()[0] = abstractRoutingDataSource.getConnection();
         // 传递给下一个拦截器处理
