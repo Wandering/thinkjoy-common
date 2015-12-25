@@ -73,48 +73,33 @@ public class ShardRouterInterceptor implements Interceptor {
                 props = DataSourceContextHolder.getRouteProps();
             } else {
                 BoundSql boundSql= (BoundSql) metaStatementHandler.getValue("delegate.boundSql");
-                try
+
+                Object object = boundSql.getParameterObject();
+                //对象中获取条件
+                if(object instanceof ShardBaseDomain)
                 {
-                    Object object = boundSql.getParameterObject();
-
-                    if(object instanceof ShardBaseDomain)
-                    {
-                        ShardBaseDomain shardBaseDomain = (ShardBaseDomain)object;
-                        Map<String,Object> map = shardBaseDomain.getShardMap();
-                        for(Map.Entry<String,Object> entry :map.entrySet())
-                        {
-                            props.put(entry.getKey(),entry.getValue().toString());
-                        }
-                    }
-                    else {
-                        paramMap = ((MapperMethod.ParamMap) ((BoundSql) metaStatementHandler.getValue("delegate.boundSql")).getParameterObject());
-                        for (String key : dbShardAnnotation.ruleProps()) {
-                            if(paramMap.containsKey(key)) {
-                                props.put(key, String.valueOf(paramMap.get(key)));
-                            }
-                        }
-                        if (props.size()==0) {
-                            Map<String, Object> map = ShardDbContext.getCurrentShardDbMap();
-                            if(map!=null) {
-                                for (Map.Entry<String, Object> entry : map.entrySet()) {
-                                    props.put(entry.getKey(), entry.getValue().toString());
-                                }
-                            }
-                        }
-                        //如果没有 对应的参数 或 个数不匹配 不做任何处理 照常进行
-                        if (props.size()==0) {
-                            LOGGER.warn("{} no router handler", mappId);
-                            // 传递给下一个拦截器处理
-                            return invocation.proceed();
-                        }
-                    }
-
-
-                }catch (Exception ex)
-                {
-                    return invocation.proceed();
+                    ShardBaseDomain shardBaseDomain = (ShardBaseDomain)object;
+                    props = shardBaseDomain.getShardMap();
                 }
-
+                else {
+                    paramMap = ((MapperMethod.ParamMap) ((BoundSql) metaStatementHandler.getValue("delegate.boundSql")).getParameterObject());
+                    //单方法中获取
+                    for (String key : dbShardAnnotation.ruleProps()) {
+                        if(paramMap.containsKey(key)) {
+                            props.put(key, String.valueOf(paramMap.get(key)));
+                        }
+                    }
+                    //上下文中获取条件
+                    if (props.size()==0) {
+                        props = ShardDbContext.getCurrentShardDbMap();
+                    }
+                    //如果没有 对应的参数 或 个数不匹配 不做任何处理 照常进行
+                    if (props.size()==0) {
+                        LOGGER.warn("{} no router handler", mappId);
+                        // 传递给下一个拦截器处理
+                        return invocation.proceed();
+                    }
+                }
 
             }
 

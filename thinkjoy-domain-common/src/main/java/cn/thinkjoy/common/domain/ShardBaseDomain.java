@@ -9,13 +9,13 @@ public class ShardBaseDomain<T> extends CreateBaseDomain<T> {
     /**
      * 分库选库条件数据
      */
-    private Map<String, Object> shardMap;
+    private Map<String, String> shardMap;
 
-    public Map<String, Object> getShardMap() {
+    public Map<String, String> getShardMap() {
         return shardMap;
     }
 
-    public void setShardMap(Map<String, Object> shardMap) {
+    public void setShardMap(Map<String, String> shardMap) {
         this.shardMap = shardMap;
     }
 

@@ -16,13 +16,13 @@ import java.util.Map;
  */
 public class ShardDbContext {
 
-    private static ThreadLocal<Map<String,Object>> context = new ThreadLocal<Map<String,Object>>();
+    private static ThreadLocal<Map<String,String>> context = new ThreadLocal<Map<String,String>>();
 
-    public static Map<String,Object> getCurrentShardDbMap(){
+    public static Map<String,String> getCurrentShardDbMap(){
         return context.get();
     }
 
-    public static void setShardDbMap(Map<String,Object> map){
+    public static void setShardDbMap(Map<String,String> map){
         context.set(map);
     }
 
