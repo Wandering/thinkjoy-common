@@ -25,8 +25,10 @@ public class User extends UserDomain<Long> {
     private Integer employeeId;
     //产品线
 	private String product;
-	//产品线
+	//真实姓名
 	private String realName;
+	//电子邮件
+	private String email;
 
 
 	//扩展字段可以添加想要的个性化属性
@@ -97,6 +99,14 @@ public class User extends UserDomain<Long> {
 		return new EqualsBuilder()
 			.append(getId(),other.getId())
 			.isEquals();
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getRealName() {
