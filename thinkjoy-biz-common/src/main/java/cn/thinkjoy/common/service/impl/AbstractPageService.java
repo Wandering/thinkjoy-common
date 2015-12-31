@@ -8,6 +8,7 @@ import cn.thinkjoy.common.service.IDataPermService;
 import cn.thinkjoy.common.service.IPageService;
 import cn.thinkjoy.common.utils.BizData4PageBuilder;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -31,6 +32,13 @@ public abstract class AbstractPageService<D extends IBaseDAO,T extends BaseDomai
 
     @Override
     public BizData4Page queryPageByDataPerm(String resUri, Map<String, Object> conditions, int curPage, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum) {
+        if (StringUtils.isNotEmpty(orderBy)) {
+            conditions.put("orderBy",orderBy);
+        }
+
+        if (sqlOrderEnum!=null) {
+            conditions.put("sortBy",sqlOrderEnum.getAction());
+        }
         return BizData4PageBuilder.createBizData4Page(getDao(), conditions, curPage, offset, rows);
     }
 
