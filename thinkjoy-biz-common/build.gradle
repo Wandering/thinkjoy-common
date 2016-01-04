@@ -14,4 +14,5 @@ dependencies {
 
     compile project (':thinkjoy-protocol-common')
     compile project (':thinkjoy-domain-common')
+    compile project (':thinkjoy-mybatis-common')
 }

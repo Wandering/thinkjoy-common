@@ -3,12 +3,11 @@ package cn.thinkjoy.common.service.impl;
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.domain.view.BizData4Page;
-import cn.thinkjoy.common.service.IDataPermAware;
-import cn.thinkjoy.common.service.IDataPermService;
+import cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria;
+import cn.thinkjoy.common.mybatis.core.mybatis.paging.PagingResult;
 import cn.thinkjoy.common.service.IPageService;
 import cn.thinkjoy.common.utils.BizData4PageBuilder;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
@@ -191,6 +190,32 @@ public abstract class AbstractPageService<D extends IBaseDAO,T extends BaseDomai
         return bizData4Page;
     }
 
+    /**
+     * 通过Criteria条件对象分页查询实体
+     * @param criteria
+     * @return
+     */
+    public BizData4Page pagingByCriteria(Criteria criteria){
+        PagingResult<T> pagingResult = getDao().pagingByCriteria(criteria);
+        int records = Integer.parseInt(String.valueOf(pagingResult.getTotalCount()));//this.countByCriteria(criteria);
+
+        BizData4Page bizData4Page = new BizData4Page();
+        bizData4Page.setRows(pagingResult.getResult());
+        bizData4Page.setPage(Integer.parseInt(String.valueOf(pagingResult.getOffset())));
+        bizData4Page.setRecords(records);
+        bizData4Page.setTotal(Integer.parseInt(String.valueOf(pagingResult.getTotalPage())));
+
+        return bizData4Page;
+    }
+
+    /**
+     * 通过Criteria条件对象查询实体数目
+     * @param criteria
+     * @return int
+     */
+    public int countByCriteria(Criteria criteria){
+        return getDao().countByCriteria(criteria);
+    }
 
 }
 

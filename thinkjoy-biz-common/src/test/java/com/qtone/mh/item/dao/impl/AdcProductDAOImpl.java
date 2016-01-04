@@ -1,8 +1,8 @@
 package com.qtone.mh.item.dao.impl;
 
 import cn.thinkjoy.common.mybatis.core.mybatis.dao.impl.SimpleMyBatisDAO;
-import com.qtone.mh.item.dao.AdcProductDAO;
 import com.qtone.mh.item.entity.AdcProduct;
+import com.qtone.mh.item.dao.AdcProductDAO;
 
 /**
  * 

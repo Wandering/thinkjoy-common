@@ -1,6 +1,8 @@
 package cn.thinkjoy.common.dao;
 
 import cn.thinkjoy.common.domain.BaseDomain;
+import cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria;
+import cn.thinkjoy.common.mybatis.core.mybatis.paging.PagingResult;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -15,7 +17,7 @@ import java.util.Map;
 public interface IBaseDAO<T extends BaseDomain> {
 
     /**
-     * 保存单一对象，如果要保存多个对象集合，请参看{@link #insertList(java.util.List)}
+     * 保存单一对象
      *
      * @param entity
      */
@@ -186,8 +188,6 @@ public interface IBaseDAO<T extends BaseDomain> {
 
     /**
      * 增加排序支持
-     * @param property
-     * @param value
      * @param orderBy
      * @param sortBy
      * @return
@@ -249,7 +249,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @name selectMaxId
      * @active 查询实体对应表最大Id
      * @time 上午10:04:05
-     * @exception/throws 如果主键类型不为long，会抛出类型转换异常
+     * @exception /throws 如果主键类型不为long，会抛出类型转换异常
      * @return 返回泛型参数对应表的主键最大值
      */
     public Object selectMaxId();
@@ -262,11 +262,6 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @param id
      *            要更新或保存的对象的id
      * @return 返回更新或保存的对象。
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
-     * @throws SecurityException
-     * @throws IllegalArgumentException
      */
     public T updateOrSave(@Param("condition") T t, @Param("condition") Long id);
 
@@ -296,6 +291,34 @@ public interface IBaseDAO<T extends BaseDomain> {
     public List<Map> queryBySql(@Param("executeSql") String executeSql);
 
     public Long queryBySqlCount(@Param("executeSqlCount") String executeSql);
+
+    /**
+     * 通过Criteria条件对象查询实体数目
+     * @param criteria
+     * @return int
+     */
+    public int countByCriteria(Criteria criteria);
+
+    /**
+     * 通过Criteria条件对象查询实体集合
+     * @param criteria
+     * @return List<T>
+     */
+    public List<T> findByCriteria(Criteria criteria);
+
+    /**
+     * 通过Criteria条件对象查询实体
+     * @param criteria
+     * @return T
+     */
+    public T findOneByCriteria(Criteria criteria);
+
+    /**
+     * 通过Criteria条件对象分页查询实体
+     * @param criteria
+     * @return PagingResult<T>
+     */
+    public PagingResult<T> pagingByCriteria(Criteria criteria);
 
     /**
      * 取得泛型类型
