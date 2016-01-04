@@ -445,7 +445,7 @@ selectList
             resultType="Role" >
         select
         *
-        from dap_role A
+        from dap_role
         <if test="_parameter != null" >
             <where >
                 <include refid="Global.Where_Clause" />
@@ -456,6 +456,53 @@ selectList
             <foreach collection="orderBys" item="orderBy" separator="," >
                 ${orderBy}
             </foreach>
+        </if>
+    </select>
+
+    <select id="countByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria" resultType="java.lang.Integer" >
+        select count(1) from dap_role
+        <if test="_parameter != null" >
+            <where >
+                <include refid="Global.Where_Clause" />
+            </where>
+        </if>
+    </select>
+
+    <select id="findOneByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria" resultType="Role" >
+        select
+        *
+        from dap_role
+        <if test="_parameter != null" >
+            <where >
+                <include refid="Global.Where_Clause" />
+            </where>
+        </if>
+        <if test="hasOrderBy" >
+            order by
+            <foreach collection="orderBys" item="orderBy" separator="," >
+                ${orderBy}
+            </foreach>
+        </if>
+        limit 0,1
+    </select>
+
+    <select id="pagingByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria" resultType="Role" >
+        select
+        *
+        from dap_role
+        <if test="_parameter != null" >
+            <where >
+                <include refid="Global.Where_Clause" />
+            </where>
+        </if>
+        <if test="hasOrderBy" >
+            order by
+            <foreach collection="orderBys" item="orderBy" separator="," >
+                ${orderBy}
+            </foreach>
+        </if>
+        <if test="hasLimit" >
+            limit ${first - 1},${last - first}
         </if>
     </select>
 

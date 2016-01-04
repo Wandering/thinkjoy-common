@@ -2,7 +2,6 @@ package cn.thinkjoy.common.dao;
 
 import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria;
-import cn.thinkjoy.common.mybatis.core.mybatis.paging.PagingResult;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -318,7 +317,7 @@ public interface IBaseDAO<T extends BaseDomain> {
      * @param criteria
      * @return PagingResult<T>
      */
-    public PagingResult<T> pagingByCriteria(Criteria criteria);
+    public List<T> pagingByCriteria(Criteria criteria);
 
     /**
      * 取得泛型类型

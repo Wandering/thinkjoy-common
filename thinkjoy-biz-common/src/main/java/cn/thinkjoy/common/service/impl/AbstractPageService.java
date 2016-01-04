@@ -4,7 +4,6 @@ import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.domain.view.BizData4Page;
 import cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria;
-import cn.thinkjoy.common.mybatis.core.mybatis.paging.PagingResult;
 import cn.thinkjoy.common.service.IPageService;
 import cn.thinkjoy.common.utils.BizData4PageBuilder;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
@@ -196,14 +195,21 @@ public abstract class AbstractPageService<D extends IBaseDAO,T extends BaseDomai
      * @return
      */
     public BizData4Page pagingByCriteria(Criteria criteria){
-        PagingResult<T> pagingResult = getDao().pagingByCriteria(criteria);
-        int records = Integer.parseInt(String.valueOf(pagingResult.getTotalCount()));//this.countByCriteria(criteria);
+        int records = getDao().countByCriteria(criteria);
+        List<T> result = getDao().pagingByCriteria(criteria);
 
         BizData4Page bizData4Page = new BizData4Page();
-        bizData4Page.setRows(pagingResult.getResult());
-        bizData4Page.setPage(Integer.parseInt(String.valueOf(pagingResult.getOffset())));
+        bizData4Page.setRows(result);
+        bizData4Page.setPage(criteria.getPagination().getPageNo());
+        bizData4Page.setPagesize(criteria.getPagination().getPageSize());
         bizData4Page.setRecords(records);
-        bizData4Page.setTotal(Integer.parseInt(String.valueOf(pagingResult.getTotalPage())));
+
+        int total = records / criteria.getPagination().getPageSize();
+        int mod = records % criteria.getPagination().getPageSize();
+        if(mod > 0){
+            total = total + 1;
+        }
+        bizData4Page.setTotal(total);
 
         return bizData4Page;
     }

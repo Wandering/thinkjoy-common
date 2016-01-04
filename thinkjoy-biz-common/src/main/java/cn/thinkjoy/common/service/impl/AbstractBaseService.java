@@ -325,4 +325,5 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
     public T findOneByCriteria(Criteria criteria){
         return findOneByCriteria(criteria);
     }
+
 }
