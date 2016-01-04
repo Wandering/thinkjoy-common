@@ -1,5 +1,7 @@
 package cn.thinkjoy.common.mybatis.core.mybatis.criteria;
 
+import cn.thinkjoy.common.mybatis.core.mybatis.paging.Pagination;
+
 import java.util.List;
 import java.util.Map;
 
@@ -21,18 +23,19 @@ public interface Criteria {
 	Criteria limit(Long start, Long end);
 
 	/**
-	 * 设置分页查询开始索引
-	 * 
-	 * @param start
-	 *            分页查询开始索引
+	 * 设置分页对象
+	 * @param pagination
+	 * @return
+	 */
+	Criteria page(Pagination pagination);
+
+	/**
+	 * 获取分页查询开始索引
 	 */
 	Long getFirst();
 
 	/**
-	 * 设置结束查询开始索引
-	 * 
-	 * @param end
-	 *            分页查询结束索引
+	 * 获取结束查询开始索引
 	 */
 	Long getLast();
 
@@ -130,6 +133,18 @@ public interface Criteria {
 	 * @return
 	 */
 	Criteria addParams(Object... values);
+
+	/**
+	 * 设置分页对象
+	 * @param pagination
+	 */
+	void setPagination(Pagination pagination);
+
+	/**
+	 * 获取分页对象
+	 * @return
+	 */
+	Pagination getPagination();
 
 	String toString();
 

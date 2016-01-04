@@ -4,6 +4,7 @@ import cn.thinkjoy.common.mybatis.core.mybatis.criteria.Condition;
 import cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria;
 import cn.thinkjoy.common.mybatis.core.mybatis.criteria.Logic;
 import cn.thinkjoy.common.mybatis.core.mybatis.criteria.OrderBy;
+import cn.thinkjoy.common.mybatis.core.mybatis.paging.Pagination;
 import cn.thinkjoy.common.mybatis.core.mybatis.utils.Lists;
 import cn.thinkjoy.common.mybatis.core.mybatis.utils.Maps;
 
@@ -26,6 +27,8 @@ public class DefaultCriteria implements Criteria, Serializable {
 
 	protected Long end;
 
+	protected Pagination pagination;
+
 	protected List<Condition> conditions = Lists.newList();
 
 	protected List<OrderBy> orderBys = Lists.newList();
@@ -36,6 +39,11 @@ public class DefaultCriteria implements Criteria, Serializable {
 		this.start = start;
 		this.end = end;
 		this.limitable = true;
+		return this;
+	}
+
+	public Criteria page(Pagination pagination){
+		this.pagination = pagination;
 		return this;
 	}
 
@@ -110,4 +118,11 @@ public class DefaultCriteria implements Criteria, Serializable {
 		return this;
 	}
 
+	public void setPagination(Pagination pagination) {
+		this.pagination = pagination;
+	}
+
+	public Pagination getPagination() {
+		return this.pagination;
+	}
 }

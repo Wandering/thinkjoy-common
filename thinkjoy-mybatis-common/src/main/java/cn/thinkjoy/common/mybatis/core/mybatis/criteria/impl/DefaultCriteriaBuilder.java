@@ -243,6 +243,7 @@ public class DefaultCriteriaBuilder implements CriteriaBuilder {
 		Criteria criteria = Cnd.createCriteria().add(cnds);
 		if (pagination != null) {
 			criteria.limit(new Long(pagination.getFirst()), new Long(pagination.getLast()));
+			criteria.page(pagination);//以方其他地方用到分页对象中的数据
 			if (pagination.isOrderBySetted()) {
 				add(new DefaultOrderBy(pagination.getOrderBy(), Order.valueOf(pagination.getOrder())));
 			}
