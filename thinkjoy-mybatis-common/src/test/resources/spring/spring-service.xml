@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd"
+	default-lazy-init="true">
+
+	<description>Spring Configuration</description>
+
+	<!-- 添加注解驱动 -->
+	<context:annotation-config />
+
+	<!-- 默认扫描的包路径 -->
+	<context:component-scan base-package="cn.thinkjoy" />
+	<context:component-scan base-package="com.qtone.mh" />
+
+	<!-- 开启父类代理模式 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+	<!-- 必须配置 -->
+	<aop:config />
+
+	<!-- 事务管理器配置,单数据源事务 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 定义事务 -->
+	<!--<tx:advice id="transactionAdvice" transaction-manager="transactionManager">-->
+		<!--<tx:attributes>-->
+			<!--<tx:method name="add*" propagation="REQUIRED" rollback-for="java.lang.Exception"-->
+				<!--read-only="false" />-->
+			<!--<tx:method name="update*" propagation="REQUIRED"-->
+				<!--rollback-for="java.lang.Exception" read-only="false" />-->
+		<!--</tx:attributes>-->
+	<!--</tx:advice>-->
+
+	<!--&lt;!&ndash; 拦截器方式配置事务 &ndash;&gt;-->
+	<!--<aop:config>-->
+		<!--<aop:pointcut id="transactionPointcut"-->
+			<!--expression="execution(public * cn.thinkjoy.*.*(..))" /> &lt;!&ndash;把事务控制在Service层 &ndash;&gt;-->
+		<!--<aop:advisor pointcut-ref="transactionPointcut"-->
+			<!--advice-ref="transactionAdvice" />-->
+	<!--</aop:config>-->
+
+	<!-- 数据源配置, 使用 BoneCP 数据库连接池 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 基本属性 url、user、password -->
+		<property name="url" value="jdbc:mysql://localhost:3307/fengchao?useUnicode=true&amp;characterEncoding=UTF-8" />
+		<property name="username" value="root" />
+		<property name="password" value="123456" />
+		<!-- 配置初始化大小、最小、最大 -->
+		<!--<property name="initialSize" value="${qtone.mh.jdbc.pool.initialSize}" />-->
+		<!--<property name="minIdle" value="${qtone.mh.jdbc.pool.minIdle}" />-->
+		<!--<property name="maxActive" value="${qtone.mh.jdbc.pool.maxActive}" />-->
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="60000" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="defaultAutoCommit" value="false" />
+		<property name="validationQuery" value="SELECT 'x' from dual" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小（Oracle使用） -->
+		<!--<property name="poolPreparedStatements" value="true" />-->
+		<!--<property name="maxPoolPreparedStatementPerConnectionSize"-->
+			<!--value="${qtone.mh.jdbc.pool.maxPSCacheSize}" />-->
+		<!-- 配置监控统计拦截的filters -->
+		<property name="filters" value="stat" />
+	</bean>
+
+	<!-- define the SqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!--<property name="configLocation" value="classpath:mybatis-config.xml" />-->
+		<!-- 自动扫描domain目录, 省掉Configuration.xml里的手工配置 -->
+		<property name="typeAliasesPackage" value="cn.thinkjoy.domain"/>
+		<property name="mapperLocations">
+			<list>
+				<value>classpath*:/mybatis/*.xml</value>
+				<value>classpath*:/mybatis-base-sql.xml</value>
+			</list>
+		</property>
+		<property name="plugins">
+			<array>
+				<ref bean="pagingHandlerInterceptor" />
+			</array>
+		</property>
+	</bean>
+
+	<!-- 数据分页插件 -->
+	<bean id="pagingHandlerInterceptor"
+		class="cn.thinkjoy.common.mybatis.core.mybatis.interceptor.PagingHandlerInterceptor" />
+
+	<!-- 数据库选择器 -->
+	<bean id="dbSelector" class="cn.thinkjoy.common.mybatis.core.mybatis.db.DBSelector">
+		<property name="dbType" value="mysql" />
+	</bean>
+
+</beans>

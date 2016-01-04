@@ -1,0 +1,113 @@
+package cn.thinkjoy.common.mybatis.core.mybatis.criteria.impl;
+
+import cn.thinkjoy.common.mybatis.core.mybatis.criteria.Condition;
+import cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria;
+import cn.thinkjoy.common.mybatis.core.mybatis.criteria.Logic;
+import cn.thinkjoy.common.mybatis.core.mybatis.criteria.OrderBy;
+import cn.thinkjoy.common.mybatis.core.mybatis.utils.Lists;
+import cn.thinkjoy.common.mybatis.core.mybatis.utils.Maps;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 
+ * Criteria 默认实现类
+ * 
+ */
+@SuppressWarnings("serial")
+public class DefaultCriteria implements Criteria, Serializable {
+
+	protected boolean limitable = false;
+
+	protected Long start;
+
+	protected Long end;
+
+	protected List<Condition> conditions = Lists.newList();
+
+	protected List<OrderBy> orderBys = Lists.newList();
+
+	protected Map<Object, Object> params = new HashMap<Object, Object>();
+
+	public Criteria limit(Long start, Long end) {
+		this.start = start;
+		this.end = end;
+		this.limitable = true;
+		return this;
+	}
+
+	public Criteria add(Condition... conditions) {
+		List<Condition> cnds = Lists.of(conditions);
+		add(cnds);
+		return this;
+	}
+
+	public Criteria add(List<Condition> conditions) {
+		if (conditions != null && conditions.size() >= 1)
+			conditions.get(0).setLogic(Logic.NONE);
+		this.conditions.addAll(conditions);
+		return this;
+	}
+
+	public Criteria orderBy(OrderBy order) {
+		orderBys.add(order);
+		return this;
+	}
+
+	public Criteria useLimitit(Boolean limitable) {
+		this.limitable = limitable;
+		return this;
+	}
+
+	public Boolean isHasLimit() {
+		return limitable;
+	}
+
+	public List<Condition> getConditions() {
+		return conditions;
+	}
+
+	public List<OrderBy> getOrderBys() {
+		return orderBys;
+	}
+
+	public Boolean isHasConditionon() {
+		return conditions != null && !conditions.isEmpty();
+	}
+
+	public Boolean isHasOrderBy() {
+		return orderBys != null && !orderBys.isEmpty();
+	}
+
+	public Long getFirst() {
+		return (null == start || start < 1) ? 1L : start;
+	}
+
+	public Long getLast() {
+		return (null == end || end < 1) ? 10L : end;
+	}
+
+	public Map<Object, Object> getParams() {
+		return params;
+	}
+
+	public Criteria setParams(Map<Object, Object> params) {
+		this.params = params;
+		return this;
+	}
+
+	public Criteria addParam(Object paramName, Object value) {
+		this.params.put(paramName, value);
+		return this;
+	}
+
+	public Criteria addParams(Object... values) {
+		Map<Object, Object> map = Maps.map(values);
+		this.params.putAll(map);
+		return this;
+	}
+
+}
