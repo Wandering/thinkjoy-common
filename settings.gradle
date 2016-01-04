@@ -31,3 +31,5 @@ include 'thinkjoy-context-common'
 
 include 'thinkjoy-db-router-common'
 
+include 'thinkjoy-mybatis-common'
+

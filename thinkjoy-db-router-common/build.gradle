@@ -10,4 +10,12 @@ dependencies {
     compile "org.mybatis:mybatis:3.2.2"
     compile "org.slf4j:slf4j-api:$slf4jVersion"
     compile "org.slf4j:log4j-over-slf4j:$slf4jVersion"
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile "org.springframework:spring-test:$springVersion"
+    testCompile "org.springframework:spring-context-support:$springVersion"
+    testCompile "com.alibaba:druid:$druidVersion"
+    testCompile 'org.aspectj:aspectjweaver:1.7.4'
+    testCompile 'org.aspectj:aspectjrt:1.7.4'
+    testCompile "mysql:mysql-connector-java:$mysqlConnectorVersion"
 }

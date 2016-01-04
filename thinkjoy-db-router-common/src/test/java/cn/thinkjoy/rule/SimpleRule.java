@@ -1,6 +1,6 @@
 package cn.thinkjoy.rule;
 
-import cn.thinkjoy.cloudstack.router.IDSNameRuleStrategy;
+import cn.thinkjoy.common.router.IDSNameRuleStrategy;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
