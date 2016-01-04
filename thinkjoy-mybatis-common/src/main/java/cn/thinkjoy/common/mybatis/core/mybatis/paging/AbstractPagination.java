@@ -36,6 +36,11 @@ public abstract class AbstractPagination implements Pagination, Ordering, Serial
 		super();
 	}
 
+	public AbstractPagination(int pageNo, int pageSize) {
+		this.pageNo = pageNo;
+		this.pageSize = pageSize;
+	}
+
 	/**
 	 * 获得当前页的页号,序号从1开始,默认为1.
 	 */

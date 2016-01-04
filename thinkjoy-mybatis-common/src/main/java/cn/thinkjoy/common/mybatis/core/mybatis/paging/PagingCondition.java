@@ -9,10 +9,14 @@ import java.io.Serializable;
  */
 public class PagingCondition extends AbstractPagination implements Pagination, Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8254943719409050750L;
+
+	public PagingCondition() {
+	}
+
+	public PagingCondition(int pageNo, int pageSize) {
+		super(pageNo, pageSize);
+	}
 
 	/**
 	 * 关联分页查询，因为有可能要用到这个条件进行查询，但又不想分页

@@ -444,7 +444,7 @@ selectList
     <select id="findByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria"
             resultType="Role" >
         select
-        *
+        <include refid="Base_Column_List" />
         from dap_role
         <if test="_parameter != null" >
             <where >
@@ -470,7 +470,7 @@ selectList
 
     <select id="findOneByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria" resultType="Role" >
         select
-        *
+        <include refid="Base_Column_List" />
         from dap_role
         <if test="_parameter != null" >
             <where >
@@ -488,7 +488,7 @@ selectList
 
     <select id="pagingByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria" resultType="Role" >
         select
-        *
+        <include refid="Base_Column_List" />
         from dap_role
         <if test="_parameter != null" >
             <where >
