@@ -3,12 +3,10 @@ package cn.thinkjoy.common.service.impl;
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.domain.view.BizData4Page;
-import cn.thinkjoy.common.service.IDataPermAware;
-import cn.thinkjoy.common.service.IDataPermService;
+import cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria;
 import cn.thinkjoy.common.service.IPageService;
 import cn.thinkjoy.common.utils.BizData4PageBuilder;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
@@ -173,16 +171,33 @@ public abstract class AbstractPageService<D extends IBaseDAO,T extends BaseDomai
      */
     public BizData4Page queryPageByDataPerm(IBaseDAO dao, Map<String, Object> conditions, int curPage, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selector)
     {
-        List mainData = dao.queryPage(conditions, offset, rows, orderBy, sqlOrderEnum.getAction(),selector);
-        int records = dao.count(conditions);
+        if (!conditions.containsKey("orderBy")) {
+            conditions.put("orderBy", orderBy);
+        }
+        if (!conditions.containsKey("sortBy")) {
+            conditions.put("sortBy", sqlOrderEnum.getAction());
+        }
+
+        return BizData4PageBuilder.createBizData4Page(getDao(), conditions, curPage, offset, rows, selector);
+    }
+
+    /**
+     * 通过Criteria条件对象分页查询实体
+     * @param criteria
+     * @return
+     */
+    public BizData4Page pagingByCriteria(Criteria criteria){
+        int records = getDao().countByCriteria(criteria);
+        List<T> result = getDao().pagingByCriteria(criteria);
 
         BizData4Page bizData4Page = new BizData4Page();
-        bizData4Page.setRows(mainData);
-        bizData4Page.setPage(curPage);
+        bizData4Page.setRows(result);
+        bizData4Page.setPage(criteria.getPagination().getPageNo());
+        bizData4Page.setPagesize(criteria.getPagination().getPageSize());
         bizData4Page.setRecords(records);
 
-        int total = records / rows;
-        int mod = records % rows;
+        int total = records / criteria.getPagination().getPageSize();
+        int mod = records % criteria.getPagination().getPageSize();
         if(mod > 0){
             total = total + 1;
         }
@@ -191,6 +206,14 @@ public abstract class AbstractPageService<D extends IBaseDAO,T extends BaseDomai
         return bizData4Page;
     }
 
+    /**
+     * 通过Criteria条件对象查询实体数目
+     * @param criteria
+     * @return int
+     */
+    public int countByCriteria(Criteria criteria){
+        return getDao().countByCriteria(criteria);
+    }
 
 }
 
