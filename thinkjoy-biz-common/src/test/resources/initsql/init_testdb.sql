@@ -4,35 +4,39 @@
  Source Server         : local-mysql
  Source Server Version : 50626
  Source Host           : 127.0.0.1
- Source Database       : test
+ Source Database       : fengchao
 
  Target Server Version : 50626
  File Encoding         : utf-8
 
- Date: 01/04/2016 17:55:41 PM
+ Date: 01/05/2016 18:15:19 PM
 */
 
 SET NAMES utf8;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
---  Table structure for `adc_product`
+--  Table structure for `dap_product`
 -- ----------------------------
-DROP TABLE IF EXISTS `adc_product`;
-CREATE TABLE `adc_product` (
+DROP TABLE IF EXISTS `dap_product`;
+CREATE TABLE `dap_product` (
   `id` int(22) NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
-  `createDate` date NOT NULL,
-  `linkUrl` varchar(100) NOT NULL,
-  `section` double NOT NULL,
+  `name` varchar(100) NOT NULL COMMENT '名字',
+  `linkUrl` varchar(100) NOT NULL COMMENT '网址',
+  `section` double NOT NULL COMMENT 'xx',
+  `creator` int(11) NOT NULL COMMENT '创建人',
+  `createDate` date NOT NULL COMMENT '创建时间',
+  `lastModifier` int(11) NOT NULL COMMENT '修改人',
+  `lastModDate` bigint(11) NOT NULL COMMENT '修改时间',
+  `description` varchar(256) NOT NULL COMMENT '描述',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='产品|产品管理|产品管理|CreateBaseDomain\n产品';
 
 -- ----------------------------
---  Records of `adc_product`
+--  Records of `dap_product`
 -- ----------------------------
 BEGIN;
-INSERT INTO `adc_product` VALUES ('1', '徐乐', '2016-01-04', 'www.baidu.com', '140'), ('2', '徐测试', '2016-01-07', 'www.sina.com', '200');
+INSERT INTO `dap_product` VALUES ('1', '徐乐', 'www.baidu.com', '140', '0', '2016-01-04', '0', '0', ''), ('2', '徐测试', 'www.sina.com', '200', '0', '2016-01-07', '0', '0', '');
 COMMIT;
 
 -- ----------------------------
