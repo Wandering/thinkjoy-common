@@ -2,6 +2,7 @@ package cn.thinkjoy.common.service;
 
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
+import cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
 import org.apache.ibatis.annotations.Param;
 
@@ -271,4 +272,17 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
      */
     public int updateByCondition(Map<String, Object> updateMap, Map<String, Object> conditionMap);
 
+    /**
+     * 通过Criteria条件对象查询实体集合
+     * @param criteria
+     * @return List<T>
+     */
+    public List<T> findByCriteria(Criteria criteria);
+
+    /**
+     * 通过Criteria条件对象查询实体
+     * @param criteria
+     * @return T
+     */
+    public T findOneByCriteria(Criteria criteria);
 }

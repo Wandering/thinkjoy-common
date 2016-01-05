@@ -3,8 +3,11 @@ package cn.thinkjoy.common.service;
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.domain.view.BizData4Page;
+import cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria;
+import cn.thinkjoy.common.mybatis.core.mybatis.paging.PagingResult;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -85,4 +88,17 @@ public interface IPageService<D extends IBaseDAO,T extends BaseDomain> {
      */
     public BizData4Page queryPageByDataPerm(IBaseDAO dao, Map<String, Object> conditions, int curPage, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selector);
 
+    /**
+     * 通过Criteria条件对象分页查询实体
+     * @param criteria
+     * @return
+     */
+    public BizData4Page pagingByCriteria(Criteria criteria);
+
+    /**
+     * 通过Criteria条件对象查询实体数目
+     * @param criteria
+     * @return int
+     */
+    public int countByCriteria(Criteria criteria);
 }

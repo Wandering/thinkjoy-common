@@ -4,12 +4,12 @@ import cn.thinkjoy.cache.spring.CacheConstants;
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.domain.CreateBaseDomain;
+import cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria;
 import cn.thinkjoy.common.service.IBaseService;
 import cn.thinkjoy.common.service.IDaoAware;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.util.StringUtils;
 
@@ -306,6 +306,24 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
     public int updateByCondition(Map<String, Object> updateMap, Map<String, Object> conditionMap)
     {
         return getDao().updateByCondition(updateMap,conditionMap);
+    }
+
+    /**
+     * 通过Criteria条件对象查询实体集合
+     * @param criteria
+     * @return List<T>
+     */
+    public List<T> findByCriteria(Criteria criteria){
+        return getDao().findByCriteria(criteria);
+    }
+
+    /**
+     * 通过Criteria条件对象查询实体
+     * @param criteria
+     * @return T
+     */
+    public T findOneByCriteria(Criteria criteria){
+        return (T)getDao().findOneByCriteria(criteria);
     }
 
 }

@@ -18,6 +18,7 @@ public class BizData4PageBuilder {
 
     /**
      * 生成 BizData4Page 实例
+     *
      * @param dao
      * @param conditions
      * @param curPage
@@ -25,7 +26,21 @@ public class BizData4PageBuilder {
      * @param rows
      * @return
      */
-    public static BizData4Page createBizData4Page(IBaseDAO dao, Map<String, Object> conditions, int curPage, int offset, int rows){
+    public static BizData4Page createBizData4Page(IBaseDAO dao, Map<String, Object> conditions, int curPage, int offset, int rows) {
+        return createBizData4Page(dao, conditions, curPage, offset, rows, null);
+    }
+
+    /**
+     * 生成 BizData4Page 实例
+     *
+     * @param dao
+     * @param conditions
+     * @param curPage
+     * @param offset
+     * @param rows
+     * @return
+     */
+    public static BizData4Page createBizData4Page(IBaseDAO dao, Map<String, Object> conditions, int curPage, int offset, int rows, Map<String, Object> selector) {
         String orderBy = null;
         String sortBy = null;
         if (conditions.containsKey("orderBy")) {
@@ -34,7 +49,7 @@ public class BizData4PageBuilder {
         if (conditions.containsKey("sortBy")) {
             sortBy = conditions.get("sortBy").toString();
         }
-        List mainData = dao.queryPage(conditions, offset, rows, orderBy, sortBy,null);
+        List mainData = dao.queryPage(conditions, offset, rows, orderBy, sortBy, selector);
         int records = dao.count(conditions);
 
         BizData4Page bizData4Page = new BizData4Page();
@@ -44,13 +59,12 @@ public class BizData4PageBuilder {
 
         int total = records / rows;
         int mod = records % rows;
-        if(mod > 0){
+        if (mod > 0) {
             total = total + 1;
         }
         bizData4Page.setTotal(total);
 
         return bizData4Page;
     }
-
 
 }

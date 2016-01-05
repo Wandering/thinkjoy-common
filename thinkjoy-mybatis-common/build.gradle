@@ -1,0 +1,26 @@
+dependencies {
+    compile group: 'junit', name: 'junit', version: '4.11'
+    compile "org.springframework:spring-test:$springVersion"
+    compile "org.springframework:spring-context-support:$springVersion"
+    compile "com.alibaba:druid:$druidVersion"
+    compile 'org.aspectj:aspectjweaver:1.7.4'
+    compile 'org.aspectj:aspectjrt:1.7.4'
+    compile "mysql:mysql-connector-java:$mysqlConnectorVersion"
+
+    compile "org.springframework:spring-beans:$springVersion"
+    compile "org.springframework:spring-context:$springVersion"
+    compile "org.springframework:spring-web:$springVersion"
+    compile "org.springframework:spring-webmvc:$springVersion"
+    compile "org.springframework:spring-tx:$springVersion"
+    compile "org.springframework:spring-jdbc:$springVersion"
+
+    compile "cglib:cglib:3.1"
+    compile "org.mybatis:mybatis:$mybatisVerion"
+    compile "org.mybatis:mybatis-spring:$mybatisSpringVerion"
+
+    compile "com.google.guava:guava:$guavaVersion"
+    compile "org.apache.commons:commons-lang3:$apacheCommonsLang3Version"
+    compile "org.apache.commons:commons-collections4:$apacheCollectionsVersion"
+    compile "org.slf4j:slf4j-api:$slf4jVersion"
+    providedCompile "javax.servlet:javax.servlet-api:$servletVersion"
+}

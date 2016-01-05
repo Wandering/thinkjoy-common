@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Global">
+
+  <!-- 全局SQL: Criteria查询条件sql -->
+  <sql id="Where_Clause">
+      <if test="@cn.thinkjoy.common.mybatis.core.mybatis.utils.Collections@isNotEmpty(conditions)">
+      <foreach open="(" close=")" collection="conditions" item="condition">
+        <if test="condition.group">
+           ${condition.logic} 
+          <foreach close=")" collection="condition.all" item="criterion" open="(">
+            <choose>
+              <when test="criterion.between">
+                 ${criterion.expression} #{criterion.value.start} and #{criterion.value.end} 
+              </when>
+              <when test="criterion.list">
+                 ${criterion.expression} 
+                <foreach close=")" collection="criterion.value" item="inItem" open="(" separator=",">
+                  #{inItem}
+                </foreach>
+              </when>
+              <when test="criterplatformion.none">
+                 ${criterion.expression} 
+              </when>
+              <otherwise>
+                 ${criterion.expression} #{criterion.value} 
+                 <if test="criterion.operator == @cn.thinkjoy.common.mybatis.core.mybatis.criteria.Operator@LIKE">
+                 	<if test="@cn.thinkjoy.common.mybatis.core.mybatis.db.DBSelector@isOracle()">
+                 	escape '\' 
+                 	</if>
+                 </if>
+              </otherwise>
+            </choose>
+          </foreach>
+        </if>
+        <if test="condition.group == false">
+          <choose>
+            <when test="condition.between">
+              ${condition.expression} #{condition.value.start} and #{condition.value.end}
+            </when>
+            <when test="condition.list">
+              ${condition.expression}
+              <foreach close=")" collection="condition.value" item="inItem" open="(" separator=",">
+                #{inItem}
+              </foreach>
+            </when>
+            <when test="condition.none">
+              ${condition.expression} 
+            </when>
+            <otherwise>
+               ${condition.expression} #{condition.value} 
+               <if test="condition.operator == @cn.thinkjoy.common.mybatis.core.mybatis.criteria.Operator@LIKE">
+                 	<if test="@cn.thinkjoy.common.mybatis.core.mybatis.db.DBSelector@isOracle()">
+                 	escape '\' 
+                 	</if>
+               </if>
+            </otherwise>
+          </choose>
+        </if>
+      </foreach>
+      </if>
+      <if test="params != null">
+      	<if test="params.recordStatus != null">
+      		AND A.RECORD_STATUS = #{params.recordStatus,jdbcType=INTEGER}
+      	</if>
+      </if>
+  </sql>
+</mapper>

@@ -1,6 +1,5 @@
 package cn.thinkjoy.dao;
 
-import cn.thinkjoy.cloudstack.router.annotation.DBShardAnnotation;
 import cn.thinkjoy.domain.Role;
 import org.apache.ibatis.annotations.Param;
 

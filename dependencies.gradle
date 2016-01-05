@@ -27,6 +27,10 @@ allprojects {
 
     apacheCommonsVersion = "2.6"
 
+    apacheCommonsLang3Version = "3.2.1"
+
+    apacheCollectionsVersion = "4.0.1"
+
     rocketMQVersion = "3.2.6"
 
     servletVersion = "3.1.0"
