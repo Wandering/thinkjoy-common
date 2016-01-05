@@ -171,22 +171,14 @@ public abstract class AbstractPageService<D extends IBaseDAO,T extends BaseDomai
      */
     public BizData4Page queryPageByDataPerm(IBaseDAO dao, Map<String, Object> conditions, int curPage, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selector)
     {
-        List mainData = dao.queryPage(conditions, offset, rows, orderBy, sqlOrderEnum.getAction(),selector);
-        int records = dao.count(conditions);
-
-        BizData4Page bizData4Page = new BizData4Page();
-        bizData4Page.setRows(mainData);
-        bizData4Page.setPage(curPage);
-        bizData4Page.setRecords(records);
-
-        int total = records / rows;
-        int mod = records % rows;
-        if(mod > 0){
-            total = total + 1;
+        if (!conditions.containsKey("orderBy")) {
+            conditions.put("orderBy", orderBy);
         }
-        bizData4Page.setTotal(total);
+        if (!conditions.containsKey("sortBy")) {
+            conditions.put("sortBy", sqlOrderEnum.getAction());
+        }
 
-        return bizData4Page;
+        return BizData4PageBuilder.createBizData4Page(getDao(), conditions, curPage, offset, rows, selector);
     }
 
     /**

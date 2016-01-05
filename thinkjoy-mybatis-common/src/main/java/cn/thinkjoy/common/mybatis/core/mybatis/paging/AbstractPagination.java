@@ -1,8 +1,11 @@
 package cn.thinkjoy.common.mybatis.core.mybatis.paging;
 
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.Objects;
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 
 import java.io.Serializable;
+import java.util.List;
 
 public abstract class AbstractPagination implements Pagination, Ordering, Serializable {
 
@@ -101,12 +104,13 @@ public abstract class AbstractPagination implements Pagination, Ordering, Serial
 	public void setOrder(String order) {
 		// 检查order字符串的合法值
 		String temp = "";
-		if (!StringUtils.isEmpty(order)) {
+
+		if (!Strings.isNullOrEmpty(order)) {
 			temp = order.toUpperCase();
 		}
-		String[] orders = StringUtils.split(temp, ",");
+		List<String> orders = Splitter.on(",").splitToList(temp);
 		for (String orderStr : orders) {
-			if (!StringUtils.equals(DESC, orderStr) && !StringUtils.equals(ASC, orderStr)) {
+			if (!Objects.equal(DESC, orderStr) && !Objects.equal(ASC, orderStr)) {
 				throw new RuntimeException("The order '%s' is not valid! " + orderStr);
 			}
 		}
@@ -118,7 +122,7 @@ public abstract class AbstractPagination implements Pagination, Ordering, Serial
 	 * 是否已设置排序字段,无默认值.
 	 */
 	public boolean isOrderBySetted() {
-		return (!StringUtils.isEmpty(orderBy) && !StringUtils.isEmpty(order));
+		return (!Strings.isNullOrEmpty(orderBy) && !Strings.isNullOrEmpty(order));
 	}
 
 	public String getOrderBy() {

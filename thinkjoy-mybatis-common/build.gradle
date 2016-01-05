@@ -18,6 +18,7 @@ dependencies {
     compile "org.mybatis:mybatis:$mybatisVerion"
     compile "org.mybatis:mybatis-spring:$mybatisSpringVerion"
 
+    compile "com.google.guava:guava:$guavaVersion"
     compile "org.apache.commons:commons-lang3:$apacheCommonsLang3Version"
     compile "org.apache.commons:commons-collections4:$apacheCollectionsVersion"
     compile "org.slf4j:slf4j-api:$slf4jVersion"

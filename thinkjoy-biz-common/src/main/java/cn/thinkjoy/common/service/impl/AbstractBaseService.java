@@ -323,7 +323,7 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
      * @return T
      */
     public T findOneByCriteria(Criteria criteria){
-        return findOneByCriteria(criteria);
+        return (T)getDao().findOneByCriteria(criteria);
     }
 
 }

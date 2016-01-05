@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * SPRING上下文工具类
- * 
+ *
  * @author shadow
- * 
+ *
  */
 public class SpringHolder implements ApplicationContextAware {
 

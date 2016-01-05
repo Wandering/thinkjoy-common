@@ -14,11 +14,9 @@
 
 	<!-- 添加注解驱动 -->
 	<context:annotation-config />
-
 	<!-- 默认扫描的包路径 -->
 	<context:component-scan base-package="cn.thinkjoy" />
 	<context:component-scan base-package="com.qtone.mh" />
-
 	<!-- 开启父类代理模式 -->
 	<aop:aspectj-autoproxy proxy-target-class="true" />
 
@@ -48,6 +46,33 @@
 		<!--<aop:advisor pointcut-ref="transactionPointcut"-->
 			<!--advice-ref="transactionAdvice" />-->
 	<!--</aop:config>-->
+
+	<!-- define the SqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!--<property name="configLocation" value="classpath:mybatis-config.xml" />-->
+		<!-- 自动扫描domain目录, 省掉Configuration.xml里的手工配置 -->
+		<property name="typeAliasesPackage" value="cn.thinkjoy.domain,com.qtone.mh.item.entity"/>
+
+		<property name="mapperLocations">
+			<list>
+				<value>classpath*:/mybatis/*.xml</value>
+			</list>
+		</property>
+		<property name="plugins">
+			<array>
+				<ref bean="pagingHandlerInterceptor" />
+			</array>
+		</property>
+	</bean>
+
+	<!-- 扫描basePackage下接口 自动生成代理实现类 -->
+	<mybatis:scan base-package="cn.thinkjoy.dao" factory-ref="sqlSessionFactory"/>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+		<property name="basePackage" value="cn.thinkjoy.dao"/>
+	</bean>
 
 	<!-- 数据源配置, 使用 BoneCP 数据库连接池 -->
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
@@ -79,25 +104,6 @@
 		<property name="filters" value="stat" />
 	</bean>
 
-	<!-- define the SqlSessionFactory -->
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<!--<property name="configLocation" value="classpath:mybatis-config.xml" />-->
-		<!-- 自动扫描domain目录, 省掉Configuration.xml里的手工配置 -->
-		<property name="typeAliasesPackage" value="cn.thinkjoy.domain,com.qtone.mh.item.entity"/>
-
-		<property name="mapperLocations">
-			<list>
-				<value>classpath*:/mybatis/*.xml</value>
-				<value>classpath*:/mybatis-base-sql.xml</value>
-			</list>
-		</property>
-		<property name="plugins">
-			<array>
-				<ref bean="pagingHandlerInterceptor" />
-			</array>
-		</property>
-	</bean>
 
 	<!-- 数据分页插件 -->
 	<bean id="pagingHandlerInterceptor"
@@ -106,14 +112,6 @@
 	<!-- 数据库选择器 -->
 	<bean id="dbSelector" class="cn.thinkjoy.common.mybatis.core.mybatis.db.DBSelector">
 		<property name="dbType" value="mysql" />
-	</bean>
-
-	<!-- 扫描basePackage下接口 自动生成代理实现类 -->
-	<mybatis:scan base-package="cn.thinkjoy.dao" factory-ref="sqlSessionFactory"/>
-
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-		<property name="basePackage" value="cn.thinkjoy.dao"/>
 	</bean>
 
 </beans>

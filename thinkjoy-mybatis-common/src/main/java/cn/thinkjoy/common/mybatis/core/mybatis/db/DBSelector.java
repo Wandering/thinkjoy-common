@@ -3,7 +3,7 @@ package cn.thinkjoy.common.mybatis.core.mybatis.db;
 import cn.thinkjoy.common.mybatis.core.mybatis.paging.dialect.Dialect;
 import cn.thinkjoy.common.mybatis.core.mybatis.paging.dialect.impl.*;
 import cn.thinkjoy.common.mybatis.core.mybatis.utils.SpringHolder;
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,8 +19,7 @@ import java.util.Map;
  * @author shadow
  * 
  */
-public class DBSelector {
-
+public class DBSelector extends SpringHolder{
 	private String dbType;
 
 	private final static Logger logger = LoggerFactory.getLogger(DBSelector.class);
@@ -44,7 +43,7 @@ public class DBSelector {
 
 	/** 获取数据库类型 */
 	public DBType selectDBType() {
-		if (StringUtils.isNotEmpty(dbType)) {
+		if (!Strings.isNullOrEmpty(dbType)) {
 			DBType dbType = DATABASES.get(this.dbType);
 			if (dbType != null) {
 				return dbType;
@@ -166,5 +165,4 @@ public class DBSelector {
 	private static DBType getCurrDBType() {
 		return SpringHolder.getBean(DBSelector.class).selectDBType();
 	}
-
 }

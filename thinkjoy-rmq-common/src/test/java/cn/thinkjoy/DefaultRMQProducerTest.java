@@ -1,6 +1,5 @@
 package cn.thinkjoy;
 
-import cn.thinkjoy.rmq.DefaultRMQProducer;
 import org.junit.Test;
 
 /**
