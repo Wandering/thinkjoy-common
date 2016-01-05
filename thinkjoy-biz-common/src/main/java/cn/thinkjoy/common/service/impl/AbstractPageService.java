@@ -3,8 +3,6 @@ package cn.thinkjoy.common.service.impl;
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.domain.view.BizData4Page;
-import cn.thinkjoy.common.service.IDataPermAware;
-import cn.thinkjoy.common.service.IDataPermService;
 import cn.thinkjoy.common.service.IPageService;
 import cn.thinkjoy.common.utils.BizData4PageBuilder;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
