@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <description>thinkjoy-mybatis Criteria查询扩展支持 </description>
+
+    <!-- SpringContext工具类 -->
+    <bean class="cn.thinkjoy.common.mybatis.core.mybatis.utils.SpringHolder" />
+
+    <!-- 数据分页插件 -->
+    <bean id="pagingHandlerInterceptor"
+          class="cn.thinkjoy.common.mybatis.core.mybatis.interceptor.PagingHandlerInterceptor" />
+
+</beans>
