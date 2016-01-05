@@ -22,18 +22,23 @@ selectMaxId
 updateOrSave
 selectOne
 selectList
+findByCriteria
+countByCriteria
+findOneByCriteria
+pagingByCriteria
 -->
+
     <sql id="Base_Column_List">
-        id,
-        name,
-        creator,
-        createDate,
-        lastModifier,
-        lastModDate,
-        description
+        id as id ,
+        name as name ,
+        creator as creator ,
+        createDate as createDate ,
+        lastModifier as lastModifier ,
+        lastModDate as lastModDate ,
+        description as description 
     </sql>
     <insert id="insert" parameterType="Role">
-        INSERT INTO ${tblName} (
+        INSERT INTO dap_role (
         name,
         creator,
         createDate,
@@ -48,9 +53,9 @@ selectList
         #{lastModDate},
         #{description}
         )
-        <selectKey resultType="java.lang.Long" keyProperty="id">
-        SELECT LAST_INSERT_ID() AS ID
-        </selectKey>
+            <selectKey resultType="java.lang.Integer" keyProperty="id">
+                SELECT LAST_INSERT_ID() AS ID
+            </selectKey>
     </insert>
 
     <!-- 更新 -->
@@ -269,7 +274,34 @@ selectList
 
     <select id="queryPage" resultType="Role">
         SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                        <if test="selector.id!=null">
+                            , id
+                        </if>
+                        <if test="selector.name!=null">
+                            , name
+                        </if>
+                        <if test="selector.creator!=null">
+                            , creator
+                        </if>
+                        <if test="selector.createDate!=null">
+                            , createDate
+                        </if>
+                        <if test="selector.lastModifier!=null">
+                            , lastModifier
+                        </if>
+                        <if test="selector.lastModDate!=null">
+                            , lastModDate
+                        </if>
+                        <if test="selector.description!=null">
+                            , description
+                        </if>
+            </trim>
+        </if>
+        <if test="selector==null">
         <include refid="Base_Column_List" />
+        </if>
         FROM dap_role
         <where>
 
@@ -278,25 +310,25 @@ selectList
             </if>
 
             <if test="condition.id!=null">
-                ${condition.groupOp}   id  ${condition.id.op}  #{condition.id.data}
+                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op}  #{condition.id.data}
             </if>
             <if test="condition.name!=null">
-                ${condition.groupOp}   name  ${condition.name.op}  #{condition.name.data}
+                ${condition.groupOp}   ${condition.name.field}  ${condition.name.op}  #{condition.name.data}
             </if>
             <if test="condition.creator!=null">
-                ${condition.groupOp}   creator  ${condition.creator.op}  #{condition.creator.data}
+                ${condition.groupOp}   ${condition.creator.field}  ${condition.creator.op}  #{condition.creator.data}
             </if>
             <if test="condition.createDate!=null">
-                ${condition.groupOp}   createDate  ${condition.createDate.op}  #{condition.createDate.data}
+                ${condition.groupOp}   ${condition.createDate.field}  ${condition.createDate.op}  #{condition.createDate.data}
             </if>
             <if test="condition.lastModifier!=null">
-                ${condition.groupOp}   lastModifier  ${condition.lastModifier.op}  #{condition.lastModifier.data}
+                ${condition.groupOp}   ${condition.lastModifier.field}  ${condition.lastModifier.op}  #{condition.lastModifier.data}
             </if>
             <if test="condition.lastModDate!=null">
-                ${condition.groupOp}   lastModDate  ${condition.lastModDate.op}  #{condition.lastModDate.data}
+                ${condition.groupOp}   ${condition.lastModDate.field}  ${condition.lastModDate.op}  #{condition.lastModDate.data}
             </if>
             <if test="condition.description!=null">
-                ${condition.groupOp}   description  ${condition.description.op}  #{condition.description.data}
+                ${condition.groupOp}   ${condition.description.field}  ${condition.description.op}  #{condition.description.data}
             </if>
 
 
@@ -311,7 +343,34 @@ selectList
 
     <select id="like" parameterType="java.util.Map" resultType="Role">
         SELECT
-        <include refid="Base_Column_List" />
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                    <if test="selector.id!=null">
+                        , id
+                    </if>
+                    <if test="selector.name!=null">
+                        , name
+                    </if>
+                    <if test="selector.creator!=null">
+                        , creator
+                    </if>
+                    <if test="selector.createDate!=null">
+                        , createDate
+                    </if>
+                    <if test="selector.lastModifier!=null">
+                        , lastModifier
+                    </if>
+                    <if test="selector.lastModDate!=null">
+                        , lastModDate
+                    </if>
+                    <if test="selector.description!=null">
+                        , description
+                    </if>
+            </trim>
+        </if>
+        <if test="selector==null">
+            <include refid="Base_Column_List" />
+        </if>
         FROM dap_role
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <if test="condition.id!=null">
@@ -344,7 +403,34 @@ selectList
 
     <select id="queryList" parameterType="java.util.Map" resultType="Role">
         SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                    <if test="selector.id!=null">
+                        , id
+                    </if>
+                    <if test="selector.name!=null">
+                        , name
+                    </if>
+                    <if test="selector.creator!=null">
+                        , creator
+                    </if>
+                    <if test="selector.createDate!=null">
+                        , createDate
+                    </if>
+                    <if test="selector.lastModifier!=null">
+                        , lastModifier
+                    </if>
+                    <if test="selector.lastModDate!=null">
+                        , lastModDate
+                    </if>
+                    <if test="selector.description!=null">
+                        , description
+                    </if>
+            </trim>
+        </if>
+        <if test="selector==null">
         <include refid="Base_Column_List" />
+        </if>
         FROM dap_role
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <if test="condition.id!=null">
@@ -376,7 +462,34 @@ selectList
 
     <select id="queryOne" parameterType="java.util.Map" resultType="Role">
         SELECT
-        <include refid="Base_Column_List" />
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                    <if test="selector.id!=null">
+                        , id
+                    </if>
+                    <if test="selector.name!=null">
+                        , name
+                    </if>
+                    <if test="selector.creator!=null">
+                        , creator
+                    </if>
+                    <if test="selector.createDate!=null">
+                        , createDate
+                    </if>
+                    <if test="selector.lastModifier!=null">
+                        , lastModifier
+                    </if>
+                    <if test="selector.lastModDate!=null">
+                        , lastModDate
+                    </if>
+                    <if test="selector.description!=null">
+                        , description
+                    </if>
+            </trim>
+        </if>
+        <if test="selector==null">
+            <include refid="Base_Column_List" />
+        </if>
         FROM dap_role
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <if test="condition.id!=null">
@@ -411,25 +524,25 @@ selectList
         SELECT count(id) FROM dap_role
        <where>
            <if test="id!=null">
-               ${groupOp} id ${id.op}  #{id.data}
+               ${groupOp} ${id.field} ${id.op}  #{id.data}
            </if>
            <if test="name!=null">
-               ${groupOp} name ${name.op}  #{name.data}
+               ${groupOp} ${name.field} ${name.op}  #{name.data}
            </if>
            <if test="creator!=null">
-               ${groupOp} creator ${creator.op}  #{creator.data}
+               ${groupOp} ${creator.field} ${creator.op}  #{creator.data}
            </if>
            <if test="createDate!=null">
-               ${groupOp} createDate ${createDate.op}  #{createDate.data}
+               ${groupOp} ${createDate.field} ${createDate.op}  #{createDate.data}
            </if>
            <if test="lastModifier!=null">
-               ${groupOp} lastModifier ${lastModifier.op}  #{lastModifier.data}
+               ${groupOp} ${lastModifier.field} ${lastModifier.op}  #{lastModifier.data}
            </if>
            <if test="lastModDate!=null">
-               ${groupOp} lastModDate ${lastModDate.op}  #{lastModDate.data}
+               ${groupOp} ${lastModDate.field} ${lastModDate.op}  #{lastModDate.data}
            </if>
            <if test="description!=null">
-               ${groupOp} description ${description.op}  #{description.data}
+               ${groupOp} ${description.field} ${description.op}  #{description.data}
            </if>
 
        </where>
@@ -444,7 +557,36 @@ selectList
     <select id="findByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria"
             resultType="Role" >
         select
-        <include refid="Base_Column_List" />
+        <choose>
+            <when test="selector!=null and selector.size() > 0">
+                <trim prefixOverrides=",">
+                    <if test="selector.id!=null">
+                        , id
+                    </if>
+                    <if test="selector.name!=null">
+                        , name
+                    </if>
+                    <if test="selector.creator!=null">
+                        , creator
+                    </if>
+                    <if test="selector.createDate!=null">
+                        , createDate
+                    </if>
+                    <if test="selector.lastModifier!=null">
+                        , lastModifier
+                    </if>
+                    <if test="selector.lastModDate!=null">
+                        , lastModDate
+                    </if>
+                    <if test="selector.description!=null">
+                        , description
+                    </if>
+                </trim>
+            </when>
+            <otherwise>
+                <include refid="Base_Column_List" />
+            </otherwise>
+        </choose>
         from dap_role
         <if test="_parameter != null" >
             <where >
@@ -452,15 +594,15 @@ selectList
             </where>
         </if>
         <if test="hasOrderBy" >
-            order by
+            ORDER BY
             <foreach collection="orderBys" item="orderBy" separator="," >
-                ${orderBy}
-            </foreach>
+                ${orderBy}</foreach>
         </if>
     </select>
 
     <select id="countByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria" resultType="java.lang.Integer" >
-        select count(1) from dap_role
+        select count(1)
+        from dap_role
         <if test="_parameter != null" >
             <where >
                 <include refid="Global.Where_Clause" />
@@ -470,7 +612,36 @@ selectList
 
     <select id="findOneByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria" resultType="Role" >
         select
-        <include refid="Base_Column_List" />
+        <choose>
+            <when test="selector!=null and selector.size() > 0">
+                <trim prefixOverrides=",">
+                    <if test="selector.id!=null">
+                        , id
+                    </if>
+                    <if test="selector.name!=null">
+                        , name
+                    </if>
+                    <if test="selector.creator!=null">
+                        , creator
+                    </if>
+                    <if test="selector.createDate!=null">
+                        , createDate
+                    </if>
+                    <if test="selector.lastModifier!=null">
+                        , lastModifier
+                    </if>
+                    <if test="selector.lastModDate!=null">
+                        , lastModDate
+                    </if>
+                    <if test="selector.description!=null">
+                        , description
+                    </if>
+                </trim>
+            </when>
+            <otherwise>
+                <include refid="Base_Column_List" />
+            </otherwise>
+        </choose>
         from dap_role
         <if test="_parameter != null" >
             <where >
@@ -478,17 +649,44 @@ selectList
             </where>
         </if>
         <if test="hasOrderBy" >
-            order by
             <foreach collection="orderBys" item="orderBy" separator="," >
-                ${orderBy}
-            </foreach>
+                ${orderBy}</foreach>
         </if>
         limit 0,1
     </select>
 
     <select id="pagingByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria" resultType="Role" >
         select
-        <include refid="Base_Column_List" />
+        <choose>
+            <when test="selector!=null and selector.size() > 0">
+                <trim prefixOverrides=",">
+                    <if test="selector.id!=null">
+                        , id
+                    </if>
+                    <if test="selector.name!=null">
+                        , name
+                    </if>
+                    <if test="selector.creator!=null">
+                        , creator
+                    </if>
+                    <if test="selector.createDate!=null">
+                        , createDate
+                    </if>
+                    <if test="selector.lastModifier!=null">
+                        , lastModifier
+                    </if>
+                    <if test="selector.lastModDate!=null">
+                        , lastModDate
+                    </if>
+                    <if test="selector.description!=null">
+                        , description
+                    </if>
+                </trim>
+            </when>
+            <otherwise>
+                <include refid="Base_Column_List" />
+            </otherwise>
+        </choose>
         from dap_role
         <if test="_parameter != null" >
             <where >
@@ -496,10 +694,8 @@ selectList
             </where>
         </if>
         <if test="hasOrderBy" >
-            order by
             <foreach collection="orderBys" item="orderBy" separator="," >
-                ${orderBy}
-            </foreach>
+                ${orderBy}</foreach>
         </if>
         <if test="hasLimit" >
             limit ${first - 1},${last - first}

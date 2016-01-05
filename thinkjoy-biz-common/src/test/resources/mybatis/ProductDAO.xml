@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.domain.Product">
+<!--
+findByCriteria
+countByCriteria
+findOneByCriteria
+pagingByCriteria
+-->
+
+    <sql id="Base_Column_List">
+        id as id ,
+        name as name ,
+        linkUrl as linkUrl ,
+        section as section ,
+        creator as creator ,
+        createDate as createDate ,
+        lastModifier as lastModifier ,
+        lastModDate as lastModDate ,
+        description as description 
+    </sql>
+
+    <select id="findByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria"
+            resultType="Product" >
+        select
+        <choose>
+            <when test="selector!=null and selector.size() > 0">
+                <trim prefixOverrides=",">
+                    <if test="selector.id!=null">
+                        , id
+                    </if>
+                    <if test="selector.name!=null">
+                        , name
+                    </if>
+                    <if test="selector.linkUrl!=null">
+                        , linkUrl
+                    </if>
+                    <if test="selector.section!=null">
+                        , section
+                    </if>
+                    <if test="selector.creator!=null">
+                        , creator
+                    </if>
+                    <if test="selector.createDate!=null">
+                        , createDate
+                    </if>
+                    <if test="selector.lastModifier!=null">
+                        , lastModifier
+                    </if>
+                    <if test="selector.lastModDate!=null">
+                        , lastModDate
+                    </if>
+                    <if test="selector.description!=null">
+                        , description
+                    </if>
+                </trim>
+            </when>
+            <otherwise>
+                <include refid="Base_Column_List" />
+            </otherwise>
+        </choose>
+        from dap_product
+        <if test="_parameter != null" >
+            <where >
+                <include refid="Global.Where_Clause" />
+            </where>
+        </if>
+        <if test="hasOrderBy" >
+            ORDER BY
+            <foreach collection="orderBys" item="orderBy" separator="," >
+                ${orderBy}</foreach>
+        </if>
+    </select>
+
+    <select id="countByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria" resultType="java.lang.Integer" >
+        select count(1)
+        from dap_product
+        <if test="_parameter != null" >
+            <where >
+                <include refid="Global.Where_Clause" />
+            </where>
+        </if>
+    </select>
+
+    <select id="findOneByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria" resultType="Product" >
+        select
+        <if test="selector!=null">
+            <choose>
+                <when test="selector!=null and selector.size() > 0">
+                    <trim prefixOverrides=",">
+                        <if test="selector.id!=null">
+                            , id
+                        </if>
+                        <if test="selector.name!=null">
+                            , name
+                        </if>
+                        <if test="selector.linkUrl!=null">
+                            , linkUrl
+                        </if>
+                        <if test="selector.section!=null">
+                            , section
+                        </if>
+                        <if test="selector.creator!=null">
+                            , creator
+                        </if>
+                        <if test="selector.createDate!=null">
+                            , createDate
+                        </if>
+                        <if test="selector.lastModifier!=null">
+                            , lastModifier
+                        </if>
+                        <if test="selector.lastModDate!=null">
+                            , lastModDate
+                        </if>
+                        <if test="selector.description!=null">
+                            , description
+                        </if>
+                    </trim>
+                </when>
+                <otherwise>
+                    <include refid="Base_Column_List" />
+                </otherwise>
+            </choose>
+        </if>
+        <if test="selector==null">
+            <include refid="Base_Column_List" />
+        </if>
+        from dap_product
+        <if test="_parameter != null" >
+            <where >
+                <include refid="Global.Where_Clause" />
+            </where>
+        </if>
+        <if test="hasOrderBy" >
+            <foreach collection="orderBys" item="orderBy" separator="," >
+                ${orderBy}</foreach>
+        </if>
+        limit 0,1
+    </select>
+
+    <select id="pagingByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria" resultType="Product" >
+        select
+        <choose>
+            <when test="selector!=null and selector.size() > 0">
+                <trim prefixOverrides=",">
+                    <if test="selector.id!=null">
+                        , id
+                    </if>
+                    <if test="selector.name!=null">
+                        , name
+                    </if>
+                    <if test="selector.linkUrl!=null">
+                        , linkUrl
+                    </if>
+                    <if test="selector.section!=null">
+                        , section
+                    </if>
+                    <if test="selector.creator!=null">
+                        , creator
+                    </if>
+                    <if test="selector.createDate!=null">
+                        , createDate
+                    </if>
+                    <if test="selector.lastModifier!=null">
+                        , lastModifier
+                    </if>
+                    <if test="selector.lastModDate!=null">
+                        , lastModDate
+                    </if>
+                    <if test="selector.description!=null">
+                        , description
+                    </if>
+                </trim>
+            </when>
+            <otherwise>
+                <include refid="Base_Column_List" />
+            </otherwise>
+        </choose>
+        from dap_product
+        <if test="_parameter != null" >
+            <where >
+                <include refid="Global.Where_Clause" />
+            </where>
+        </if>
+        <if test="hasOrderBy" >
+            <foreach collection="orderBys" item="orderBy" separator="," >
+                ${orderBy}</foreach>
+        </if>
+        <if test="hasLimit" >
+            limit ${first - 1},${last - first}
+        </if>
+    </select>
+
+</mapper>
+

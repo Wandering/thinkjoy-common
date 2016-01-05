@@ -98,6 +98,10 @@ public interface CriteriaBuilder {
 
 	public CriteriaBuilder addParams(Object... keyValues);
 
+	public CriteriaBuilder addSelector(String param);
+
+	public CriteriaBuilder addSelector(Object... params);
+
 	public CriterionGroup buildCriterionGroup();
 	
 	public CriteriaBuilder isActive();

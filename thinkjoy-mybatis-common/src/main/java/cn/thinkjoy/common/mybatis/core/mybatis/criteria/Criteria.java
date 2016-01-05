@@ -1,9 +1,11 @@
 package cn.thinkjoy.common.mybatis.core.mybatis.criteria;
 
 import cn.thinkjoy.common.mybatis.core.mybatis.paging.Pagination;
+import cn.thinkjoy.common.mybatis.core.mybatis.utils.Maps;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 
@@ -133,6 +135,27 @@ public interface Criteria {
 	 * @return
 	 */
 	Criteria addParams(Object... values);
+
+	/**
+	 * 增加自定义查询字段
+	 * @param selector
+	 * @return
+	 */
+	Criteria setSelector(Set<Object> selector);
+
+	/**
+	 * 增加自定义查询字段
+	 * @param paramName
+	 * @return
+	 */
+	Criteria addSelector(Object paramName);
+
+	/**
+	 * 增加自定义查询字段
+	 * @param param
+	 * @return
+	 */
+	Criteria addSelector(Object... param);
 
 	/**
 	 * 设置分页对象

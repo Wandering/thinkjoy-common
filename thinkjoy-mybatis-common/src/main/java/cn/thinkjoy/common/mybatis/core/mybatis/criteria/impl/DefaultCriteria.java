@@ -7,11 +7,10 @@ import cn.thinkjoy.common.mybatis.core.mybatis.criteria.OrderBy;
 import cn.thinkjoy.common.mybatis.core.mybatis.paging.Pagination;
 import cn.thinkjoy.common.mybatis.core.mybatis.utils.Lists;
 import cn.thinkjoy.common.mybatis.core.mybatis.utils.Maps;
+import com.google.common.collect.Sets;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 
@@ -34,6 +33,8 @@ public class DefaultCriteria implements Criteria, Serializable {
 	protected List<OrderBy> orderBys = Lists.newList();
 
 	protected Map<Object, Object> params = new HashMap<Object, Object>();
+
+	protected Set<Object> selector = new HashSet<>();
 
 	public Criteria limit(Long start, Long end) {
 		this.start = start;
@@ -115,6 +116,22 @@ public class DefaultCriteria implements Criteria, Serializable {
 	public Criteria addParams(Object... values) {
 		Map<Object, Object> map = Maps.map(values);
 		this.params.putAll(map);
+		return this;
+	}
+
+	public Criteria setSelector(Set<Object> selector) {
+		this.selector = selector;
+		return this;
+	}
+
+	public Criteria addSelector(Object paramName) {
+		this.selector.add(paramName);
+		return this;
+	}
+
+	public Criteria addSelector(Object... params) {
+		Set<Object> set = Sets.newHashSet(params);
+		this.selector.addAll(set);
 		return this;
 	}
 

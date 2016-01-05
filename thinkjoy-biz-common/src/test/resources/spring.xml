@@ -3,9 +3,18 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="
      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	
+
 	<!-- SpringContext工具类 -->
 	<bean class="cn.thinkjoy.common.mybatis.core.mybatis.utils.SpringHolder" />
+
+	<!-- 数据分页插件 -->
+	<bean id="pagingHandlerInterceptor"
+		  class="cn.thinkjoy.common.mybatis.core.mybatis.interceptor.PagingHandlerInterceptor" />
+
+	<!-- 数据库选择器 -->
+	<bean id="dbSelector" class="cn.thinkjoy.common.mybatis.core.mybatis.db.DBSelector">
+		<property name="dbType" value="mysql" />
+	</bean>
 	
 	<import resource="classpath*:spring/*.xml" />
 	

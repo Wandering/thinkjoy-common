@@ -6,9 +6,9 @@ import cn.thinkjoy.common.mybatis.core.mybatis.paging.Pagination;
 import cn.thinkjoy.common.mybatis.core.mybatis.utils.Assert;
 import cn.thinkjoy.common.mybatis.core.mybatis.utils.Lists;
 import cn.thinkjoy.common.mybatis.core.mybatis.utils.Maps;
+import com.google.common.collect.Sets;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DefaultCriteriaBuilder implements CriteriaBuilder {
 
@@ -16,6 +16,7 @@ public class DefaultCriteriaBuilder implements CriteriaBuilder {
 	private List<Condition> cnds = Lists.newList();
 	private List<OrderBy> orderbys = Lists.newList();
 	private Map<Object, Object> params = Maps.newMap();
+	private Set<Object> selector = new HashSet<>();
 	protected Pagination pagination;
 
 	public Class<?> getEntityClass() {
@@ -256,6 +257,9 @@ public class DefaultCriteriaBuilder implements CriteriaBuilder {
 		if (!params.isEmpty()) {
 			criteria.setParams(params);
 		}
+		if (!selector.isEmpty()) {
+			criteria.setSelector(selector);
+		}
 		return criteria;
 	}
 
@@ -276,6 +280,16 @@ public class DefaultCriteriaBuilder implements CriteriaBuilder {
 
 	public CriteriaBuilder addParams(Object... keyValues) {
 		this.params.putAll(Maps.map(keyValues));
+		return this;
+	}
+
+	public CriteriaBuilder addSelector(String param){
+		this.selector.add(param);
+		return this;
+	}
+
+	public CriteriaBuilder addSelector(Object... params){
+		this.selector.addAll(Sets.newHashSet(params));
 		return this;
 	}
 
