@@ -104,11 +104,11 @@ public interface CriteriaBuilder {
 
 	public CriterionGroup buildCriterionGroup();
 	
-	public CriteriaBuilder isActive();
+	public CriteriaBuilder isNormal();
 	
-	public CriteriaBuilder isLocked();
+	public CriteriaBuilder isDeleted();
 	
-	public CriteriaBuilder isInActive();
+	public CriteriaBuilder isStoped();
 
 	public Criteria buildCriteria();
 

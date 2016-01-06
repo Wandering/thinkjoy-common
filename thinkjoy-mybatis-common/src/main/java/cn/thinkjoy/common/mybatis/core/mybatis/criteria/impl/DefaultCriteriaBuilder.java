@@ -1,14 +1,18 @@
 package cn.thinkjoy.common.mybatis.core.mybatis.criteria.impl;
 
+import cn.thinkjoy.common.domain.BizStatusEnum;
 import cn.thinkjoy.common.mybatis.core.mybatis.criteria.*;
-import cn.thinkjoy.common.mybatis.core.mybatis.domain.StatusEntity;
 import cn.thinkjoy.common.mybatis.core.mybatis.paging.Pagination;
 import cn.thinkjoy.common.mybatis.core.mybatis.utils.Assert;
 import cn.thinkjoy.common.mybatis.core.mybatis.utils.Lists;
 import cn.thinkjoy.common.mybatis.core.mybatis.utils.Maps;
+import cn.thinkjoy.common.mybatis.core.mybatis.utils.ReflectUtils;
 import com.google.common.collect.Sets;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class DefaultCriteriaBuilder implements CriteriaBuilder {
 
@@ -18,6 +22,13 @@ public class DefaultCriteriaBuilder implements CriteriaBuilder {
 	private Map<Object, Object> params = Maps.newMap();
 	private Set<Object> selector = new HashSet<>();
 	protected Pagination pagination;
+
+	public DefaultCriteriaBuilder() {
+	}
+
+	public DefaultCriteriaBuilder(Class<?> entityClass) {
+		this.entityClass = entityClass;
+	}
 
 	public Class<?> getEntityClass() {
 		return entityClass;
@@ -238,8 +249,8 @@ public class DefaultCriteriaBuilder implements CriteriaBuilder {
 	}
 
 	public Criteria buildCriteria() {
-		if (getEntityClass() != null && StatusEntity.class.isAssignableFrom(getEntityClass())) {
-			add(Cnd.eq(Logic.AND, "recordStatus", StatusEntity.ACTIVE));
+		if (getEntityClass() != null && ReflectUtils.getMethod(getEntityClass(), "getStatus") != null) {
+			add(Cnd.eq(Logic.AND, "status", BizStatusEnum.N.getCode()));
 		}
 		Criteria criteria = Cnd.createCriteria().add(cnds);
 		if (pagination != null) {
@@ -293,20 +304,20 @@ public class DefaultCriteriaBuilder implements CriteriaBuilder {
 		return this;
 	}
 
-	public CriteriaBuilder isActive() {
-		return addStatus(StatusEntity.ACTIVE);
+	public CriteriaBuilder isNormal() {
+		return addStatus(BizStatusEnum.N.getCode());
 	}
 
-	public CriteriaBuilder isLocked() {
-		return addStatus(StatusEntity.INACTIVE);
+	public CriteriaBuilder isStoped() {
+		return addStatus(BizStatusEnum.S.getCode());
 	}
 
-	public CriteriaBuilder isInActive() {
-		return addStatus(StatusEntity.LOCKED);
+	public CriteriaBuilder isDeleted() {
+		return addStatus(BizStatusEnum.D.getCode());
 	}
 
 	private CriteriaBuilder addStatus(Object value) {
-		return add(Cnd.eq(Logic.AND, "recordStatus", value));
+		return add(Cnd.eq(Logic.AND, "status", value));
 	}
 
 }

@@ -1,7 +1,7 @@
 package cn.thinkjoy;
 
 import cn.thinkjoy.common.mybatis.core.mybatis.criteria.Cnd;
-import cn.thinkjoy.dao.impl.ProductDAOImpl;
+import cn.thinkjoy.dao.IProductDAO;
 import cn.thinkjoy.domain.Product;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,7 @@ import java.util.List;
 @ContextConfiguration(locations = {"classpath:spring.xml"})//, "classpath*:spring/spring-service.xml"
 public class MainTest2 {
 	@Autowired
-	private ProductDAOImpl dao;
+	private IProductDAO dao;
 
 	@Test
 	public void test(){

@@ -1,80 +1,58 @@
 package cn.thinkjoy.domain;
 
 import cn.thinkjoy.common.domain.CreateBaseDomain;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
-/**
- * TODO 一句话描述该类用途
- * <p/>
- * 创建时间: 15/4/27 下午8:34<br/>
- *
- * @author qyang
- * @since v0.0.1
- */
 public class Role extends CreateBaseDomain<Integer> {
+    /** 角色名称 */
     private String name;
+    /** 描述 */
     private String description;
-    private Long creator;
-    private Long createDate;
-    private Long lastModifier;
-    private Long lastModDate = Long.valueOf(System.currentTimeMillis());
-    private Integer status;
 
-    public Role() {
-        }
-
-        public void setName(String value) {
-            this.name = value;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
-        public void setDescription(String value) {
-            this.description = value;
-        }
-
-        public String getDescription() {
-            return this.description;
-        }
-
-    public Long getCreator() {
-        return creator;
+    public Role(){
+    }
+    public void setName(String value) {
+        this.name = value;
     }
 
-    public void setCreator(Long creator) {
-        this.creator = creator;
+    public String getName() {
+        return this.name;
+    }
+    public void setDescription(String value) {
+        this.description = value;
     }
 
-    public Long getCreateDate() {
-        return createDate;
+    public String getDescription() {
+        return this.description;
     }
 
-    public void setCreateDate(Long createDate) {
-        this.createDate = createDate;
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("Id",getId())
+                .append("Name",getName())
+                .append("Creator",getCreator())
+                .append("CreateDate",getCreateDate())
+                .append("LastModifier",getLastModifier())
+                .append("LastModDate",getLastModDate())
+                .append("Description",getDescription())
+                .toString();
     }
 
-    public Long getLastModifier() {
-        return lastModifier;
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(getId())
+                .toHashCode();
     }
 
-    public void setLastModifier(Long lastModifier) {
-        this.lastModifier = lastModifier;
-    }
-
-    public Long getLastModDate() {
-        return lastModDate;
-    }
-
-    public void setLastModDate(Long lastModDate) {
-        this.lastModDate = lastModDate;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
+    public boolean equals(Object obj) {
+        if(obj instanceof Role == false) return false;
+        if(this == obj) return true;
+        Role other = (Role)obj;
+        return new EqualsBuilder()
+                .append(getId(),other.getId())
+                .isEquals();
     }
 }

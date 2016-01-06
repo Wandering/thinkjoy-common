@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -51,6 +53,15 @@ public class MainTest {
 			Criteria criteria = Cnd.builder(Role.class).andEQ("creator", 1).pagination(page).buildCriteria();
 			BizData4Page bizData4Page = roleService.pagingByCriteria(criteria);
 			System.out.println(JSONObject.toJSONString(bizData4Page)+"-----");
+
+			//queryPage
+			Map<String, Object> conditions = new HashMap<>();
+			List<Role> roles = roleService.queryPage(conditions, 2, 4);
+			System.out.println(JSONObject.toJSONString(roles)+"-----");
+
+			//queryPageByDataPerm
+			BizData4Page<Role> bizData = roleService.queryPageByDataPerm(null, conditions, 2, 2, 4);
+			System.out.println(JSONObject.toJSONString(bizData)+"-----");
 
 		} catch (Exception e) {
 			e.printStackTrace();

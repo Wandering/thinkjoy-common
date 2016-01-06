@@ -178,7 +178,7 @@ public abstract class AbstractPageService<D extends IBaseDAO,T extends BaseDomai
             conditions.put("sortBy", sqlOrderEnum.getAction());
         }
 
-        return BizData4PageBuilder.createBizData4Page(getDao(), conditions, curPage, offset, rows, selector);
+        return BizData4PageBuilder.createBizData4Page(dao, conditions, curPage, offset, rows, selector);
     }
 
     /**

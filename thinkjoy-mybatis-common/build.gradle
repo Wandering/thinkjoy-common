@@ -23,4 +23,6 @@ dependencies {
     compile "org.apache.commons:commons-collections4:$apacheCollectionsVersion"
     compile "org.slf4j:slf4j-api:$slf4jVersion"
     providedCompile "javax.servlet:javax.servlet-api:$servletVersion"
+
+    compile project (':thinkjoy-domain-common')
 }
