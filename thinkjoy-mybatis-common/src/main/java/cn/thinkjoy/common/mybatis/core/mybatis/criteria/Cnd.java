@@ -149,7 +149,7 @@ public class Cnd {
 	}
 
 	public static CriteriaBuilder builder(Class<?> entityClass) {
-		return new EntityCriteriaBuilder(entityClass);
+		return new DefaultCriteriaBuilder(entityClass);
 	}
 
 	@SuppressWarnings("rawtypes")

@@ -1,14 +1,13 @@
 package cn.thinkjoy.domain;
 
-import cn.thinkjoy.common.mybatis.core.mybatis.domain.PKEntity;
+import cn.thinkjoy.common.domain.CreateBaseDomain;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-public class Product implements PKEntity<Long> {
+public class Product extends CreateBaseDomain<Integer> {
 
-    private Long id;
     /** 名字 */
     private String name;
     /** 网址 */
@@ -17,23 +16,6 @@ public class Product implements PKEntity<Long> {
     private Double section;
     /** 描述 */
     private String description;
-
-    private Long creator;
-    private Long createDate;
-    private Long lastModifier;
-    private Long lastModDate = Long.valueOf(System.currentTimeMillis());
-    private Integer status;
-
-	public Product(){
-	}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public void setName(String value) {
         this.name = value;
@@ -63,46 +45,6 @@ public class Product implements PKEntity<Long> {
 
     public String getDescription() {
         return this.description;
-    }
-
-    public Long getCreator() {
-        return creator;
-    }
-
-    public void setCreator(Long creator) {
-        this.creator = creator;
-    }
-
-    public Long getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Long createDate) {
-        this.createDate = createDate;
-    }
-
-    public Long getLastModifier() {
-        return lastModifier;
-    }
-
-    public void setLastModifier(Long lastModifier) {
-        this.lastModifier = lastModifier;
-    }
-
-    public Long getLastModDate() {
-        return lastModDate;
-    }
-
-    public void setLastModDate(Long lastModDate) {
-        this.lastModDate = lastModDate;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
     }
 
     public String toString() {

@@ -60,8 +60,8 @@
       </foreach>
       </if>
       <if test="params != null">
-      	<if test="params.recordStatus != null">
-      		AND A.RECORD_STATUS = #{params.recordStatus,jdbcType=INTEGER}
+      	<if test="params.status != null">
+      		AND status = #{params.status,jdbcType=INTEGER}
       	</if>
       </if>
   </sql>

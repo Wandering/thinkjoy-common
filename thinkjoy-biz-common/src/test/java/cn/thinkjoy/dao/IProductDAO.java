@@ -1,9 +1,9 @@
 package cn.thinkjoy.dao;
 
-import cn.thinkjoy.common.mybatis.core.mybatis.dao.MyBatisDAO;
+import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.domain.Product;
 
-public interface IProductDAO extends MyBatisDAO<Product, Long> {
+public interface IProductDAO extends IBaseDAO<Product> {
 	
 
 }
