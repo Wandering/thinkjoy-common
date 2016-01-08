@@ -2,7 +2,8 @@ package cn.thinkjoy.common.protocol;
 
 
 import cn.thinkjoy.common.exception.BizException;
-import cn.thinkjoy.common.utils.RtnCodeEnum;
+import cn.thinkjoy.common.utils.*;
+import com.alibaba.fastjson.JSON;
 
 import java.io.Serializable;
 
@@ -23,8 +24,22 @@ public class ResponseT<T> implements Serializable {
     /** 返回的业务 有业务异常的时候，来源于BizException；否则网关出错（系统异常），使用通用异常 */
     private T bizData;
 
-    public ResponseT(){}
-    public ResponseT(RtnCodeEnum rtnCode){ this.rtnCode = rtnCode.getValue();}
+    /** data的处理方式 */
+    private StyleEnum style;
+    private String styledData;
+
+    public ResponseT(){
+        this.style = StyleEnum.PLAIN;
+    }
+
+    public ResponseT(StyleEnum style) {
+        this.style = style;
+    }
+
+    public ResponseT(RtnCodeEnum rtnCode){
+        this.rtnCode = rtnCode.getValue();
+        this.style = StyleEnum.PLAIN;
+    }
 
     public ResponseT(BizException bizException) {
         this(bizException, false);
@@ -37,6 +52,7 @@ public class ResponseT<T> implements Serializable {
             this.developMsg = bizException.getDevelopMsg();
         }
         this.uri = bizException.getUri();
+        this.style = StyleEnum.PLAIN;
     }
 
     public String getRtnCode() {
@@ -63,16 +79,70 @@ public class ResponseT<T> implements Serializable {
         this.uri = uri;
     }
 
+    public StyleEnum getStyle() {
+        return style;
+    }
+
+    public void setStyle(StyleEnum style) {
+        this.style = style;
+    }
+
     public T getBizData() {
-        return bizData;
+        if(StyleEnum.PLAIN.equals(style)){
+            return bizData;
+        }else {
+            //unwrapper data with styled data
+            String jsonData;
+            if(StyleEnum.GZIP.equals(style)){
+                jsonData = StringGZIPUtils.uncompressToString(ByteUtils.HexString2Bytes(styledData));
+                if(jsonData != null){
+                    return (T) JSON.parse(jsonData);
+                }
+            }else if(StyleEnum.AES.equals(style)){
+                try {
+                    jsonData = AES256Utils.decrypt2str(ByteUtils.HexString2Bytes(styledData));
+                    if(jsonData != null){
+                        return (T) JSON.parse(jsonData);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
     }
 
     public void setBizData(T bizData) {
-        this.bizData = bizData;
+        if(bizData == null || StyleEnum.PLAIN.equals(style)){
+            this.bizData = bizData;
+        }else {
+            this.bizData = null;
+            //wrapper data with style
+            String jsonData = JSON.toJSONString(bizData);
+            if(StyleEnum.GZIP.equals(style)){
+                styledData = ByteUtils.Bytes2HexString(StringGZIPUtils.compressToByte(jsonData));
+                this.setStyledData(styledData);
+            }else if(StyleEnum.AES.equals(style)){
+                try {
+                    styledData = ByteUtils.Bytes2HexString(AES256Utils.encrypt(jsonData));
+                    this.setStyledData(styledData);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public String getDevelopMsg() {
         return developMsg;
+    }
+
+    public String getStyledData() {
+        return styledData;
+    }
+
+    public void setStyledData(String styledData) {
+        this.styledData = styledData;
     }
 
     /**
