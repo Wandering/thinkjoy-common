@@ -1,11 +1,13 @@
 package cn.thinkjoy.common.restful;
 
-import cn.thinkjoy.common.protocol.Response;
+import cn.thinkjoy.common.protocol.RequestT;
 import cn.thinkjoy.common.protocol.ResponseT;
+import cn.thinkjoy.common.serializer.filter.ExtPropertyFilter;
 import cn.thinkjoy.common.utils.RtnCodeEnum;
+import cn.thinkjoy.common.utils.StyleEnum;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializeFilter;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -18,9 +20,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Type;
 import java.nio.charset.Charset;
-import java.util.Map;
 
 /**
  * 扩展的fastjson convert  针对习悦特有协议扩展
@@ -73,6 +73,8 @@ public class ExtFastJsonHttpMessageConverter<T> extends AbstractHttpMessageConve
         this.iTypeReference = iTypeReference;
     }
 
+    private ThreadLocal<StyleEnum> styleEnumThreadLocal = new ThreadLocal<>();
+
     @Override
     protected T readInternal(Class<? extends T> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -99,17 +101,37 @@ public class ExtFastJsonHttpMessageConverter<T> extends AbstractHttpMessageConve
         if(size != -1){
             url = url.substring(0, size);
         }
-        return JSON.parseObject(bytes, 0, bytes.length, charset.newDecoder(), iTypeReference.getTypeReference(url).getType());
+
+        T t = JSON.parseObject(bytes, 0, bytes.length, charset.newDecoder(), iTypeReference.getTypeReference(url).getType());
+
+        //RequestT中data处理
+        if(t instanceof RequestT){
+            RequestT requestT = (RequestT)t;
+            StyleEnum style = requestT.getStyle();
+            styleEnumThreadLocal.set(style);
+        }
+        return t;
     }
 
     @Override
     protected void writeInternal(T t, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
         ResponseT<T> response = new ResponseT<T>(RtnCodeEnum.SUCCESS);
+        ////RequestT中data处理
+        StyleEnum style = styleEnumThreadLocal.get();
+        if(style != null){
+            response.setStyle(style);
+        }
+
         response.setBizData(t);
 
         OutputStream out = outputMessage.getBody();
-        String text = JSON.toJSONString(response,  features);
+        String text = JSON.toJSONString(response, getSerializeFilter(), features);
         byte[] bytes = text.getBytes(charset);
         out.write(bytes);
+    }
+
+    //获取序列化过滤器
+    private SerializeFilter[] getSerializeFilter(){
+        return new SerializeFilter[]{new ExtPropertyFilter()};
     }
 }
