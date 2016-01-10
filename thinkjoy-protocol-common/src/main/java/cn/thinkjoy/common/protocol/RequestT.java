@@ -55,21 +55,29 @@ public class RequestT<T> implements Serializable {
         if(StyleEnum.PLAIN.equals(style)){
             return data;
         }else {
-            //unwrapper data with styled data
-            String jsonData;
-            if(StyleEnum.GZIP.equals(style)){
-                jsonData = StringGZIPUtils.uncompressToString(ByteUtils.HexString2Bytes(styledData));
-                if(jsonData != null){
-                    return (T) JSON.parse(jsonData);
-                }
-            }else if(StyleEnum.AES.equals(style)){
-                try {
-                    jsonData = AES256Utils.decrypt2str(ByteUtils.HexString2Bytes(styledData));
-                    if(jsonData != null){
-                        return (T) JSON.parse(jsonData);
+            if (data != null) {//说明已经解密过并设回原值  注意 请一定确认 客户端编码时清空了data
+                return data;
+            } else {
+                //unwrapper data with styled data
+                String jsonData;
+                if (StyleEnum.GZIP.equals(style)) {
+                    jsonData = StringGZIPUtils.uncompressToString(ByteUtils.HexString2Bytes(styledData));
+                    if (jsonData != null) {
+                        data = (T) JSON.parse(jsonData);
+
+                        return data;
                     }
-                }catch (Exception e){
-                    e.printStackTrace();
+                } else if (StyleEnum.AES.equals(style)) {
+                    try {
+                        jsonData = AES256Utils.decrypt2str(ByteUtils.HexString2Bytes(styledData));
+                        if (jsonData != null) {
+                            data =  (T) JSON.parse(jsonData);
+
+                            return data;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -77,7 +85,7 @@ public class RequestT<T> implements Serializable {
     }
 
     public void setData(T data) {
-        if(data == null || StyleEnum.PLAIN.equals(style)){
+        if(StyleEnum.PLAIN.equals(style)){
             this.data = data;
         }else {
             this.data = null;
@@ -116,8 +124,9 @@ public class RequestT<T> implements Serializable {
     @Override
     public String toString() {
         return "RequestT{" +
-                "style='" + style + '\'' +
+                "style=" + style +
                 ", data=" + data +
+                ", styledData='" + styledData + '\'' +
                 ", clientInfo=" + clientInfo +
                 '}';
     }

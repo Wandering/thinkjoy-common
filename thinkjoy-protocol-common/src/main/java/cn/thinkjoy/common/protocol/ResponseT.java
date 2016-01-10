@@ -91,21 +91,27 @@ public class ResponseT<T> implements Serializable {
         if(StyleEnum.PLAIN.equals(style)){
             return bizData;
         }else {
-            //unwrapper data with styled data
-            String jsonData;
-            if(StyleEnum.GZIP.equals(style)){
-                jsonData = StringGZIPUtils.uncompressToString(ByteUtils.HexString2Bytes(styledData));
-                if(jsonData != null){
-                    return (T) JSON.parse(jsonData);
-                }
-            }else if(StyleEnum.AES.equals(style)){
-                try {
-                    jsonData = AES256Utils.decrypt2str(ByteUtils.HexString2Bytes(styledData));
-                    if(jsonData != null){
-                        return (T) JSON.parse(jsonData);
+            if (bizData != null) {//说明已经解密过并设回原值  注意 请一定确认 客户端编码时清空了data
+                return bizData;
+            } else {
+                //unwrapper data with styled data
+                String jsonData;
+                if (StyleEnum.GZIP.equals(style)) {
+                    jsonData = StringGZIPUtils.uncompressToString(ByteUtils.HexString2Bytes(styledData));
+                    if (jsonData != null) {
+                        bizData = (T) JSON.parse(jsonData);
+                        return bizData;
                     }
-                }catch (Exception e){
-                    e.printStackTrace();
+                } else if (StyleEnum.AES.equals(style)) {
+                    try {
+                        jsonData = AES256Utils.decrypt2str(ByteUtils.HexString2Bytes(styledData));
+                        if (jsonData != null) {
+                            bizData = (T) JSON.parse(jsonData);
+                            return bizData;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -113,7 +119,7 @@ public class ResponseT<T> implements Serializable {
     }
 
     public void setBizData(T bizData) {
-        if(bizData == null || StyleEnum.PLAIN.equals(style)){
+        if(StyleEnum.PLAIN.equals(style)){
             this.bizData = bizData;
         }else {
             this.bizData = null;

@@ -132,6 +132,11 @@ public class ExtFastJsonHttpMessageConverter<T> extends AbstractHttpMessageConve
 
     //获取序列化过滤器
     private SerializeFilter[] getSerializeFilter(){
-        return new SerializeFilter[]{new ExtPropertyFilter()};
+        return SerializeFilterBuilder.instance;
+    }
+
+
+    private static class SerializeFilterBuilder{
+        private static SerializeFilter[] instance = new SerializeFilter[]{new ExtPropertyFilter()};
     }
 }
