@@ -6,6 +6,7 @@ import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.exception.BizExceptionEnum;
 import cn.thinkjoy.common.managerui.controller.helpers.ActionPermHelper;
 import cn.thinkjoy.common.managerui.controller.helpers.BaseServiceMaps;
+import cn.thinkjoy.common.managerui.controller.helpers.PersistenceProviderMaps;
 import cn.thinkjoy.common.managerui.domain.ResourceGrid;
 import cn.thinkjoy.common.managerui.service.IResourceGridService;
 import cn.thinkjoy.common.service.IBaseService;
@@ -15,6 +16,7 @@ import cn.thinkjoy.common.utils.UserContext;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
+import org.apache.poi.hslf.record.PersistPtrHolder;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jeecgframework.poi.excel.ExcelExportUtil;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
@@ -220,7 +222,9 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
      * @return
      */
     protected void innerHandleAdd(String mainObj, Map<String, Object> dataMap){
-        getServiceMaps().get(mainObj).insertMap(dataMap);
+        //getServiceMaps().get(mainObj).insertMap(dataMap);
+
+        getPersistenceProviderMaps().get(getServiceMaps(), mainObj).insertMap(dataMap);
     }
 
     /**
@@ -229,7 +233,9 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
      * @param dataMap
      */
     protected void innerHandleUpdate(String mainObj, Map<String, Object> dataMap){
-        getServiceMaps().get(mainObj).updateMap(dataMap);
+        //getServiceMaps().get(mainObj).updateMap(dataMap);
+
+        getPersistenceProviderMaps().get(getServiceMaps(), mainObj).updateMap(dataMap);
     }
 
     /**
@@ -242,7 +248,8 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
         //getServiceMaps().get(mainObj).delete(id);
         dataMap.put("status", BizStatusEnum.D.getCode());
         // 只做逻辑删除  modify by qyang 2015.9.2
-        getServiceMaps().get(mainObj).updateMap(dataMap);
+        //getServiceMaps().get(mainObj).updateMap(dataMap);
+        getPersistenceProviderMaps().get(getServiceMaps(), mainObj).updateMap(dataMap);
     }
 
     @RequestMapping(value="/import/{mainObj}")
@@ -288,7 +295,9 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
                 , getGenericType(0), params);
 
                 for(T t : lists) {
-                    getServiceMaps().get(mainObj).insert((BaseDomain) t);
+                    //getServiceMaps().get(mainObj).insert((BaseDomain) t);
+
+                    getPersistenceProviderMaps().get(getServiceMaps(), mainObj).insert((BaseDomain) t);
                 }
 
             } catch (Exception e) {
@@ -301,7 +310,7 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
 
     protected abstract BaseServiceMaps getServiceMaps();
 
-
+    protected abstract PersistenceProviderMaps getPersistenceProviderMaps();
 
     /**
      * 设定多对象的存储顺序

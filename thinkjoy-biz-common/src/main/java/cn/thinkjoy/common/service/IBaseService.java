@@ -17,7 +17,7 @@ import java.util.Map;
  * @author qyang
  * @since v0.0.1
  */
-public interface IBaseService<D extends IBaseDAO,T extends BaseDomain> {
+public interface IBaseService<D extends IBaseDAO,T extends BaseDomain>{
 
     public D getDao();
 
