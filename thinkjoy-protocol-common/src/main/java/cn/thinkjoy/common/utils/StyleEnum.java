@@ -30,12 +30,12 @@ public enum StyleEnum {
         this.desc = desc;
     }
 
-    public static StyleEnum codeOf(String name) {
-        if(name == null ){
+    public static StyleEnum codeOf(String code) {
+        if(code == null ){
             return null;
         }
         for (StyleEnum rtnCodeEnum : StyleEnum.values()) {
-            if (name.equals(rtnCodeEnum.name())) {
+            if (code.equalsIgnoreCase(rtnCodeEnum.name())) {
                 return rtnCodeEnum;
             }
         }

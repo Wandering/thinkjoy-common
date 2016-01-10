@@ -1,13 +1,14 @@
 package cn.thinkjoy.common.restful;
 
-import cn.thinkjoy.common.protocol.RequestT;
 import cn.thinkjoy.common.protocol.ResponseT;
 import cn.thinkjoy.common.serializer.filter.ExtPropertyFilter;
-import cn.thinkjoy.common.utils.RtnCodeEnum;
-import cn.thinkjoy.common.utils.StyleEnum;
+import cn.thinkjoy.common.utils.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializeFilter;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.google.common.base.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.MediaType;
@@ -31,6 +32,9 @@ import java.nio.charset.Charset;
  * @since v0.0.1
  */
 public class ExtFastJsonHttpMessageConverter<T> extends AbstractHttpMessageConverter<T> {
+
+    public Logger logger = LoggerFactory.getLogger(ExtFastJsonHttpMessageConverter.class);
+
     public final static Charset UTF8     = Charset.forName("UTF-8");
 
     private Charset             charset  = UTF8;
@@ -44,6 +48,9 @@ public class ExtFastJsonHttpMessageConverter<T> extends AbstractHttpMessageConve
     }
 
     private ITypeReference iTypeReference;
+
+    private String dataStyleType;
+
     @Override
     protected boolean supports(Class<?> clazz) {
         return true;
@@ -73,7 +80,13 @@ public class ExtFastJsonHttpMessageConverter<T> extends AbstractHttpMessageConve
         this.iTypeReference = iTypeReference;
     }
 
-    private ThreadLocal<StyleEnum> styleEnumThreadLocal = new ThreadLocal<>();
+    public String getDataStyleType() {
+        return dataStyleType;
+    }
+
+    public void setDataStyleType(String dataStyleType) {
+        this.dataStyleType = dataStyleType;
+    }
 
     @Override
     protected T readInternal(Class<? extends T> clazz, HttpInputMessage inputMessage) throws IOException, HttpMessageNotReadableException {
@@ -104,25 +117,17 @@ public class ExtFastJsonHttpMessageConverter<T> extends AbstractHttpMessageConve
 
         T t = JSON.parseObject(bytes, 0, bytes.length, charset.newDecoder(), iTypeReference.getTypeReference(url).getType());
 
-        //RequestT中data处理
-        if(t instanceof RequestT){
-            RequestT requestT = (RequestT)t;
-            StyleEnum style = requestT.getStyle();
-            styleEnumThreadLocal.set(style);
-        }
         return t;
     }
 
     @Override
     protected void writeInternal(T t, HttpOutputMessage outputMessage) throws IOException, HttpMessageNotWritableException {
         ResponseT<T> response = new ResponseT<T>(RtnCodeEnum.SUCCESS);
-        ////RequestT中data处理
-        StyleEnum style = styleEnumThreadLocal.get();
-        if(style != null){
-            response.setStyle(style);
-        }
 
         response.setBizData(t);
+
+        //响应数据是ResponseT对象时style处理
+        resetResponseData(response);
 
         OutputStream out = outputMessage.getBody();
         String text = JSON.toJSONString(response, getSerializeFilter(), features);
@@ -138,5 +143,35 @@ public class ExtFastJsonHttpMessageConverter<T> extends AbstractHttpMessageConve
 
     private static class SerializeFilterBuilder{
         private static SerializeFilter[] instance = new SerializeFilter[]{new ExtPropertyFilter()};
+    }
+
+    /**
+     * 响应数据是ResponseT对象时处理<br/>
+     * bizData --> styledData
+     * @param response
+     */
+    private void resetResponseData(ResponseT<T> response){
+        if(response.getBizData() != null){
+            StyleEnum style = StyleEnum.codeOf(dataStyleType);
+            if(!StyleEnum.PLAIN.equals(style)){
+                response.setStyle(style);
+                //wrapper data with style
+                String jsonData = JSON.toJSONString(response.getBizData());
+                String styledData = null;
+                if(StyleEnum.GZIP.equals(style)){
+                    styledData = ByteUtils.Bytes2HexString(StringGZIPUtils.compressToByte(jsonData));
+                }else if(StyleEnum.AES.equals(style)){
+                    try {
+                        styledData = ByteUtils.Bytes2HexString(AES256Utils.encrypt(jsonData));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+                if(!Strings.isNullOrEmpty(styledData)){
+                    response.setStyledData(styledData);
+                    response.setBizData(null);
+                }
+            }
+        }
     }
 }

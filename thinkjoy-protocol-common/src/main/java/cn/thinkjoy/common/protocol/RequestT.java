@@ -5,6 +5,8 @@ import cn.thinkjoy.common.utils.ByteUtils;
 import cn.thinkjoy.common.utils.StringGZIPUtils;
 import cn.thinkjoy.common.utils.StyleEnum;
 import com.alibaba.fastjson.JSON;
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -55,28 +57,25 @@ public class RequestT<T> implements Serializable {
         if(StyleEnum.PLAIN.equals(style)){
             return data;
         }else {
-            if (data != null) {//说明已经解密过并设回原值  注意 请一定确认 客户端编码时清空了data
+            if (data != null && !Objects.equal(data, "")) {
                 return data;
             } else {
                 //unwrapper data with styled data
-                String jsonData;
-                if (StyleEnum.GZIP.equals(style)) {
-                    jsonData = StringGZIPUtils.uncompressToString(ByteUtils.HexString2Bytes(styledData));
-                    if (jsonData != null) {
-                        data = (T) JSON.parse(jsonData);
-
-                        return data;
-                    }
-                } else if (StyleEnum.AES.equals(style)) {
-                    try {
-                        jsonData = AES256Utils.decrypt2str(ByteUtils.HexString2Bytes(styledData));
-                        if (jsonData != null) {
-                            data =  (T) JSON.parse(jsonData);
-
-                            return data;
+                if(!Strings.isNullOrEmpty(styledData)){
+                    String jsonData = null;
+                    if(StyleEnum.GZIP.equals(style)){
+                        jsonData = StringGZIPUtils.uncompressToString(ByteUtils.HexString2Bytes(styledData));
+                    }else if(StyleEnum.AES.equals(style)){
+                        try {
+                            jsonData = AES256Utils.decrypt2str(ByteUtils.HexString2Bytes(styledData));
+                        }catch (Exception e){
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    }
+                    if(jsonData != null){
+                        data = (T) JSON.parse(jsonData);
+                        styledData = null;
+                        return data;
                     }
                 }
             }
@@ -88,18 +87,24 @@ public class RequestT<T> implements Serializable {
         if(StyleEnum.PLAIN.equals(style)){
             this.data = data;
         }else {
-            this.data = null;
-            //wrapper data with style
-            String jsonData = JSON.toJSONString(data);
-            if(StyleEnum.GZIP.equals(style)){
-                styledData = ByteUtils.Bytes2HexString(StringGZIPUtils.compressToByte(jsonData));
-                this.setStyledData(styledData);
-            }else if(StyleEnum.AES.equals(style)){
-                try {
-                    styledData = ByteUtils.Bytes2HexString(AES256Utils.encrypt(jsonData));
-                    this.setStyledData(styledData);
-                }catch (Exception e){
-                    e.printStackTrace();
+            if(data == null || Objects.equal(data, "")){
+                this.data = data;
+            }else {
+                //wrapper data with style
+                String jsonData = JSON.toJSONString(data);
+                String hexData = null;
+                if(StyleEnum.GZIP.equals(style)){
+                    hexData = ByteUtils.Bytes2HexString(StringGZIPUtils.compressToByte(jsonData));
+                }else if(StyleEnum.AES.equals(style)){
+                    try {
+                        hexData = ByteUtils.Bytes2HexString(AES256Utils.encrypt(jsonData));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+                if(!Strings.isNullOrEmpty(hexData)){
+                    this.styledData = hexData;
+                    this.data = null;
                 }
             }
         }
