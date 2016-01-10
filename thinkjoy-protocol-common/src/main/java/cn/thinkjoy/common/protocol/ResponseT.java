@@ -93,7 +93,7 @@ public class ResponseT<T> implements Serializable {
         if(StyleEnum.PLAIN.equals(style)){
             return bizData;
         }else {
-            if (bizData != null && !Objects.equal(bizData, "")) {//说明已经解密过并设回原值  注意 请一定确认 客户端编码时清空了data
+            if (bizData != null && !Objects.equal(bizData, "")) {
                 return bizData;
             } else {
                 //unwrapper data with styled data
