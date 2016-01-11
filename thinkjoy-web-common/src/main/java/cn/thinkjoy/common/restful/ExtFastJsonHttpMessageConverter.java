@@ -130,14 +130,17 @@ public class ExtFastJsonHttpMessageConverter<T> extends AbstractHttpMessageConve
         resetResponseData(response);
 
         OutputStream out = outputMessage.getBody();
-        String text = JSON.toJSONString(response, getSerializeFilter(), features);
+        String text = JSON.toJSONString(response, getSerializeFilter(response), features);
         byte[] bytes = text.getBytes(charset);
         out.write(bytes);
     }
 
     //获取序列化过滤器
-    private SerializeFilter[] getSerializeFilter(){
-        return SerializeFilterBuilder.instance;
+    private SerializeFilter[] getSerializeFilter(ResponseT<T> response){
+        if(response.getStyle() != null && !StyleEnum.PLAIN.equals(response.getStyle())){
+            return SerializeFilterBuilder.instance;
+        }
+        return new SerializeFilter[0];
     }
 
 
