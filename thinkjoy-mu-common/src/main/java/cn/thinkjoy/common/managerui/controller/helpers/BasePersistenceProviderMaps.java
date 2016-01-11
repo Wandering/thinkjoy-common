@@ -13,7 +13,7 @@ import java.util.Map;
  * @author qyang
  * @since v0.0.1
  */
-public class PersistenceProviderMaps {
+public class BasePersistenceProviderMaps {
     protected final Map<String, IPersistenceProvider> providerMap = Maps.newHashMap();
 
 

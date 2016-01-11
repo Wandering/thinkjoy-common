@@ -1,7 +1,7 @@
 package cn.thinkjoy.common.managerui.controller;
 
 import cn.thinkjoy.common.managerui.controller.helpers.BaseServiceMaps;
-import cn.thinkjoy.common.managerui.controller.helpers.PersistenceProviderMaps;
+import cn.thinkjoy.common.managerui.controller.helpers.BasePersistenceProviderMaps;
 import cn.thinkjoy.common.service.IBaseService;
 
 /**
@@ -19,7 +19,7 @@ public class TestCommonController extends AbstractCommonController {
     }
 
     @Override
-    protected PersistenceProviderMaps getPersistenceProviderMaps() {
+    protected BasePersistenceProviderMaps getPersistenceProviderMaps() {
         return null;
     }
 

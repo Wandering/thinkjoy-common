@@ -6,7 +6,7 @@ import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.exception.BizExceptionEnum;
 import cn.thinkjoy.common.managerui.controller.helpers.ActionPermHelper;
 import cn.thinkjoy.common.managerui.controller.helpers.BaseServiceMaps;
-import cn.thinkjoy.common.managerui.controller.helpers.PersistenceProviderMaps;
+import cn.thinkjoy.common.managerui.controller.helpers.BasePersistenceProviderMaps;
 import cn.thinkjoy.common.managerui.domain.ResourceGrid;
 import cn.thinkjoy.common.managerui.service.IResourceGridService;
 import cn.thinkjoy.common.service.IBaseService;
@@ -16,7 +16,6 @@ import cn.thinkjoy.common.utils.UserContext;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
-import org.apache.poi.hslf.record.PersistPtrHolder;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.jeecgframework.poi.excel.ExcelExportUtil;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
@@ -310,7 +309,7 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
 
     protected abstract BaseServiceMaps getServiceMaps();
 
-    protected abstract PersistenceProviderMaps getPersistenceProviderMaps();
+    protected abstract BasePersistenceProviderMaps getPersistenceProviderMaps();
 
     /**
      * 设定多对象的存储顺序
