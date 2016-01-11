@@ -1,5 +1,6 @@
 package cn.thinkjoy.common.managerui.controller.helpers;
 
+import cn.thinkjoy.common.service.IBaseService;
 import cn.thinkjoy.common.service.IPersistenceProvider;
 import com.google.common.collect.Maps;
 
@@ -13,15 +14,15 @@ import java.util.Map;
  * @author qyang
  * @since v0.0.1
  */
-public class PersistenceProviderMaps {
+public class BasePersistenceProviderMaps {
     protected final Map<String, IPersistenceProvider> providerMap = Maps.newHashMap();
 
 
-    public IPersistenceProvider get(BaseServiceMaps serviceMaps, String mainObj){
+    public IBaseService get(BaseServiceMaps serviceMaps, String mainObj){
         IPersistenceProvider persistenceProvider = providerMap.get(mainObj);
         if(persistenceProvider != null){
             return persistenceProvider;
         }
-        return (IPersistenceProvider) serviceMaps.get(mainObj);
+        return serviceMaps.get(mainObj);
     }
 }
