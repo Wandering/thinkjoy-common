@@ -24,6 +24,11 @@ public @interface ApiDesc {
      * @return
      */
     String value() default "";
+    /**
+     * 分类
+     * @return
+     */
+    String group() default "";
 
     /**
      * 责任人

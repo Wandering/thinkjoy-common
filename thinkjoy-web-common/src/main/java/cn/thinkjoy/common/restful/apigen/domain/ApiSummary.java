@@ -20,6 +20,16 @@ public class ApiSummary implements Serializable {
     private String response;
     private String owner;
 
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    private String group;
+
     public int getSeq() {
         return seq;
     }
