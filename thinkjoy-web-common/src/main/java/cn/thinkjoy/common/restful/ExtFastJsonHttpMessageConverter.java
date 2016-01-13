@@ -1,12 +1,15 @@
 package cn.thinkjoy.common.restful;
 
+import cn.thinkjoy.common.protocol.RequestT;
 import cn.thinkjoy.common.protocol.ResponseT;
 import cn.thinkjoy.common.serializer.filter.ExtPropertyFilter;
 import cn.thinkjoy.common.utils.*;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializeFilter;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.base.Strings;
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpInputMessage;
@@ -16,11 +19,13 @@ import org.springframework.http.converter.AbstractHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.http.server.ServletServerHttpRequest;
+import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 
 /**
@@ -117,6 +122,9 @@ public class ExtFastJsonHttpMessageConverter<T> extends AbstractHttpMessageConve
 
         T t = JSON.parseObject(bytes, 0, bytes.length, charset.newDecoder(), iTypeReference.getTypeReference(url).getType());
 
+        //请求数据是RequestT对象时styledData处理
+        t = resetRequestData(url, t);
+
         return t;
     }
 
@@ -146,6 +154,29 @@ public class ExtFastJsonHttpMessageConverter<T> extends AbstractHttpMessageConve
 
     private static class SerializeFilterBuilder{
         private static SerializeFilter[] instance = new SerializeFilter[]{new ExtPropertyFilter()};
+    }
+
+    /**
+     * 请求中的数据解密并设置到业务对象<br/>
+     */
+    private T resetRequestData(String url, T t){
+        if(t instanceof RequestT){
+            RequestT requestT = (RequestT)t;
+            if(requestT.getStyle() != null && !StyleEnum.PLAIN.equals(requestT.getStyle())){
+                Type[] types = ((ParameterizedTypeImpl)iTypeReference.getTypeReference(url).getType()).getActualTypeArguments();
+                Type type = ArrayUtils.isNotEmpty(types) ? types[0] : null;
+                if(type != null){
+                    Object data = JSON.parseObject(((JSONObject) requestT.getData()).toJSONString(), type);
+                    StyleEnum style = requestT.getStyle();
+                    requestT.setStyle(StyleEnum.PLAIN);
+                    requestT.setData(data);
+                    requestT.setStyledData(null);
+                    requestT.setStyle(style);
+                    return (T)requestT;
+                }
+            }
+        }
+        return t;
     }
 
     /**
