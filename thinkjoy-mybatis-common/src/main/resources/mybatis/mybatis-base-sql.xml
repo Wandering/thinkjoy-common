@@ -59,10 +59,10 @@
         </if>
       </foreach>
       </if>
-      <if test="params != null">
-      	<if test="params.status != null">
-      		AND status = #{params.status,jdbcType=INTEGER}
-      	</if>
-      </if>
+      <!--<if test="params != null">-->
+      	<!--<if test="params.status != null">-->
+      		<!--AND status = #{params.status,jdbcType=INTEGER}-->
+      	<!--</if>-->
+      <!--</if>-->
   </sql>
 </mapper>

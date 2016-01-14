@@ -19,7 +19,7 @@ public class DefaultCriteriaBuilder implements CriteriaBuilder {
 	protected Class<?> entityClass;
 	private List<Condition> cnds = Lists.newList();
 	private List<OrderBy> orderbys = Lists.newList();
-	private Map<Object, Object> params = Maps.newMap();
+//	private Map<Object, Object> params = Maps.newMap();
 	private Set<Object> selector = new HashSet<>();
 	protected Pagination pagination;
 
@@ -249,9 +249,9 @@ public class DefaultCriteriaBuilder implements CriteriaBuilder {
 	}
 
 	public Criteria buildCriteria() {
-		if (getEntityClass() != null && ReflectUtils.getMethod(getEntityClass(), "getStatus") != null) {
-			add(Cnd.eq(Logic.AND, "status", BizStatusEnum.N.getCode()));
-		}
+//		if (getEntityClass() != null && ReflectUtils.getMethod(getEntityClass(), "getStatus") != null) {
+//			add(Cnd.eq(Logic.AND, "status", BizStatusEnum.N.getCode()));
+//		}
 		Criteria criteria = Cnd.createCriteria().add(cnds);
 		if (pagination != null) {
 			criteria.limit(new Long(pagination.getFirst()), new Long(pagination.getLast()));
@@ -265,9 +265,9 @@ public class DefaultCriteriaBuilder implements CriteriaBuilder {
 				criteria.orderBy(orderby);
 			}
 		}
-		if (!params.isEmpty()) {
-			criteria.setParams(params);
-		}
+//		if (!params.isEmpty()) {
+//			criteria.setParams(params);
+//		}
 		if (!selector.isEmpty()) {
 			criteria.setSelector(selector);
 		}
@@ -284,15 +284,15 @@ public class DefaultCriteriaBuilder implements CriteriaBuilder {
 		return this;
 	}
 
-	public CriteriaBuilder addParam(String name, Object value) {
-		this.params.put(name, value);
-		return this;
-	}
-
-	public CriteriaBuilder addParams(Object... keyValues) {
-		this.params.putAll(Maps.map(keyValues));
-		return this;
-	}
+//	public CriteriaBuilder addParam(String name, Object value) {
+//		this.params.put(name, value);
+//		return this;
+//	}
+//
+//	public CriteriaBuilder addParams(Object... keyValues) {
+//		this.params.putAll(Maps.map(keyValues));
+//		return this;
+//	}
 
 	public CriteriaBuilder addSelector(String param){
 		this.selector.add(param);

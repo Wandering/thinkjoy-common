@@ -94,9 +94,9 @@ public interface CriteriaBuilder {
 
 	public CriteriaBuilder orderBy(String orderby, Order order);
 
-	public CriteriaBuilder addParam(String name, Object value);
-
-	public CriteriaBuilder addParams(Object... keyValues);
+//	public CriteriaBuilder addParam(String name, Object value);
+//
+//	public CriteriaBuilder addParams(Object... keyValues);
 
 	public CriteriaBuilder addSelector(String param);
 
