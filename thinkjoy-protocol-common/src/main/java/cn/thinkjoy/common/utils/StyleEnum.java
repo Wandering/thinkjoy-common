@@ -18,7 +18,7 @@ package cn.thinkjoy.common.utils;
  */
 public enum StyleEnum {
 
-    PLAIN("plain", "请求成功"),
+    PLAIN("plain", "普通明文"),
     GZIP("gzip", "gzip压缩"),
     AES("aes", "AES加密");
 
