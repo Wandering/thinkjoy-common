@@ -51,11 +51,15 @@ public class PagingHandlerInterceptor extends AbstractInterceptor {
 		Dialect dialect = SpringHolder.getBean(DBSelector.class).selectDialect();
 		boolean isHasLimit = false;
 		if ((parameter instanceof Criteria || parameter instanceof PageBean)
-				&& (dialect.supportsLimit() && (offset != 0 || limit != 2147483647))) {
+				&& (dialect.supportsLimit()
+//				&& (offset != 0 || limit != 2147483647)
+					)) {
 			if ((parameter instanceof Criteria)) {
 				Criteria criteria = (Criteria) parameter;
 				if (criteria.isHasLimit().booleanValue()) {
 					isHasLimit = true;
+					offset = criteria.getFirst().intValue();
+					limit = criteria.getLast().intValue();
 				}
 			}
 			if (parameter instanceof PageBean) {
@@ -70,7 +74,7 @@ public class PagingHandlerInterceptor extends AbstractInterceptor {
 				} else {
 					sql = dialect.getLimitString(sql, 0, limit);
 				}
-				limit = 2147483647;
+//				limit = 2147483647;
 				queryArgs[ROWBOUNDS_INDEX] = new RowBounds(offset, limit);
 				BoundSql newBoundSql = MybatisUtils.copyBoundSql(ms, boundSql, sql);
 				MappedStatement newMs = MybatisUtils.copyMappedStatement(ms, new BoundSqlSqlSource(newBoundSql));
