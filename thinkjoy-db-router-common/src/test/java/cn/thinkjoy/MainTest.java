@@ -19,7 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:springme.xml")
 public class MainTest {
-    @Autowired
+    @Autowired(required = false)
     private IRoleDAO roleDAO;
 
     @Test
