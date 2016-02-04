@@ -25,4 +25,8 @@ public class BasePersistenceProviderMaps {
         }
         return serviceMaps.get(mainObj);
     }
+
+    public IPersistenceProvider get(String mainObj){
+        return providerMap.get(mainObj);
+    }
 }

@@ -23,6 +23,11 @@ public abstract class AbstractPersistenceProvider implements IPersistenceProvide
     public abstract IBaseService getService();
 
     @Override
+    public void verifyData(Map<String, Object> dataMap) {
+
+    }
+
+    @Override
     public IBaseDAO getDao() {
         return null;
     }

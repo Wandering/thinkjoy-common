@@ -93,7 +93,7 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
                 throw new BizException(BizExceptionEnum.NOTEXISTS.getCode(), "没有修改权限");
             }
 
-            //做通用校验 TODO 支持全局开启
+            //做通用校验
             verifyData(dataMap, mainObj, true);
 
             dataMap.put("lastModifier", UserContext.getCurrentUser().getId());
@@ -106,7 +106,7 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
                 throw new BizException(BizExceptionEnum.NOTEXISTS.getCode(), "没有新增权限");
             }
 
-            //做通用校验 TODO 支持全局开启
+            //做通用校验
             verifyData(dataMap, mainObj, false);
 
             dataMap.put("creator", UserContext.getCurrentUser().getId());
@@ -137,12 +137,19 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
     }
 
     /**
-     * 数据表单校验
+     * 通用数据表单校验
      * @param dataMap
      * @param mainObj
      * @param isEdit  true 编辑； false 新增         true，检查重复性 需要排除自己本身
      */
     private void verifyData(Map<String, Object> dataMap, String mainObj,  boolean isEdit) {
+
+        //1.有自定义的校验先执行自定义校验
+        if(getPersistenceProviderMaps().get(mainObj) != null){
+            getPersistenceProviderMaps().get(mainObj).verifyData(dataMap);
+        }
+
+        //2.执行通用校验
         Map<String, Object> condition = Maps.newHashMap();
         condition.put("moduleName", mainObj);
         List<ResourceGrid> resourceGridList = resourceGridService.queryList(condition, "orderNum", SqlOrderEnum.ASC.getAction());
