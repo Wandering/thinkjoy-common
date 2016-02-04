@@ -13,6 +13,7 @@ import cn.thinkjoy.common.service.IBaseService;
 import cn.thinkjoy.common.utils.ActionEnum;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
 import cn.thinkjoy.common.utils.UserContext;
+import cn.thinkjoy.utils.ValidatorUtil;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
@@ -136,7 +137,7 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
     }
 
     /**
-     *
+     * 数据表单校验
      * @param dataMap
      * @param mainObj
      * @param isEdit  true 编辑； false 新增         true，检查重复性 需要排除自己本身
@@ -153,18 +154,22 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
         for(ResourceGrid resourceGrid : resourceGridList){
             editRules = resourceGrid.getEditrules();
             rules = JSON.parseObject(editRules, Map.class);
-            if(rules.get("exists") != null && (String.valueOf(rules.get("exists"))).trim().length() > 0) {//唯一性校验
+
+            //唯一性校验
+            if(rules.containsKey("exists") && (String.valueOf(rules.get("exists"))).trim().length() > 0) {
                 existRules = (String)rules.get("exists");
             }
 
-            if(rules.get("required") != null && (Boolean)rules.get("required")){//required
-                if(dataMap.containsKey(resourceGrid.getColId()) && (dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0)){
+            //required
+            if(rules.containsKey("required") && (Boolean)rules.get("required")){
+                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
                     throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
                 }
             }
 
-            if(rules.get("maxLength") != null && (String.valueOf(rules.get("maxLength"))).trim().length() > 0){//最大长度校验
-                if(dataMap.containsKey(resourceGrid.getColId()) && (dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0)){
+            //最大长度校验
+            if(rules.containsKey("maxLength") && !Strings.isNullOrEmpty((String)rules.get("maxLength"))){
+                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
                     throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
                 } else {
                     if(dataMap.containsKey(resourceGrid.getColId()) && (((String)dataMap.get(resourceGrid.getColId())).trim().length() > (Integer) rules.get("maxLength"))){
@@ -173,12 +178,101 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
                 }
             }
 
-            if(rules.get("length") != null && (String.valueOf(rules.get("length"))).trim().length() > 0){//长度校验
-                if(dataMap.containsKey(resourceGrid.getColId()) && (dataMap.get(resourceGrid.getColId()) == null || ((String)dataMap.get(resourceGrid.getColId())).trim().length() == 0)){
+            //固定长度校验
+            if(rules.containsKey("length") && (String.valueOf(rules.get("length"))).trim().length() > 0){
+                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
                     throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
                 } else {
                     if(dataMap.containsKey(resourceGrid.getColId()) && (((String)dataMap.get(resourceGrid.getColId())).trim().length() != (Integer) rules.get("length"))){
                         throw new BizException(BizExceptionEnum.LENGTH.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.LENGTH.getDesc()+rules.get("length"));
+                    }
+                }
+            }
+
+            //邮箱
+            if(rules.containsKey("isEmail") && (Boolean)rules.get("isEmail")){
+                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
+                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
+                } else {
+                    if(dataMap.containsKey(resourceGrid.getColId()) && ValidatorUtil.isEmail((String)dataMap.get(resourceGrid.getColId()))){
+                        throw new BizException(BizExceptionEnum.ISEMAIL.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISEMAIL.getDesc());
+                    }
+                }
+            }
+
+            //IP
+            if(rules.containsKey("isIpV4") && (Boolean)rules.get("isIpV4")){
+                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
+                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
+                } else {
+                    if(dataMap.containsKey(resourceGrid.getColId()) && ValidatorUtil.isIpV4((String) dataMap.get(resourceGrid.getColId()))){
+                        throw new BizException(BizExceptionEnum.ISIPV4.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISIPV4.getDesc());
+                    }
+                }
+            }
+
+            //数字
+            if(rules.containsKey("isNum") && (Boolean)rules.get("isNum")){
+                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
+                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
+                } else {
+                    if(dataMap.containsKey(resourceGrid.getColId()) && ValidatorUtil.isNum((String) dataMap.get(resourceGrid.getColId()))){
+                        throw new BizException(BizExceptionEnum.ISNUM.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISNUM.getDesc());
+                    }
+                }
+            }
+
+            //整数
+            if(rules.containsKey("isInt") && (Boolean)rules.get("isInt")){
+                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
+                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
+                } else {
+                    if(dataMap.containsKey(resourceGrid.getColId()) && ValidatorUtil.isInt((String) dataMap.get(resourceGrid.getColId()))){
+                        throw new BizException(BizExceptionEnum.ISINT.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISINT.getDesc());
+                    }
+                }
+            }
+
+            //正整数
+            if(rules.containsKey("isIntPos") && (Boolean)rules.get("isIntPos")){
+                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
+                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
+                } else {
+                    if(dataMap.containsKey(resourceGrid.getColId()) && ValidatorUtil.isIntPos((String) dataMap.get(resourceGrid.getColId()))){
+                        throw new BizException(BizExceptionEnum.ISINTPOS.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISINTPOS.getDesc());
+                    }
+                }
+            }
+
+            //URL
+            if(rules.containsKey("isUrl") && (Boolean)rules.get("isUrl")){
+                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
+                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
+                } else {
+                    if(dataMap.containsKey(resourceGrid.getColId()) && ValidatorUtil.isUrl((String) dataMap.get(resourceGrid.getColId()))){
+                        throw new BizException(BizExceptionEnum.ISURL.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISURL.getDesc());
+                    }
+                }
+            }
+
+            //中文
+            if(rules.containsKey("isZw") && (Boolean)rules.get("isZw")){
+                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
+                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
+                } else {
+                    if(dataMap.containsKey(resourceGrid.getColId()) && ValidatorUtil.isChinese((String) dataMap.get(resourceGrid.getColId()))){
+                        throw new BizException(BizExceptionEnum.ISZW.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISZW.getDesc());
+                    }
+                }
+            }
+
+            //邮编
+            if(rules.containsKey("isZip") && (Boolean)rules.get("isZip")){
+                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
+                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
+                } else {
+                    if(dataMap.containsKey(resourceGrid.getColId()) && ValidatorUtil.isZipcode((String) dataMap.get(resourceGrid.getColId()))){
+                        throw new BizException(BizExceptionEnum.ISPOSTCODE.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISPOSTCODE.getDesc());
                     }
                 }
             }

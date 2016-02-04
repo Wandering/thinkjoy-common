@@ -1,32 +1,23 @@
 package cn.thinkjoy.common.managerui.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import cn.thinkjoy.common.utils.SqlOrderEnum;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.servlet.ModelAndView;
-
-import cn.thinkjoy.common.domain.SearchField;
-import cn.thinkjoy.common.domain.SearchFilter;
 import cn.thinkjoy.common.domain.view.BizData4Page;
-import cn.thinkjoy.common.enumration.SearchEnum;
 import cn.thinkjoy.common.managerui.controller.helpers.ActionPermHelper;
 import cn.thinkjoy.common.managerui.domain.Resource;
 import cn.thinkjoy.common.managerui.domain.ResourceGrid;
 import cn.thinkjoy.common.managerui.service.IResourceGridService;
-import cn.thinkjoy.common.service.IDataPermAware;
 import cn.thinkjoy.common.service.IDataPermService;
 import cn.thinkjoy.common.service.IPageService;
-
+import cn.thinkjoy.common.utils.SqlOrderEnum;
 import cn.thinkjoy.common.utils.UserContext;
-import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 管理类controller抽象类

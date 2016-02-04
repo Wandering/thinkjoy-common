@@ -41,7 +41,7 @@ tasks.withType(Compile) {
 /** 此闭包内的声明子类皆可使用 */
 allprojects {
     group = 'cn.thinkjoy.common'
-    version = '0.1.79-SNAPSHOT'
+    version = '0.1.82-SNAPSHOT'
 
 
     apply plugin: 'java'
@@ -111,6 +111,10 @@ subprojects {
         all*.exclude group: 'asm', module: 'asm'
         all*.exclude group: 'log4j', module: 'log4j'
         all*.exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    }
+
+    dependencies {
+        compile group: "cn.thinkjoy.utils", name: "core", version: "$thinkjoyUtilsVersion", changing: true
     }
 }
 
