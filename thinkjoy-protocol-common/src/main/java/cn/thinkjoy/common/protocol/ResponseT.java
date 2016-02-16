@@ -4,8 +4,6 @@ package cn.thinkjoy.common.protocol;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.utils.*;
 import com.alibaba.fastjson.JSON;
-import com.google.common.base.Objects;
-import com.google.common.base.Strings;
 
 import java.io.Serializable;
 
@@ -93,7 +91,7 @@ public class ResponseT<T> implements Serializable {
         if(StyleEnum.PLAIN.equals(style)){
             return bizData;
         }else {
-            if (bizData != null && !Objects.equal(bizData, "")) {
+            if (bizData != null && !"".equals(bizData.toString())) {
                 return bizData;
             } else {
                 //unwrapper data with styled data
@@ -125,7 +123,7 @@ public class ResponseT<T> implements Serializable {
         if(StyleEnum.PLAIN.equals(style)){
             this.bizData = bizData;
         }else {
-            if(bizData == null || Objects.equal(bizData, "")){
+            if(bizData == null || "".equals(bizData.toString())){
                 this.bizData = bizData;
             }else {
                 //wrapper data with style
@@ -140,7 +138,7 @@ public class ResponseT<T> implements Serializable {
                         e.printStackTrace();
                     }
                 }
-                if(!Strings.isNullOrEmpty(hexData)){
+                if(hexData != null && !"".equals(hexData)){
                     this.styledData = hexData;
                     this.bizData = null;
                 }

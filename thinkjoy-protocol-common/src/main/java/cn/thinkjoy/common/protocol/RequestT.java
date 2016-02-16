@@ -5,8 +5,6 @@ import cn.thinkjoy.common.utils.ByteUtils;
 import cn.thinkjoy.common.utils.StringGZIPUtils;
 import cn.thinkjoy.common.utils.StyleEnum;
 import com.alibaba.fastjson.JSON;
-import com.google.common.base.Objects;
-import com.google.common.base.Strings;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -57,11 +55,11 @@ public class RequestT<T> implements Serializable {
         if(StyleEnum.PLAIN.equals(style)){
             return data;
         }else {
-            if (data != null && !Objects.equal(data, "")) {
+            if (data != null && !"".equals(data.toString())) {
                 return data;
             } else {
                 //unwrapper data with styled data
-                if(!Strings.isNullOrEmpty(styledData)){
+                if(styledData != null && !"".equals(styledData)){
                     String jsonData = null;
                     if(StyleEnum.GZIP.equals(style)){
                         jsonData = StringGZIPUtils.uncompressToString(ByteUtils.HexString2Bytes(styledData));
@@ -87,7 +85,7 @@ public class RequestT<T> implements Serializable {
         if(StyleEnum.PLAIN.equals(style)){
             this.data = data;
         }else {
-            if(data == null || Objects.equal(data, "")){
+            if(data == null || "".equals(data.toString())){
                 this.data = data;
             }else {
                 //wrapper data with style
@@ -102,7 +100,7 @@ public class RequestT<T> implements Serializable {
                         e.printStackTrace();
                     }
                 }
-                if(!Strings.isNullOrEmpty(hexData)){
+                if(hexData != null && !"".equals(hexData)){
                     this.styledData = hexData;
                     this.data = null;
                 }

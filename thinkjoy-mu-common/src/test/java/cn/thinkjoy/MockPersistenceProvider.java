@@ -239,4 +239,9 @@ public class MockPersistenceProvider implements IPersistenceProvider {
     public List listByPage(Map condition, int offset, int rows) {
         return null;
     }
+
+    @Override
+    public void verifyData(Map<String, Object> dataMap) {
+
+    }
 }
