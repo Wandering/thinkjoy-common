@@ -139,51 +139,32 @@ public class AES256Utils {
 
     public static void main(String[] args) throws Exception {
 
-//        String str = "AES中国雄起";
-//        System.out.println("原文：" + str);
-//
-//        //初始化密钥
-//        byte[] key;
-//        try {
-////            key = AES256Utils.initkey();
-//            key = defaultKey;
-//            System.out.print("密钥：");
-//            for (int i = 0; i < key.length; i++) {
-//                System.out.printf("%x", key[i]);
-//            }
-//            System.out.print("\n");
-//            //加密数据
-//            byte[] data = AES256Utils.encrypt(str.getBytes(), key);
-//            System.out.print("加密后：");
-//            for (int i = 0; i < data.length; i++) {
-//                System.out.printf("%x", data[i]);
-//            }
-//            System.out.print("\n");
-//
-//            //解密数据
-//            data = AES256Utils.decrypt(data, key);
-//            System.out.println("解密后：" + new String(data));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        String str = "AES中国雄起";
+        System.out.println("原文：" + str);
 
-        User obj = new User();
-        obj.setSs("asf");
-        System.out.println(JSON.toJSONString(obj));
-        System.out.println(JSON.parseObject(JSON.toJSONString(obj)));
-        System.out.println(encrypt("my test".getBytes()));
-        System.out.println(decrypt("3AAA7860F552C1F408651740DD921B80".getBytes()));
-    }
-}
+        //初始化密钥
+        byte[] key;
+        try {
+//            key = AES256Utils.initkey();
+            key = defaultKey;
+            System.out.print("密钥：");
+            for (int i = 0; i < key.length; i++) {
+                System.out.printf("%x", key[i]);
+            }
+            System.out.print("\n");
+            //加密数据
+            byte[] data = AES256Utils.encrypt(str.getBytes(), key);
+            System.out.print("加密后：");
+            for (int i = 0; i < data.length; i++) {
+                System.out.printf("%x", data[i]);
+            }
+            System.out.print("\n");
 
-class User{
-    private String ss;
-
-    public String getSs() {
-        return ss;
-    }
-
-    public void setSs(String ss) {
-        this.ss = ss;
+            //解密数据
+            data = AES256Utils.decrypt(data, key);
+            System.out.println("解密后：" + new String(data));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
