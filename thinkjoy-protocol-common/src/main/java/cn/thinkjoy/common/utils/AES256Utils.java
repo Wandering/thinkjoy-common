@@ -16,8 +16,6 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import javax.management.relation.Role;
-import java.io.UnsupportedEncodingException;
 import java.security.Key;
 import java.security.Provider;
 import java.security.Security;
