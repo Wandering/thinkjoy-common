@@ -199,7 +199,7 @@ public class ExtFastJsonHttpMessageConverter<T> extends AbstractHttpMessageConve
                     styledData = ByteUtils.Bytes2HexString(StringGZIPUtils.compressToByte(jsonData));
                 }else if(StyleEnum.AES.equals(style)){
                     try {
-                        styledData = ByteUtils.Bytes2HexString(AES256Utils.encrypt(jsonData));
+                        styledData = AES128Utils.encrypt2str(jsonData);
                     }catch (Exception e){
                         e.printStackTrace();
                     }

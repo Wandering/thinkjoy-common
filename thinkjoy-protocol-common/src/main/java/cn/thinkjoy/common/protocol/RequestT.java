@@ -1,6 +1,6 @@
 package cn.thinkjoy.common.protocol;
 
-import cn.thinkjoy.common.utils.AES256Utils;
+import cn.thinkjoy.common.utils.AES128Utils;
 import cn.thinkjoy.common.utils.ByteUtils;
 import cn.thinkjoy.common.utils.StringGZIPUtils;
 import cn.thinkjoy.common.utils.StyleEnum;
@@ -65,7 +65,7 @@ public class RequestT<T> implements Serializable {
                         jsonData = StringGZIPUtils.uncompressToString(ByteUtils.HexString2Bytes(styledData));
                     }else if(StyleEnum.AES.equals(style)){
                         try {
-                            jsonData = AES256Utils.decrypt2str(ByteUtils.HexString2Bytes(styledData));
+                            jsonData = AES128Utils.decrypt(styledData);
                         }catch (Exception e){
                             e.printStackTrace();
                         }
@@ -95,7 +95,7 @@ public class RequestT<T> implements Serializable {
                     hexData = ByteUtils.Bytes2HexString(StringGZIPUtils.compressToByte(jsonData));
                 }else if(StyleEnum.AES.equals(style)){
                     try {
-                        hexData = ByteUtils.Bytes2HexString(AES256Utils.encrypt(jsonData));
+                        hexData = AES128Utils.encrypt2str(jsonData);
                     }catch (Exception e){
                         e.printStackTrace();
                     }

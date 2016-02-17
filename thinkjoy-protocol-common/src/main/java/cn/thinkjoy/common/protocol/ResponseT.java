@@ -104,7 +104,7 @@ public class ResponseT<T> implements Serializable {
                     }
                 } else if (StyleEnum.AES.equals(style)) {
                     try {
-                        jsonData = AES256Utils.decrypt2str(ByteUtils.HexString2Bytes(styledData));
+                        jsonData = AES128Utils.decrypt(styledData);
                         if (jsonData != null) {
                             bizData = (T) JSON.parse(jsonData);
                             styledData = null;
@@ -133,8 +133,8 @@ public class ResponseT<T> implements Serializable {
                     hexData = ByteUtils.Bytes2HexString(StringGZIPUtils.compressToByte(jsonData));
                 }else if(StyleEnum.AES.equals(style)){
                     try {
-                        hexData = ByteUtils.Bytes2HexString(AES256Utils.encrypt(jsonData));
-                    }catch (Exception e){
+                        hexData = ByteUtils.Bytes2HexString(AES128Utils.encrypt(jsonData));
+                    } catch (Exception e){
                         e.printStackTrace();
                     }
                 }
