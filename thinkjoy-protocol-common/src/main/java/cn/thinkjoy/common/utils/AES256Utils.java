@@ -10,12 +10,16 @@ package cn.thinkjoy.common.utils;
  * @since v0.0.1
  */
 
+import com.alibaba.fastjson.JSON;
+
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.management.relation.Role;
 import java.io.UnsupportedEncodingException;
 import java.security.Key;
+import java.security.Provider;
 import java.security.Security;
 
 public class AES256Utils {
@@ -49,7 +53,9 @@ public class AES256Utils {
      */
     public static byte[] initkey() throws Exception {
         //实例化密钥生成器
-        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+//        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+        Provider provider = (Provider) Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider").newInstance();
+        Security.addProvider(provider);
         KeyGenerator kg = KeyGenerator.getInstance(KEY_ALGORITHM, "BC");
         //初始化密钥生成器，AES要求密钥长度为128位、192位、256位
 //      kg.init(256);
@@ -86,7 +92,9 @@ public class AES256Utils {
          * 使用 PKCS7PADDING 填充方式，按如下方式实现,就是调用bouncycastle组件实现
          * Cipher.getInstance(CIPHER_ALGORITHM,"BC")
          */
-        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+//        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+        Provider provider = (Provider) Class.forName("org.bouncycastle.jce.provider.BouncyCastleProvider").newInstance();
+        Security.addProvider(provider);
         Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM, "BC");
         //初始化，设置为加密模式
         cipher.init(Cipher.ENCRYPT_MODE, k);
@@ -131,35 +139,53 @@ public class AES256Utils {
         return new String(decrypt(data, defaultKey), BM);
     }
 
-    public static void main(String[] args) throws UnsupportedEncodingException {
+    public static void main(String[] args) throws Exception {
 
-        String str = "AES中国雄起";
-        System.out.println("原文：" + str);
+//        String str = "AES中国雄起";
+//        System.out.println("原文：" + str);
+//
+//        //初始化密钥
+//        byte[] key;
+//        try {
+////            key = AES256Utils.initkey();
+//            key = defaultKey;
+//            System.out.print("密钥：");
+//            for (int i = 0; i < key.length; i++) {
+//                System.out.printf("%x", key[i]);
+//            }
+//            System.out.print("\n");
+//            //加密数据
+//            byte[] data = AES256Utils.encrypt(str.getBytes(), key);
+//            System.out.print("加密后：");
+//            for (int i = 0; i < data.length; i++) {
+//                System.out.printf("%x", data[i]);
+//            }
+//            System.out.print("\n");
+//
+//            //解密数据
+//            data = AES256Utils.decrypt(data, key);
+//            System.out.println("解密后：" + new String(data));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
-        //初始化密钥
-        byte[] key;
-        try {
-//            key = AES256Utils.initkey();
-            key = defaultKey;
-            System.out.print("密钥：");
-            for (int i = 0; i < key.length; i++) {
-                System.out.printf("%x", key[i]);
-            }
-            System.out.print("\n");
-            //加密数据
-            byte[] data = AES256Utils.encrypt(str.getBytes(), key);
-            System.out.print("加密后：");
-            for (int i = 0; i < data.length; i++) {
-                System.out.printf("%x", data[i]);
-            }
-            System.out.print("\n");
+        User obj = new User();
+        obj.setSs("asf");
+        System.out.println(JSON.toJSONString(obj));
+        System.out.println(JSON.parseObject(JSON.toJSONString(obj)));
+        System.out.println(encrypt("my test".getBytes()));
+        System.out.println(decrypt("3AAA7860F552C1F408651740DD921B80".getBytes()));
+    }
+}
 
-            //解密数据
-            data = AES256Utils.decrypt(data, key);
-            System.out.println("解密后：" + new String(data));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+class User{
+    private String ss;
 
+    public String getSs() {
+        return ss;
+    }
+
+    public void setSs(String ss) {
+        this.ss = ss;
     }
 }

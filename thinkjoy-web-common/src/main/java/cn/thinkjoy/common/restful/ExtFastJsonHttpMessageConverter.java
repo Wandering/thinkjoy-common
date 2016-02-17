@@ -166,7 +166,10 @@ public class ExtFastJsonHttpMessageConverter<T> extends AbstractHttpMessageConve
                 Type[] types = ((ParameterizedTypeImpl)iTypeReference.getTypeReference(url).getType()).getActualTypeArguments();
                 Type type = ArrayUtils.isNotEmpty(types) ? types[0] : null;
                 if(type != null){
-                    Object data = JSON.parseObject(((JSONObject) requestT.getData()).toJSONString(), type);
+                    Object data = requestT.getData();
+                    if(requestT.getData() instanceof JSONObject){
+                        data = JSON.parseObject(((JSONObject) requestT.getData()).toJSONString(), type);
+                    }
                     StyleEnum style = requestT.getStyle();
                     requestT.setStyle(StyleEnum.PLAIN);
                     requestT.setData(data);
