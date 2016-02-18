@@ -175,112 +175,92 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
             }
 
             //最大长度校验
-            if(rules.containsKey("maxLength") && !Strings.isNullOrEmpty((String)rules.get("maxLength"))){
-                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
-                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
-                } else {
-                    if(dataMap.containsKey(resourceGrid.getColId()) && (((String)dataMap.get(resourceGrid.getColId())).trim().length() > (Integer) rules.get("maxLength"))){
-                        throw new BizException(BizExceptionEnum.MAXLENGTH.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.MAXLENGTH.getDesc()+rules.get("maxLength"));
-                    }
+            if(rules.containsKey("maxLength") && !Strings.isNullOrEmpty(String.valueOf(rules.get("maxLength"))) && dataMap.containsKey(resourceGrid.getColId())){
+                String paramVal = String.valueOf(dataMap.get(resourceGrid.getColId()));
+                String maxLength = String.valueOf(rules.get("maxLength"));
+                if(paramVal.trim().length() > Integer.valueOf(maxLength)){
+                    throw new BizException(BizExceptionEnum.MAXLENGTH.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.MAXLENGTH.getDesc()+maxLength);
                 }
             }
 
             //固定长度校验
-            if(rules.containsKey("length") && (String.valueOf(rules.get("length"))).trim().length() > 0){
-                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
-                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
-                } else {
-                    if(dataMap.containsKey(resourceGrid.getColId()) && (((String)dataMap.get(resourceGrid.getColId())).trim().length() != (Integer) rules.get("length"))){
-                        throw new BizException(BizExceptionEnum.LENGTH.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.LENGTH.getDesc()+rules.get("length"));
-                    }
+            if(rules.containsKey("length") && !Strings.isNullOrEmpty(String.valueOf(rules.get("length"))) && dataMap.containsKey(resourceGrid.getColId())){
+                String paramVal = String.valueOf(dataMap.get(resourceGrid.getColId()));
+                String length = String.valueOf(rules.get("length"));
+                if(paramVal.trim().length() != Integer.valueOf(length)){
+                    throw new BizException(BizExceptionEnum.LENGTH.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.LENGTH.getDesc()+length);
                 }
             }
 
             //邮箱
-            if(rules.containsKey("isEmail") && (Boolean)rules.get("isEmail")){
-                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
-                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
-                } else {
-                    if(dataMap.containsKey(resourceGrid.getColId()) && ValidatorUtil.isEmail((String)dataMap.get(resourceGrid.getColId()))){
-                        throw new BizException(BizExceptionEnum.ISEMAIL.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISEMAIL.getDesc());
-                    }
+            if(rules.containsKey("isEmail") && !Strings.isNullOrEmpty(String.valueOf(rules.get("isEmail"))) && dataMap.containsKey(resourceGrid.getColId())){
+                String paramVal = String.valueOf(dataMap.get(resourceGrid.getColId()));
+                String isEmail = String.valueOf(rules.get("isEmail"));
+                if(Boolean.valueOf(isEmail) && !ValidatorUtil.isEmail(paramVal)){
+                    throw new BizException(BizExceptionEnum.ISEMAIL.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISEMAIL.getDesc());
                 }
             }
 
             //IP
-            if(rules.containsKey("isIpV4") && (Boolean)rules.get("isIpV4")){
-                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
-                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
-                } else {
-                    if(dataMap.containsKey(resourceGrid.getColId()) && ValidatorUtil.isIpV4((String) dataMap.get(resourceGrid.getColId()))){
-                        throw new BizException(BizExceptionEnum.ISIPV4.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISIPV4.getDesc());
-                    }
+            if(rules.containsKey("isIpV4") && !Strings.isNullOrEmpty(String.valueOf(rules.get("isIpV4"))) && dataMap.containsKey(resourceGrid.getColId())){
+                String paramVal = String.valueOf(dataMap.get(resourceGrid.getColId()));
+                String isIpV4 = String.valueOf(rules.get("isIpV4"));
+                if(Boolean.valueOf(isIpV4) && !ValidatorUtil.isIpV4(paramVal)){
+                    throw new BizException(BizExceptionEnum.ISIPV4.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISIPV4.getDesc());
                 }
             }
 
             //数字
-            if(rules.containsKey("isNum") && (Boolean)rules.get("isNum")){
-                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
-                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
-                } else {
-                    if(dataMap.containsKey(resourceGrid.getColId()) && ValidatorUtil.isNum((String) dataMap.get(resourceGrid.getColId()))){
-                        throw new BizException(BizExceptionEnum.ISNUM.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISNUM.getDesc());
-                    }
+            if(rules.containsKey("isNum") && !Strings.isNullOrEmpty(String.valueOf(rules.get("isNum"))) && dataMap.containsKey(resourceGrid.getColId())){
+                String paramVal = String.valueOf(dataMap.get(resourceGrid.getColId()));
+                String isNum = String.valueOf(rules.get("isNum"));
+                if(Boolean.valueOf(isNum) && !ValidatorUtil.isNum(paramVal)){
+                    throw new BizException(BizExceptionEnum.ISNUM.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISNUM.getDesc());
                 }
             }
 
             //整数
-            if(rules.containsKey("isInt") && (Boolean)rules.get("isInt")){
-                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
-                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
-                } else {
-                    if(dataMap.containsKey(resourceGrid.getColId()) && ValidatorUtil.isInt((String) dataMap.get(resourceGrid.getColId()))){
-                        throw new BizException(BizExceptionEnum.ISINT.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISINT.getDesc());
-                    }
+            if(rules.containsKey("isInt") && !Strings.isNullOrEmpty(String.valueOf(rules.get("isInt"))) && dataMap.containsKey(resourceGrid.getColId())){
+                String paramVal = String.valueOf(dataMap.get(resourceGrid.getColId()));
+                String isInt = String.valueOf(rules.get("isInt"));
+                if(Boolean.valueOf(isInt) && !ValidatorUtil.isInt(paramVal)){
+                    throw new BizException(BizExceptionEnum.ISINT.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISINT.getDesc());
                 }
             }
 
             //正整数
-            if(rules.containsKey("isIntPos") && (Boolean)rules.get("isIntPos")){
-                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
-                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
-                } else {
-                    if(dataMap.containsKey(resourceGrid.getColId()) && ValidatorUtil.isIntPos((String) dataMap.get(resourceGrid.getColId()))){
-                        throw new BizException(BizExceptionEnum.ISINTPOS.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISINTPOS.getDesc());
-                    }
+            if(rules.containsKey("isIntPos") && !Strings.isNullOrEmpty(String.valueOf(rules.get("isIntPos"))) && dataMap.containsKey(resourceGrid.getColId())){
+                String paramVal = String.valueOf(dataMap.get(resourceGrid.getColId()));
+                String isIntPos = String.valueOf(rules.get("isIntPos"));
+                if(Boolean.valueOf(isIntPos) && !ValidatorUtil.isIntPos(paramVal)){
+                    throw new BizException(BizExceptionEnum.ISINTPOS.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISINTPOS.getDesc());
                 }
             }
 
             //URL
-            if(rules.containsKey("isUrl") && (Boolean)rules.get("isUrl")){
-                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
-                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
-                } else {
-                    if(dataMap.containsKey(resourceGrid.getColId()) && ValidatorUtil.isUrl((String) dataMap.get(resourceGrid.getColId()))){
-                        throw new BizException(BizExceptionEnum.ISURL.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISURL.getDesc());
-                    }
+            if(rules.containsKey("isUrl") && !Strings.isNullOrEmpty(String.valueOf(rules.get("isUrl"))) && dataMap.containsKey(resourceGrid.getColId())){
+                String paramVal = String.valueOf(dataMap.get(resourceGrid.getColId()));
+                String isUrl = String.valueOf(rules.get("isUrl"));
+                if(Boolean.valueOf(isUrl) && !ValidatorUtil.isUrl(paramVal)){
+                    throw new BizException(BizExceptionEnum.ISURL.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISURL.getDesc());
                 }
             }
 
             //中文
-            if(rules.containsKey("isZw") && (Boolean)rules.get("isZw")){
-                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
-                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
-                } else {
-                    if(dataMap.containsKey(resourceGrid.getColId()) && ValidatorUtil.isChinese((String) dataMap.get(resourceGrid.getColId()))){
-                        throw new BizException(BizExceptionEnum.ISZW.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISZW.getDesc());
-                    }
+            if(rules.containsKey("isZw") && !Strings.isNullOrEmpty(String.valueOf(rules.get("isZw"))) && dataMap.containsKey(resourceGrid.getColId())){
+                String paramVal = String.valueOf(dataMap.get(resourceGrid.getColId()));
+                String isZw = String.valueOf(rules.get("isZw"));
+                if(Boolean.valueOf(isZw) && !ValidatorUtil.isChinese(paramVal)){
+                    throw new BizException(BizExceptionEnum.ISZW.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISZW.getDesc());
                 }
             }
 
             //邮编
-            if(rules.containsKey("isZip") && (Boolean)rules.get("isZip")){
-                if(dataMap.containsKey(resourceGrid.getColId()) && Strings.isNullOrEmpty((String)dataMap.get(resourceGrid.getColId()))){
-                    throw new BizException(BizExceptionEnum.REQUIRED.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.REQUIRED.getDesc());
-                } else {
-                    if(dataMap.containsKey(resourceGrid.getColId()) && ValidatorUtil.isZipcode((String) dataMap.get(resourceGrid.getColId()))){
-                        throw new BizException(BizExceptionEnum.ISPOSTCODE.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISPOSTCODE.getDesc());
-                    }
+            if(rules.containsKey("isZip") && !Strings.isNullOrEmpty(String.valueOf(rules.get("isZip"))) && dataMap.containsKey(resourceGrid.getColId())){
+                String paramVal = String.valueOf(dataMap.get(resourceGrid.getColId()));
+                String isZip = String.valueOf(rules.get("isZip"));
+                if(Boolean.valueOf(isZip) && !ValidatorUtil.isZipcode(paramVal)){
+                    throw new BizException(BizExceptionEnum.ISPOSTCODE.getCode(), resourceGrid.getDisplayName() + BizExceptionEnum.ISPOSTCODE.getDesc());
                 }
             }
         }
