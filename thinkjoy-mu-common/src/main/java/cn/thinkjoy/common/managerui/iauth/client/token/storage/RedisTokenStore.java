@@ -1,7 +1,6 @@
 package cn.thinkjoy.common.managerui.iauth.client.token.storage;
 
 import cn.thinkjoy.cloudstack.cache.IRedisRepository;
-import cn.thinkjoy.cloudstack.cache.RedisRepository;
 import cn.thinkjoy.cloudstack.cache.RedisRepositoryFactory;
 import cn.thinkjoy.cloudstack.dynconfig.DynConfigClient;
 import cn.thinkjoy.cloudstack.dynconfig.DynConfigClientFactory;
@@ -9,6 +8,7 @@ import cn.thinkjoy.cloudstack.dynconfig.IChangeListener;
 import cn.thinkjoy.cloudstack.dynconfig.domain.Configuration;
 import cn.thinkjoy.common.managerui.iauth.core.token.Token;
 import cn.thinkjoy.common.managerui.iauth.core.token.storage.TokenStore;
+import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -41,9 +41,13 @@ public class RedisTokenStore implements TokenStore {
         try {
             TOKEN_EXPIRE_TIME = Integer.parseInt(dynConfigClient.getConfig("ucm", "common", "tokenExpireTime"));
         } catch (Exception e) {
-            logger.info("tokenExpireTime没有进行配置，采用默认值: "+TOKEN_EXPIRE_TIME);
+            try {
+                TOKEN_EXPIRE_TIME = Integer.parseInt(dynConfigClient.getConfig("ucm", "ucm", "common", "tokenExpireTime"));
+            }catch (Exception e2){
+                logger.info("tokenExpireTime没有进行配置，采用默认值: "+TOKEN_EXPIRE_TIME);
+            }
         }
-        dynConfigClient.registerListeners("ucm", "common", "tokenExpireTime", new IChangeListener() {
+        dynConfigClient.registerListeners("ucm", "ucm", "common", "tokenExpireTime", new IChangeListener() {
             @Override
             public Executor getExecutor() {
                 return Executors.newSingleThreadExecutor();
@@ -62,9 +66,10 @@ public class RedisTokenStore implements TokenStore {
                 });
             }
         });
-        tokenStorage = RedisRepositoryFactory.getRepository("ucm", "common", "tokenStorage");
-    }
 
+        tokenStorage = RedisRepositoryFactory.getRepository("ucm", "common", "tokenStorage");
+        tokenStorage = ObjectUtils.defaultIfNull(tokenStorage, RedisRepositoryFactory.getRepository("ucm", "ucm", "common", "tokenStorage"));
+    }
 
     @Override
     public Token readToken(String key) {
@@ -74,13 +79,11 @@ public class RedisTokenStore implements TokenStore {
     @Override
     public void postpone(String key) {
         tokenStorage.expire(PREFIX+key, TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
-
     }
 
     @Override
-    public void store(String key, Token token)
-    {
-        tokenStorage.set(PREFIX+key, token, TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
+    public void store(String key, Token token) {
+        tokenStorage.set(PREFIX + key, token, TOKEN_EXPIRE_TIME, TimeUnit.SECONDS);
     }
 
     @Override
