@@ -8,7 +8,6 @@ import cn.thinkjoy.cloudstack.dynconfig.IChangeListener;
 import cn.thinkjoy.cloudstack.dynconfig.domain.Configuration;
 import cn.thinkjoy.common.managerui.domain.User;
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -67,7 +66,8 @@ public class RedisUserStore implements UserStore{
         });
 
         userStorage = RedisRepositoryFactory.getRepository("ucm", "common", "tokenStorage");
-        userStorage = ObjectUtils.defaultIfNull(userStorage, RedisRepositoryFactory.getRepository("ucm", "ucm", "common", "tokenStorage"));
+        userStorage = (userStorage != null ? userStorage :
+                RedisRepositoryFactory.getRepository("ucm", "ucm", "common", "tokenStorage"));
     }
 
 
