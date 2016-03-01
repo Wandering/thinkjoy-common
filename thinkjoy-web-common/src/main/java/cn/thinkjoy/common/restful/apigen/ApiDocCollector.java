@@ -12,7 +12,6 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -30,6 +29,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -223,59 +224,62 @@ public class ApiDocCollector {
         List<Param> request = new ArrayList<>();
         for(int i = 0; i < parameterAnnotations.length; i++) {
             Class<?> param = paramType[i];
-            //肯定有两个annotion 第一个ApiParam，第二个为spring mvc的annotion
-            Annotation descAnnotation = parameterAnnotations[i][0];
-            Annotation annotation = parameterAnnotations[i][1];
+            //生成的doc不包含request和response
+            if(param != HttpServletRequest.class && param != HttpServletResponse.class){
+                //肯定有两个annotion 第一个ApiParam，第二个为spring mvc的annotion
+                Annotation descAnnotation = parameterAnnotations[i][0];
+                Annotation annotation = parameterAnnotations[i][1];
 
-            if (annotation instanceof RequestBody) {            //报文结构json化处理
-                //获取RequestT的泛型类说明
-                Type parameterizedType = ((ParameterizedTypeImpl)method.getGenericParameterTypes()[i]).getActualTypeArguments()[0];
-                Class requestClass = null;
-                if(parameterizedType instanceof Class){
-                    requestClass = ((Class)parameterizedType);
-                } else {
-                    requestClass = ((ParameterizedTypeImpl)parameterizedType).getRawType();
-                }
-                //Class requestClass = ((Class));
-                apiDetail.setRequestType(requestClass.getName());
+                if (annotation instanceof RequestBody) {            //报文结构json化处理
+                    //获取RequestT的泛型类说明
+                    Type parameterizedType = ((ParameterizedTypeImpl)method.getGenericParameterTypes()[i]).getActualTypeArguments()[0];
+                    Class requestClass = null;
+                    if(parameterizedType instanceof Class){
+                        requestClass = ((Class)parameterizedType);
+                    } else {
+                        requestClass = ((ParameterizedTypeImpl)parameterizedType).getRawType();
+                    }
+                    //Class requestClass = ((Class));
+                    apiDetail.setRequestType(requestClass.getName());
 
-                apiDetail.setRequestDesc(((ApiParam)descAnnotation).desc());
-                if(requestClass.getName().indexOf(".dto.") != -1) {
-                    //dto对象才进行这里的处理
-//                    Field[] fields = requestClass.getDeclaredFields();
-
-//                    Param param1 = null;
-//                    ApiPropDesc apiPropDesc = null;
-//                    for (Field field : fields) {
-//                        param1 = new Param();
-//                        param1.setName(field.getName());
-//                        param1.setType(field.getType().toString());
-//                        apiPropDesc = field.getAnnotation(ApiPropDesc.class);
-//                        if (apiPropDesc != null) {
-//                            param1.setDesc(apiPropDesc.value());
+                    apiDetail.setRequestDesc(((ApiParam)descAnnotation).desc());
+                    if(requestClass.getName().indexOf(".dto.") != -1) {
+                        //dto对象才进行这里的处理
+//                        Field[] fields = requestClass.getDeclaredFields();
+//
+//                        Param param1 = null;
+//                        ApiPropDesc apiPropDesc = null;
+//                        for (Field field : fields) {
+//                            param1 = new Param();
+//                            param1.setName(field.getName());
+//                            param1.setType(field.getType().toString());
+//                            apiPropDesc = field.getAnnotation(ApiPropDesc.class);
+//                            if (apiPropDesc != null) {
+//                                param1.setDesc(apiPropDesc.value());
+//                            }
+//                            request.add(param1);
 //                        }
-//                        request.add(param1);
-//                    }
-                    handleApiPropDesc(requestClass, request);
+                        handleApiPropDesc(requestClass, request);
+                    }
+                } else if (annotation instanceof PathVariable) {    //URL路径参数化
+                    //拼接完整的url
+                    //apiDetail.setUrl(apiDetail.getUrl()+"/"+((PathVariable) annotation).value());
+                    Param param1 = new Param();
+                    param1.setName(((PathVariable) annotation).value());
+                    param1.setType(((Class)method.getGenericParameterTypes()[i]).getName());
+                    param1.setDesc(((ApiParam)descAnnotation).desc());
+                    pathVars.add(param1);
+                    //这里可以对参数的内容校验提供类型判断支持，暂不支持
+                } else if (annotation instanceof RequestParam) {    //URL拼接
+                    //URL参数，用于拼接URL
+                    paramUrl = paramUrl + ((RequestParam) annotation).value() + "=&";
+                    Param param1 = new Param();
+                    param1.setName(((RequestParam) annotation).value());
+                    param1.setType(((Class)method.getGenericParameterTypes()[i]).getName());
+                    param1.setDesc(((ApiParam)descAnnotation).desc());
+                    params.add(param1);
+    //                    paramMap.put(((RequestParam) annotation).value(), param);
                 }
-            } else if (annotation instanceof PathVariable) {    //URL路径参数化
-                //拼接完整的url
-                //apiDetail.setUrl(apiDetail.getUrl()+"/"+((PathVariable) annotation).value());
-                Param param1 = new Param();
-                param1.setName(((PathVariable) annotation).value());
-                param1.setType(((Class)method.getGenericParameterTypes()[i]).getName());
-                param1.setDesc(((ApiParam)descAnnotation).desc());
-                pathVars.add(param1);
-                //这里可以对参数的内容校验提供类型判断支持，暂不支持
-            } else if (annotation instanceof RequestParam) {    //URL拼接
-                //URL参数，用于拼接URL
-                paramUrl = paramUrl + ((RequestParam) annotation).value() + "=&";
-                Param param1 = new Param();
-                param1.setName(((RequestParam) annotation).value());
-                param1.setType(((Class)method.getGenericParameterTypes()[i]).getName());
-                param1.setDesc(((ApiParam)descAnnotation).desc());
-                params.add(param1);
-//                    paramMap.put(((RequestParam) annotation).value(), param);
             }
         }
 
