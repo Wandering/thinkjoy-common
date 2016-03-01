@@ -224,13 +224,14 @@ public class ApiDocCollector {
         List<Param> request = new ArrayList<>();
         for(int i = 0; i < parameterAnnotations.length; i++) {
             Class<?> param = paramType[i];
-            //生成的doc不包含request和response
-            if(param != HttpServletRequest.class && param != HttpServletResponse.class){
+            //生成的doc不包含request和response, 第一个注解必需是ApiParam
+            if(param != HttpServletRequest.class && param != HttpServletResponse.class
+                    && parameterAnnotations[i].length > 0){
                 //肯定有两个annotion 第一个ApiParam，第二个为spring mvc的annotion
                 Annotation descAnnotation = parameterAnnotations[i][0];
-                Annotation annotation = parameterAnnotations[i][1];
+                Annotation annotation = parameterAnnotations[i].length > 1 ? parameterAnnotations[i][1] : null;
 
-                if (annotation instanceof RequestBody) {            //报文结构json化处理
+                if (annotation instanceof RequestBody) {    //报文结构json化处理
                     //获取RequestT的泛型类说明
                     Type parameterizedType = ((ParameterizedTypeImpl)method.getGenericParameterTypes()[i]).getActualTypeArguments()[0];
                     Class requestClass = null;
@@ -268,6 +269,7 @@ public class ApiDocCollector {
                     param1.setName(((PathVariable) annotation).value());
                     param1.setType(((Class)method.getGenericParameterTypes()[i]).getName());
                     param1.setDesc(((ApiParam)descAnnotation).desc());
+                    param1.setRequired(((ApiParam)descAnnotation).required());
                     pathVars.add(param1);
                     //这里可以对参数的内容校验提供类型判断支持，暂不支持
                 } else if (annotation instanceof RequestParam) {    //URL拼接
@@ -277,8 +279,16 @@ public class ApiDocCollector {
                     param1.setName(((RequestParam) annotation).value());
                     param1.setType(((Class)method.getGenericParameterTypes()[i]).getName());
                     param1.setDesc(((ApiParam)descAnnotation).desc());
+                    param1.setRequired(((ApiParam)descAnnotation).required());
                     params.add(param1);
     //                    paramMap.put(((RequestParam) annotation).value(), param);
+                }else if(annotation == null){    //json数据非RequestBody的接收，或POST方式参数接收
+                    Param param1 = new Param();
+                    param1.setName(((ApiParam)descAnnotation).param());
+                    param1.setType(((Class)method.getGenericParameterTypes()[i]).getName());
+                    param1.setDesc(((ApiParam)descAnnotation).desc());
+                    param1.setRequired(((ApiParam)descAnnotation).required());
+                    pathVars.add(param1);
                 }
             }
         }
