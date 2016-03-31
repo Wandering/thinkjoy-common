@@ -11,7 +11,7 @@ import org.apache.commons.lang.StringUtils;
 public enum SearchEnum {
 
 	eq("eq", "="), ne("ne", "!="), lt("lt", "<"), le("le", "<="), gt("gt", ">"), ge(
-			"ge", ">="),lk("lk","like");
+			"ge", ">="),lk("lk","like"),alk("alk","like");
 
 	private String code;
 
