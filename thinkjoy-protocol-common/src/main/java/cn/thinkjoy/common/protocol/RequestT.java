@@ -5,6 +5,7 @@ import cn.thinkjoy.common.utils.ByteUtils;
 import cn.thinkjoy.common.utils.StringGZIPUtils;
 import cn.thinkjoy.common.utils.StyleEnum;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -14,6 +15,12 @@ import java.util.Map;
  */
 public class RequestT<T> implements Serializable {
     private static final long serialVersionUID = -5125919776534597878L;
+
+    /**
+     * style!=plain时用FastJson转换json串时用到
+     */
+    public static SimplePropertyPreFilter FILTER = new SimplePropertyPreFilter(
+            RequestT.class, "style", "styledData", "clientInfo");
 
     /*
     data的处理方式
