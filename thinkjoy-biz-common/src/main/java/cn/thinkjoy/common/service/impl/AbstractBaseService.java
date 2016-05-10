@@ -24,8 +24,8 @@ import java.util.Map;
  * @author qyang
  * @since v0.0.1
  */
-@CacheConfig(cacheNames={CacheConstants.ALLUNUSED})
-public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomain> implements IBaseService<D,T>, IDaoAware<D,T>{
+@CacheConfig(cacheNames = {CacheConstants.ALLUNUSED})
+public abstract class AbstractBaseService<D extends IBaseDAO, T extends BaseDomain> implements IBaseService<D, T>, IDaoAware<D, T> {
 //public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomain> implements IBaseService<D,T>{
 
 
@@ -59,7 +59,7 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
     @Override
     @Cacheable(key = "#id")
     public final T view(Object id) {
-        return (T)getDao().fetch(id);
+        return (T) getDao().fetch(id);
     }
 
     @Override
@@ -95,20 +95,20 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
     @Override
     @CacheEvict(allEntries = true)
     public final int deleteByProperty(String property, Object value) {
-        return getDao().deleteByProperty(property,value);
+        return getDao().deleteByProperty(property, value);
 
     }
 
     @Override
     @Cacheable(key = "#id")
     public final T fetch(Object id) {
-        return (T)getDao().fetch(id);
+        return (T) getDao().fetch(id);
     }
 
     @Override
     @Cacheable()
     public final T findOne(String property, Object value) {
-        return (T)getDao().findOne(property,value, null, null);
+        return (T) getDao().findOne(property, value, null, null);
     }
 
     @Override
@@ -120,29 +120,29 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
     @Override
     @Cacheable()
     public final List findList(String property, Object value, String orderBy, SqlOrderEnum sqlOrderEnum) {
-        return getDao().findList(property, value, orderBy, sqlOrderEnum.getAction());
+        return getDao().findList(property, value, orderBy, (sqlOrderEnum != null ? sqlOrderEnum.getAction() : null));
     }
 
     @Override
     public final List findAll() {
-       return getDao().findAll(null, null);
+        return getDao().findAll(null, null);
     }
 
     @Override
     public final List findAll(String orderBy, SqlOrderEnum sqlOrderEnum) {
-        return getDao().findAll(orderBy, sqlOrderEnum.getAction());
+        return getDao().findAll(orderBy, (sqlOrderEnum != null ? sqlOrderEnum.getAction() : null));
     }
 
     @Override
     @Cacheable()
     public final List like(Map<String, Object> condition) {
-        return getDao().like(condition, null, null,null);
+        return getDao().like(condition, null, null, null);
     }
 
     @Override
     @Cacheable()
     public final List like(Map<String, Object> condition, String orderBy, SqlOrderEnum sqlOrderEnum) {
-        return getDao().like(condition, orderBy, sqlOrderEnum.getAction(),null);
+        return getDao().like(condition, orderBy, (sqlOrderEnum != null ? sqlOrderEnum.getAction() : null), null);
     }
 
     @Override
@@ -153,10 +153,10 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
     @Override
     @CacheEvict(key = "#id")
     public final void updateOrSave(T entity, Object id) {
-        if(id!=null&&!StringUtils.isEmpty(id)){
+        if (id != null && !StringUtils.isEmpty(id)) {
             enhanceCreateBaseDomain(entity);
             getDao().update(entity);
-        }else{
+        } else {
             enhanceNewCreateBaseDomain(entity);
             getDao().insert(entity);
         }
@@ -164,7 +164,7 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
 
     @Override
     public final T selectOne(String mapperId, Object obj) {
-        return (T)getDao().selectOne(mapperId,obj);
+        return (T) getDao().selectOne(mapperId, obj);
     }
 
     @Override
@@ -174,31 +174,31 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
 
     @Override
     public final int count(Map condition) {
-       return getDao().count(condition);
+        return getDao().count(condition);
     }
 
     @Override
     public final T queryOne(Map condition) {
-        return (T)getDao().queryOne(condition, null, null,null);
+        return (T) getDao().queryOne(condition, null, null, null);
     }
 
     @Override
     public final T queryOne(Map condition, String orderBy, SqlOrderEnum sqlOrderEnum) {
-        return (T)getDao().queryOne(condition, orderBy, sqlOrderEnum.getAction(),null);
+        return (T) getDao().queryOne(condition, orderBy, (sqlOrderEnum != null ? sqlOrderEnum.getAction() : null), null);
     }
 
     @Override
     public final List queryList(Map condition, String orderBy, String sortBy) {
-        return getDao().queryList(condition, orderBy, sortBy,null);
+        return getDao().queryList(condition, orderBy, sortBy, null);
     }
 
     @Override
     public final List queryPage(Map condition, int offset, int rows) {
-       return getDao().queryPage(condition, offset, rows, null, null,null);
+        return getDao().queryPage(condition, offset, rows, null, null, null);
     }
 
-    public List<T> queryPage(Map<String, Object> condition, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum){
-        return getDao().queryPage(condition, offset, rows, orderBy, sqlOrderEnum.getAction(),null);
+    public List<T> queryPage(Map<String, Object> condition, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum) {
+        return getDao().queryPage(condition, offset, rows, orderBy, (sqlOrderEnum != null ? sqlOrderEnum.getAction() : null), null);
     }
 
     @Override
@@ -223,16 +223,16 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
 
     @Override
     public final List listByPage(Map condition, int offset, int rows) {
-        return getDao().queryPage(condition, offset, rows, null, null,null);
+        return getDao().queryPage(condition, offset, rows, null, null, null);
     }
 
     @Override
     public final List listByPage(Map condition, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum) {
-        return getDao().queryPage(condition, offset, rows, orderBy, sqlOrderEnum.getAction(),null);
+        return getDao().queryPage(condition, offset, rows, orderBy, (sqlOrderEnum != null ? sqlOrderEnum.getAction() : null), null);
     }
 
-    private final T enhanceCreateBaseDomain(T entity){
-        if(entity instanceof CreateBaseDomain){
+    private final T enhanceCreateBaseDomain(T entity) {
+        if (entity instanceof CreateBaseDomain) {
             ((CreateBaseDomain) entity).setLastModDate(System.currentTimeMillis());
             //TODO 当前用户
         }
@@ -240,22 +240,22 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
         return entity;
     }
 
-    private final T enhanceNewCreateBaseDomain(T entity){
-        if(entity instanceof CreateBaseDomain){
+    private final T enhanceNewCreateBaseDomain(T entity) {
+        if (entity instanceof CreateBaseDomain) {
             //设置默认值，如果默认值和common不一样，需要自行设置初始值
-            if (((CreateBaseDomain) entity).getCreateDate() == null){
+            if (((CreateBaseDomain) entity).getCreateDate() == null) {
                 ((CreateBaseDomain) entity).setCreateDate(System.currentTimeMillis());
             }
-            if (((CreateBaseDomain) entity).getStatus() == null){
+            if (((CreateBaseDomain) entity).getStatus() == null) {
                 ((CreateBaseDomain) entity).setStatus(0);
             }
-            if (((CreateBaseDomain) entity).getLastModDate() == null){
+            if (((CreateBaseDomain) entity).getLastModDate() == null) {
                 ((CreateBaseDomain) entity).setLastModDate(0l);
             }
-            if (((CreateBaseDomain) entity).getCreator() == null){
+            if (((CreateBaseDomain) entity).getCreator() == null) {
                 ((CreateBaseDomain) entity).setCreator(0l);
             }
-            if (((CreateBaseDomain) entity).getLastModifier() == null){
+            if (((CreateBaseDomain) entity).getLastModifier() == null) {
                 ((CreateBaseDomain) entity).setLastModifier(0l);
             }
             //TODO 当前用户
@@ -264,13 +264,13 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
         return entity;
     }
 
-    private final Map enhanceCreateBaseDomain(Map entityMap){
+    private final Map enhanceCreateBaseDomain(Map entityMap) {
         entityMap.put("lastModDate", System.currentTimeMillis());
 
         return entityMap;
     }
 
-    private final Map enhanceNewCreateBaseDomain(Map entityMap){
+    private final Map enhanceNewCreateBaseDomain(Map entityMap) {
         entityMap.put("createDate", System.currentTimeMillis());
 
         return entityMap;
@@ -279,51 +279,53 @@ public abstract class AbstractBaseService<D extends IBaseDAO,T extends BaseDomai
     // ---------------- 后加接口，在这里默认做空实现，避免实现类报错，如果需要使用这些特性，需要重载 -----------------//
     @Override
     public List<T> queryPage(Map<String, Object> condition, int offset, int rows, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selectorpage) {
-        return getDao().queryPage(condition,offset,rows,orderBy,sqlOrderEnum.getAction(),selectorpage);
+        return getDao().queryPage(condition, offset, rows, orderBy, (sqlOrderEnum != null ? sqlOrderEnum.getAction() : null), selectorpage);
     }
 
     @Override
     public List<T> like(Map<String, Object> condition, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selector) {
-        return getDao().like(condition,orderBy,sqlOrderEnum.getAction(),selector);
+        return getDao().like(condition, orderBy, (sqlOrderEnum != null ? sqlOrderEnum.getAction() : null), selector);
     }
 
     @Override
     public List<T> queryList(Map<String, Object> condition, String orderBy, String sortBy, Map<String, Object> selector) {
-        return getDao().queryList(condition,orderBy,sortBy,selector);
+        return getDao().queryList(condition, orderBy, sortBy, selector);
     }
 
     @Override
     public T queryOne(Map<String, Object> condition, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selector) {
-        return (T)getDao().queryOne(condition,orderBy,sqlOrderEnum.getAction(),selector);
+        return (T) getDao().queryOne(condition, orderBy, (sqlOrderEnum != null ? sqlOrderEnum.getAction() : null), selector);
     }
 
 
     /**
      * 通用的更新操作
-     * @param updateMap 需要更新的值
+     *
+     * @param updateMap    需要更新的值
      * @param conditionMap 需要被更新的条件
      */
-    public int updateByCondition(Map<String, Object> updateMap, Map<String, Object> conditionMap)
-    {
-        return getDao().updateByCondition(updateMap,conditionMap);
+    public int updateByCondition(Map<String, Object> updateMap, Map<String, Object> conditionMap) {
+        return getDao().updateByCondition(updateMap, conditionMap);
     }
 
     /**
      * 通过Criteria条件对象查询实体集合
+     *
      * @param criteria
      * @return List<T>
      */
-    public List<T> findByCriteria(Criteria criteria){
+    public List<T> findByCriteria(Criteria criteria) {
         return getDao().findByCriteria(criteria);
     }
 
     /**
      * 通过Criteria条件对象查询实体
+     *
      * @param criteria
      * @return T
      */
-    public T findOneByCriteria(Criteria criteria){
-        return (T)getDao().findOneByCriteria(criteria);
+    public T findOneByCriteria(Criteria criteria) {
+        return (T) getDao().findOneByCriteria(criteria);
     }
 
 }
