@@ -26,11 +26,14 @@ findByCriteria
 countByCriteria
 findOneByCriteria
 pagingByCriteria
+updateByCriteria
+deleteByCriteria
 -->
 
     <sql id="Base_Column_List">
         id as id ,
         name as name ,
+        status as status ,
         creator as creator ,
         createDate as createDate ,
         lastModifier as lastModifier ,
@@ -40,6 +43,7 @@ pagingByCriteria
     <insert id="insert" parameterType="Role">
         INSERT INTO dap_role (
         name,
+        status,
         creator,
         createDate,
         lastModifier,
@@ -47,6 +51,7 @@ pagingByCriteria
         description
         ) VALUES (
         #{name},
+        #{status},
         #{creator},
         #{createDate},
         #{lastModifier},
@@ -64,6 +69,9 @@ pagingByCriteria
         <trim prefix="SET" suffixOverrides=",">
             <if test="name!=null">
                 name = #{name},
+            </if>
+            <if test="status!=null">
+                status = #{status},
             </if>
             <if test="creator!=null">
                 creator = #{creator},
@@ -91,6 +99,9 @@ pagingByCriteria
             <if test="map.name!=null">
                 name = #{map.name},
             </if>
+            <if test="map.status!=null">
+                status = #{map.status},
+            </if>
             <if test="map.creator!=null">
                 creator = #{map.creator},
             </if>
@@ -117,6 +128,9 @@ pagingByCriteria
             <if test="update.name!=null">
                 name = #{update.name},
             </if>
+            <if test="update.status!=null">
+                status = #{update.status},
+            </if>
             <if test="update.creator!=null">
                 creator = #{update.creator},
             </if>
@@ -141,6 +155,9 @@ pagingByCriteria
             <if test="condition.name!=null">
                 AND name = #{condition.name}
             </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
+            </if>
             <if test="condition.creator!=null">
                 AND creator = #{condition.creator}
             </if>
@@ -162,6 +179,7 @@ pagingByCriteria
     <insert id="insertMap" >
         INSERT INTO dap_role (
                 name,
+                status,
                 creator,
                 createDate,
                 lastModifier,
@@ -169,6 +187,7 @@ pagingByCriteria
                 description
         ) VALUES (
                     #{map.name},
+                    #{map.status},
                     #{map.creator},
                     #{map.createDate},
                     #{map.lastModifier},
@@ -182,6 +201,7 @@ pagingByCriteria
         UPDATE dap_role
         <trim prefix="SET" suffixOverrides=",">
             name = #{name},
+            status = #{status},
             creator = #{creator},
             createDate = #{createDate},
             lastModifier = #{lastModifier},
@@ -209,6 +229,9 @@ pagingByCriteria
             </if>
             <if test="name!=null">
                 AND name = #{name}
+            </if>
+            <if test="status!=null">
+                AND status = #{status}
             </if>
             <if test="creator!=null">
                 AND creator = #{creator}
@@ -282,6 +305,9 @@ pagingByCriteria
                         <if test="selector.name!=null">
                             , name
                         </if>
+                        <if test="selector.status!=null">
+                            , status
+                        </if>
                         <if test="selector.creator!=null">
                             , creator
                         </if>
@@ -310,25 +336,60 @@ pagingByCriteria
             </if>
 
             <if test="condition.id!=null">
-                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op}  #{condition.id.data}
+                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op}
+                <if test="condition.id.op!='in'"> #{condition.id.data} </if>
+                <if test="condition.id.op=='in'">
+                    <foreach collection="condition.id.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
             </if>
             <if test="condition.name!=null">
-                ${condition.groupOp}   ${condition.name.field}  ${condition.name.op}  #{condition.name.data}
+                ${condition.groupOp}   ${condition.name.field}  ${condition.name.op}
+                <if test="condition.name.op!='in'"> #{condition.name.data} </if>
+                <if test="condition.name.op=='in'">
+                    <foreach collection="condition.name.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.status!=null">
+                ${condition.groupOp}   ${condition.status.field}  ${condition.status.op}
+                <if test="condition.status.op!='in'"> #{condition.status.data} </if>
+                <if test="condition.status.op=='in'">
+                    <foreach collection="condition.status.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
             </if>
             <if test="condition.creator!=null">
-                ${condition.groupOp}   ${condition.creator.field}  ${condition.creator.op}  #{condition.creator.data}
+                ${condition.groupOp}   ${condition.creator.field}  ${condition.creator.op}
+                <if test="condition.creator.op!='in'"> #{condition.creator.data} </if>
+                <if test="condition.creator.op=='in'">
+                    <foreach collection="condition.creator.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
             </if>
             <if test="condition.createDate!=null">
-                ${condition.groupOp}   ${condition.createDate.field}  ${condition.createDate.op}  #{condition.createDate.data}
+                ${condition.groupOp}   ${condition.createDate.field}  ${condition.createDate.op}
+                <if test="condition.createDate.op!='in'"> #{condition.createDate.data} </if>
+                <if test="condition.createDate.op=='in'">
+                    <foreach collection="condition.createDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
             </if>
             <if test="condition.lastModifier!=null">
-                ${condition.groupOp}   ${condition.lastModifier.field}  ${condition.lastModifier.op}  #{condition.lastModifier.data}
+                ${condition.groupOp}   ${condition.lastModifier.field}  ${condition.lastModifier.op}
+                <if test="condition.lastModifier.op!='in'"> #{condition.lastModifier.data} </if>
+                <if test="condition.lastModifier.op=='in'">
+                    <foreach collection="condition.lastModifier.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
             </if>
             <if test="condition.lastModDate!=null">
-                ${condition.groupOp}   ${condition.lastModDate.field}  ${condition.lastModDate.op}  #{condition.lastModDate.data}
+                ${condition.groupOp}   ${condition.lastModDate.field}  ${condition.lastModDate.op}
+                <if test="condition.lastModDate.op!='in'"> #{condition.lastModDate.data} </if>
+                <if test="condition.lastModDate.op=='in'">
+                    <foreach collection="condition.lastModDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
             </if>
             <if test="condition.description!=null">
-                ${condition.groupOp}   ${condition.description.field}  ${condition.description.op}  #{condition.description.data}
+                ${condition.groupOp}   ${condition.description.field}  ${condition.description.op}
+                <if test="condition.description.op!='in'"> #{condition.description.data} </if>
+                <if test="condition.description.op=='in'">
+                    <foreach collection="condition.description.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
             </if>
 
 
@@ -350,6 +411,9 @@ pagingByCriteria
                     </if>
                     <if test="selector.name!=null">
                         , name
+                    </if>
+                    <if test="selector.status!=null">
+                        , status
                     </if>
                     <if test="selector.creator!=null">
                         , creator
@@ -378,6 +442,9 @@ pagingByCriteria
             </if>
             <if test="condition.name!=null">
                 AND name like CONCAT('%', #{condition.name} , '%')
+            </if>
+            <if test="condition.status!=null">
+                AND status like CONCAT('%', #{condition.status} , '%')
             </if>
             <if test="condition.creator!=null">
                 AND creator like CONCAT('%', #{condition.creator} , '%')
@@ -411,6 +478,9 @@ pagingByCriteria
                     <if test="selector.name!=null">
                         , name
                     </if>
+                    <if test="selector.status!=null">
+                        , status
+                    </if>
                     <if test="selector.creator!=null">
                         , creator
                     </if>
@@ -438,6 +508,9 @@ pagingByCriteria
             </if>
             <if test="condition.name!=null">
                 AND name = #{condition.name}
+            </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
             </if>
             <if test="condition.creator!=null">
                 AND creator = #{condition.creator}
@@ -470,6 +543,9 @@ pagingByCriteria
                     <if test="selector.name!=null">
                         , name
                     </if>
+                    <if test="selector.status!=null">
+                        , status
+                    </if>
                     <if test="selector.creator!=null">
                         , creator
                     </if>
@@ -498,6 +574,9 @@ pagingByCriteria
             <if test="condition.name!=null">
                 AND name = #{condition.name}
             </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
+            </if>
             <if test="condition.creator!=null">
                 AND creator = #{condition.creator}
             </if>
@@ -524,25 +603,60 @@ pagingByCriteria
         SELECT count(id) FROM dap_role
        <where>
            <if test="id!=null">
-               ${groupOp} ${id.field} ${id.op}  #{id.data}
+               ${groupOp} ${id.field} ${id.op}
+               <if test="condition.id.op!='in'"> #{id.data} </if>
+               <if test="condition.id.op=='in'">
+                   <foreach collection="condition.id.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
            </if>
            <if test="name!=null">
-               ${groupOp} ${name.field} ${name.op}  #{name.data}
+               ${groupOp} ${name.field} ${name.op}
+               <if test="condition.name.op!='in'"> #{name.data} </if>
+               <if test="condition.name.op=='in'">
+                   <foreach collection="condition.name.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
+           </if>
+           <if test="status!=null">
+               ${groupOp} ${status.field} ${status.op}
+               <if test="condition.status.op!='in'"> #{status.data} </if>
+               <if test="condition.status.op=='in'">
+                   <foreach collection="condition.status.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
            </if>
            <if test="creator!=null">
-               ${groupOp} ${creator.field} ${creator.op}  #{creator.data}
+               ${groupOp} ${creator.field} ${creator.op}
+               <if test="condition.creator.op!='in'"> #{creator.data} </if>
+               <if test="condition.creator.op=='in'">
+                   <foreach collection="condition.creator.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
            </if>
            <if test="createDate!=null">
-               ${groupOp} ${createDate.field} ${createDate.op}  #{createDate.data}
+               ${groupOp} ${createDate.field} ${createDate.op}
+               <if test="condition.createDate.op!='in'"> #{createDate.data} </if>
+               <if test="condition.createDate.op=='in'">
+                   <foreach collection="condition.createDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
            </if>
            <if test="lastModifier!=null">
-               ${groupOp} ${lastModifier.field} ${lastModifier.op}  #{lastModifier.data}
+               ${groupOp} ${lastModifier.field} ${lastModifier.op}
+               <if test="condition.lastModifier.op!='in'"> #{lastModifier.data} </if>
+               <if test="condition.lastModifier.op=='in'">
+                   <foreach collection="condition.lastModifier.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
            </if>
            <if test="lastModDate!=null">
-               ${groupOp} ${lastModDate.field} ${lastModDate.op}  #{lastModDate.data}
+               ${groupOp} ${lastModDate.field} ${lastModDate.op}
+               <if test="condition.lastModDate.op!='in'"> #{lastModDate.data} </if>
+               <if test="condition.lastModDate.op=='in'">
+                   <foreach collection="condition.lastModDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
            </if>
            <if test="description!=null">
-               ${groupOp} ${description.field} ${description.op}  #{description.data}
+               ${groupOp} ${description.field} ${description.op}
+               <if test="condition.description.op!='in'"> #{description.data} </if>
+               <if test="condition.description.op=='in'">
+                   <foreach collection="condition.description.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
            </if>
 
        </where>
@@ -560,27 +674,30 @@ pagingByCriteria
         <choose>
             <when test="selector!=null and selector.size() > 0">
                 <trim prefixOverrides=",">
-                    <if test="selector.id!=null">
-                        , id
-                    </if>
-                    <if test="selector.name!=null">
-                        , name
-                    </if>
-                    <if test="selector.creator!=null">
-                        , creator
-                    </if>
-                    <if test="selector.createDate!=null">
-                        , createDate
-                    </if>
-                    <if test="selector.lastModifier!=null">
-                        , lastModifier
-                    </if>
-                    <if test="selector.lastModDate!=null">
-                        , lastModDate
-                    </if>
-                    <if test="selector.description!=null">
-                        , description
-                    </if>
+                        <if test="selector.id!=null">
+                            , id
+                        </if>
+                        <if test="selector.name!=null">
+                            , name
+                        </if>
+                        <if test="selector.status!=null">
+                            , status
+                        </if>
+                        <if test="selector.creator!=null">
+                            , creator
+                        </if>
+                        <if test="selector.createDate!=null">
+                            , createDate
+                        </if>
+                        <if test="selector.lastModifier!=null">
+                            , lastModifier
+                        </if>
+                        <if test="selector.lastModDate!=null">
+                            , lastModDate
+                        </if>
+                        <if test="selector.description!=null">
+                            , description
+                        </if>
                 </trim>
             </when>
             <otherwise>
@@ -615,27 +732,30 @@ pagingByCriteria
         <choose>
             <when test="selector!=null and selector.size() > 0">
                 <trim prefixOverrides=",">
-                    <if test="selector.id!=null">
-                        , id
-                    </if>
-                    <if test="selector.name!=null">
-                        , name
-                    </if>
-                    <if test="selector.creator!=null">
-                        , creator
-                    </if>
-                    <if test="selector.createDate!=null">
-                        , createDate
-                    </if>
-                    <if test="selector.lastModifier!=null">
-                        , lastModifier
-                    </if>
-                    <if test="selector.lastModDate!=null">
-                        , lastModDate
-                    </if>
-                    <if test="selector.description!=null">
-                        , description
-                    </if>
+                        <if test="selector.id!=null">
+                            , id
+                        </if>
+                        <if test="selector.name!=null">
+                            , name
+                        </if>
+                        <if test="selector.status!=null">
+                            , status
+                        </if>
+                        <if test="selector.creator!=null">
+                            , creator
+                        </if>
+                        <if test="selector.createDate!=null">
+                            , createDate
+                        </if>
+                        <if test="selector.lastModifier!=null">
+                            , lastModifier
+                        </if>
+                        <if test="selector.lastModDate!=null">
+                            , lastModDate
+                        </if>
+                        <if test="selector.description!=null">
+                            , description
+                        </if>
                 </trim>
             </when>
             <otherwise>
@@ -660,27 +780,30 @@ pagingByCriteria
         <choose>
             <when test="selector!=null and selector.size() > 0">
                 <trim prefixOverrides=",">
-                    <if test="selector.id!=null">
-                        , id
-                    </if>
-                    <if test="selector.name!=null">
-                        , name
-                    </if>
-                    <if test="selector.creator!=null">
-                        , creator
-                    </if>
-                    <if test="selector.createDate!=null">
-                        , createDate
-                    </if>
-                    <if test="selector.lastModifier!=null">
-                        , lastModifier
-                    </if>
-                    <if test="selector.lastModDate!=null">
-                        , lastModDate
-                    </if>
-                    <if test="selector.description!=null">
-                        , description
-                    </if>
+                        <if test="selector.id!=null">
+                            , id
+                        </if>
+                        <if test="selector.name!=null">
+                            , name
+                        </if>
+                        <if test="selector.status!=null">
+                            , status
+                        </if>
+                        <if test="selector.creator!=null">
+                            , creator
+                        </if>
+                        <if test="selector.createDate!=null">
+                            , createDate
+                        </if>
+                        <if test="selector.lastModifier!=null">
+                            , lastModifier
+                        </if>
+                        <if test="selector.lastModDate!=null">
+                            , lastModDate
+                        </if>
+                        <if test="selector.description!=null">
+                            , description
+                        </if>
                 </trim>
             </when>
             <otherwise>
@@ -701,6 +824,47 @@ pagingByCriteria
             limit ${first - 1},${last - first}
         </if>
     </select>
+
+    <update id="updateByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria">
+        UPDATE dap_role
+        <trim prefix="SET" suffixOverrides=",">
+                <if test="entityMap.name!=null">
+                    name = #{entityMap.name},
+                </if>
+                <if test="entityMap.status!=null">
+                    status = #{entityMap.status},
+                </if>
+                <if test="entityMap.creator!=null">
+                    creator = #{entityMap.creator},
+                </if>
+                <if test="entityMap.createDate!=null">
+                    createDate = #{entityMap.createDate},
+                </if>
+                <if test="entityMap.lastModifier!=null">
+                    lastModifier = #{entityMap.lastModifier},
+                </if>
+                <if test="entityMap.lastModDate!=null">
+                    lastModDate = #{entityMap.lastModDate},
+                </if>
+                <if test="entityMap.description!=null">
+                    description = #{entityMap.description},
+                </if>
+        </trim>
+        <if test="_parameter != null" >
+            <where >
+                <include refid="Global.Where_Clause" />
+            </where>
+        </if>
+    </update>
+
+    <delete id="deleteByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria">
+        DELETE FROM dap_role
+        <if test="_parameter != null" >
+            <where >
+                <include refid="Global.Where_Clause" />
+            </where>
+        </if>
+    </delete>
 
 </mapper>
 

@@ -133,16 +133,6 @@ public class MockPersistenceProvider implements IPersistenceProvider {
     }
 
     @Override
-    public List findByCriteria(Criteria criteria) {
-        return null;
-    }
-
-    @Override
-    public BaseDomain findOneByCriteria(Criteria criteria) {
-        return null;
-    }
-
-    @Override
     public int updateByCondition(Map updateMap, Map conditionMap) {
 
         return 0;
@@ -243,5 +233,25 @@ public class MockPersistenceProvider implements IPersistenceProvider {
     @Override
     public void verifyData(Map<String, Object> dataMap) {
 
+    }
+
+    @Override
+    public List findByCriteria(Criteria criteria) {
+        return null;
+    }
+
+    @Override
+    public BaseDomain findOneByCriteria(Criteria criteria) {
+        return null;
+    }
+
+    @Override
+    public int updateByCriteria(Criteria criteria) {
+        return 0;
+    }
+
+    @Override
+    public int deleteByCriteria(Criteria criteria) {
+        return 0;
     }
 }

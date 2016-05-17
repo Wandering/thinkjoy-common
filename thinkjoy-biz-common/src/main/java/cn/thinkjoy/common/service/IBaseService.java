@@ -4,7 +4,6 @@ import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -285,4 +284,18 @@ public interface IBaseService<D extends IBaseDAO,T extends BaseDomain>{
      * @return T
      */
     public T findOneByCriteria(Criteria criteria);
+
+    /**
+     * 通过Criteria条件修改实体
+     * @param criteria
+     * @return int
+     */
+    public int updateByCriteria(Criteria criteria);
+
+    /**
+     * 通过Criteria条件删除
+     * @param criteria
+     * @return int
+     */
+    public int deleteByCriteria(Criteria criteria);
 }

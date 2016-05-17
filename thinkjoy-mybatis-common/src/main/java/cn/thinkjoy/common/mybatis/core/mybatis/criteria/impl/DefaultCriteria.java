@@ -36,6 +36,11 @@ public class DefaultCriteria implements Criteria, Serializable {
 
 	protected Set<Object> selector = new HashSet<>();
 
+	/**
+	 * updateByCriteria时使用
+	 */
+	protected Map<Object, Object> entityMap = new HashMap<>();
+
 	public Criteria limit(Long start, Long end) {
 		this.start = start;
 		this.end = end;
@@ -141,5 +146,19 @@ public class DefaultCriteria implements Criteria, Serializable {
 
 	public Pagination getPagination() {
 		return this.pagination;
+	}
+
+	public Criteria addUpdateParam(Object paramName, Object value){
+		this.entityMap.put(paramName, value);
+		return this;
+	}
+
+	public Criteria addUpdateParam(Map<Object, Object> updateParams){
+		this.entityMap.putAll(updateParams);
+		return this;
+	}
+
+	public Map<Object, Object> getEntityMap() {
+		return entityMap;
 	}
 }

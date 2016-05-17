@@ -137,6 +137,23 @@ public interface Criteria {
 	Criteria addParams(Object... values);
 
 	/**
+	 * 增加更新的字段
+	 *
+	 * @param paramName
+	 * @param value
+	 * @return
+	 */
+	Criteria addUpdateParam(Object paramName, Object value);
+
+	/**
+	 * 增加更新的字段
+	 *
+	 * @param updateParams
+	 * @return
+	 */
+	Criteria addUpdateParam(Map<Object, Object> updateParams);
+
+	/**
 	 * 增加自定义查询字段
 	 * @param selector
 	 * @return

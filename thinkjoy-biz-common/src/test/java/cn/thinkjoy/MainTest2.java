@@ -31,6 +31,8 @@ public class MainTest2 {
 			List<Product> products3 = dao.findByCriteria(Cnd.builder(Product.class).andEQ("id", 1).andEQ("name", "成长帮手").andLike("linkUrl", "www").buildCriteria());
 			System.out.println(products3.size()+"-----");
 
+			Product p = dao.findOneByCriteria(Cnd.builder(Product.class).andEQ("id", 1).buildCriteria());
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

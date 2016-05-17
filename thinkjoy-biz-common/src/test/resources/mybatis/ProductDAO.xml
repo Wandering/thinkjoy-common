@@ -3,10 +3,31 @@
 
 <mapper namespace="cn.thinkjoy.dao.IProductDAO">
 <!--
+insert
+update
+updateNull
+deleteById
+deleteByCondition
+deleteByProperty
+fetch
+findOne
+findList
+findAll
+queryPage
+like
+queryList
+queryOne
+count
+selectMaxId
+updateOrSave
+selectOne
+selectList
 findByCriteria
 countByCriteria
 findOneByCriteria
 pagingByCriteria
+updateByCriteria
+deleteByCriteria
 -->
 
     <sql id="Base_Column_List">
@@ -14,19 +35,439 @@ pagingByCriteria
         name as name ,
         linkUrl as linkUrl ,
         section as section ,
+        status as status ,
         creator as creator ,
         createDate as createDate ,
         lastModifier as lastModifier ,
         lastModDate as lastModDate ,
         description as description 
     </sql>
+    <insert id="insert" parameterType="Product">
+        INSERT INTO dap_product (
+        name,
+        linkUrl,
+        section,
+        status,
+        creator,
+        createDate,
+        lastModifier,
+        lastModDate,
+        description
+        ) VALUES (
+        #{name},
+        #{linkUrl},
+        #{section},
+        #{status},
+        #{creator},
+        #{createDate},
+        #{lastModifier},
+        #{lastModDate},
+        #{description}
+        )
+            <selectKey resultType="java.lang.Integer" keyProperty="id">
+                SELECT LAST_INSERT_ID() AS ID
+            </selectKey>
+    </insert>
 
-    <select id="findByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria"
-            resultType="Product" >
-        select
-        <choose>
-            <when test="selector!=null and selector.size() > 0">
-                <trim prefixOverrides=",">
+    <!-- 更新 -->
+    <update id="update" parameterType="Product">
+        UPDATE dap_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name!=null">
+                name = #{name},
+            </if>
+            <if test="linkUrl!=null">
+                linkUrl = #{linkUrl},
+            </if>
+            <if test="section!=null">
+                section = #{section},
+            </if>
+            <if test="status!=null">
+                status = #{status},
+            </if>
+            <if test="creator!=null">
+                creator = #{creator},
+            </if>
+            <if test="createDate!=null">
+                createDate = #{createDate},
+            </if>
+            <if test="lastModifier!=null">
+                lastModifier = #{lastModifier},
+            </if>
+            <if test="lastModDate!=null">
+                lastModDate = #{lastModDate},
+            </if>
+            <if test="description!=null">
+                description = #{description},
+            </if>
+        </trim>
+        WHERE
+        id = #{id}
+    </update>
+
+    <update id="updateMap">
+        UPDATE dap_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="map.name!=null">
+                name = #{map.name},
+            </if>
+            <if test="map.linkUrl!=null">
+                linkUrl = #{map.linkUrl},
+            </if>
+            <if test="map.section!=null">
+                section = #{map.section},
+            </if>
+            <if test="map.status!=null">
+                status = #{map.status},
+            </if>
+            <if test="map.creator!=null">
+                creator = #{map.creator},
+            </if>
+            <if test="map.createDate!=null">
+                createDate = #{map.createDate},
+            </if>
+            <if test="map.lastModifier!=null">
+                lastModifier = #{map.lastModifier},
+            </if>
+            <if test="map.lastModDate!=null">
+                lastModDate = #{map.lastModDate},
+            </if>
+            <if test="map.description!=null">
+                description = #{map.description},
+            </if>
+        </trim>
+        WHERE
+        id = #{map.id}
+    </update>
+
+    <update id="updateByCondition">
+        UPDATE dap_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="update.name!=null">
+                name = #{update.name},
+            </if>
+            <if test="update.linkUrl!=null">
+                linkUrl = #{update.linkUrl},
+            </if>
+            <if test="update.section!=null">
+                section = #{update.section},
+            </if>
+            <if test="update.status!=null">
+                status = #{update.status},
+            </if>
+            <if test="update.creator!=null">
+                creator = #{update.creator},
+            </if>
+            <if test="update.createDate!=null">
+                createDate = #{update.createDate},
+            </if>
+            <if test="update.lastModifier!=null">
+                lastModifier = #{update.lastModifier},
+            </if>
+            <if test="update.lastModDate!=null">
+                lastModDate = #{update.lastModDate},
+            </if>
+            <if test="update.description!=null">
+                description = #{update.description},
+            </if>
+        </trim>
+
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.name!=null">
+                AND name = #{condition.name}
+            </if>
+            <if test="condition.linkUrl!=null">
+                AND linkUrl = #{condition.linkUrl}
+            </if>
+            <if test="condition.section!=null">
+                AND section = #{condition.section}
+            </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
+            </if>
+            <if test="condition.creator!=null">
+                AND creator = #{condition.creator}
+            </if>
+            <if test="condition.createDate!=null">
+                AND createDate = #{condition.createDate}
+            </if>
+            <if test="condition.lastModifier!=null">
+                AND lastModifier = #{condition.lastModifier}
+            </if>
+            <if test="condition.lastModDate!=null">
+                AND lastModDate = #{condition.lastModDate}
+            </if>
+            <if test="condition.description!=null">
+                AND description = #{condition.description}
+            </if>
+        </trim>
+    </update>
+
+    <insert id="insertMap" >
+        INSERT INTO dap_product (
+                name,
+                linkUrl,
+                section,
+                status,
+                creator,
+                createDate,
+                lastModifier,
+                lastModDate,
+                description
+        ) VALUES (
+                    #{map.name},
+                    #{map.linkUrl},
+                    #{map.section},
+                    #{map.status},
+                    #{map.creator},
+                    #{map.createDate},
+                    #{map.lastModifier},
+                    #{map.lastModDate},
+                    #{map.description}
+        )
+    </insert>
+
+
+    <update id="updateNull" parameterType="Product">
+        UPDATE dap_product
+        <trim prefix="SET" suffixOverrides=",">
+            name = #{name},
+            linkUrl = #{linkUrl},
+            section = #{section},
+            status = #{status},
+            creator = #{creator},
+            createDate = #{createDate},
+            lastModifier = #{lastModifier},
+            lastModDate = #{lastModDate},
+            description = #{description},
+        </trim>
+        WHERE
+        id = #{id} 
+    </update>
+
+    <!-- 按Id删除 -->
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        DELETE FROM dap_product
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+    </delete>
+
+
+    <delete id="deleteByCondition" parameterType="java.util.Map">
+        DELETE FROM dap_product
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="id!=null">
+                AND id = #{id}
+            </if>
+            <if test="name!=null">
+                AND name = #{name}
+            </if>
+            <if test="linkUrl!=null">
+                AND linkUrl = #{linkUrl}
+            </if>
+            <if test="section!=null">
+                AND section = #{section}
+            </if>
+            <if test="status!=null">
+                AND status = #{status}
+            </if>
+            <if test="creator!=null">
+                AND creator = #{creator}
+            </if>
+            <if test="createDate!=null">
+                AND createDate = #{createDate}
+            </if>
+            <if test="lastModifier!=null">
+                AND lastModifier = #{lastModifier}
+            </if>
+            <if test="lastModDate!=null">
+                AND lastModDate = #{lastModDate}
+            </if>
+            <if test="description!=null">
+                AND description = #{description}
+            </if>
+        </trim>
+    </delete>
+
+    <delete id="deleteByProperty" parameterType="java.util.Map">
+        DELETE FROM dap_product WHERE
+        ${property} = #{value}
+    </delete>
+
+    <select id="fetch" parameterType="java.lang.Integer" resultType="Product">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dap_product
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+    </select>
+
+    <select id="findOne" parameterType="java.util.Map" resultType="Product">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dap_product WHERE
+        ${property} = #{value}
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        LIMIT 0,1
+    </select>
+
+    <select id="findList" parameterType="java.util.Map" resultType="Product">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dap_product WHERE
+        ${property} = #{value}
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findAll" resultType="Product">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM dap_product
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryPage" resultType="Product">
+        SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                        <if test="selector.id!=null">
+                            , id
+                        </if>
+                        <if test="selector.name!=null">
+                            , name
+                        </if>
+                        <if test="selector.linkUrl!=null">
+                            , linkUrl
+                        </if>
+                        <if test="selector.section!=null">
+                            , section
+                        </if>
+                        <if test="selector.status!=null">
+                            , status
+                        </if>
+                        <if test="selector.creator!=null">
+                            , creator
+                        </if>
+                        <if test="selector.createDate!=null">
+                            , createDate
+                        </if>
+                        <if test="selector.lastModifier!=null">
+                            , lastModifier
+                        </if>
+                        <if test="selector.lastModDate!=null">
+                            , lastModDate
+                        </if>
+                        <if test="selector.description!=null">
+                            , description
+                        </if>
+            </trim>
+        </if>
+        <if test="selector==null">
+        <include refid="Base_Column_List" />
+        </if>
+        FROM dap_product
+        <where>
+
+            <if test="condition.whereSql != null">
+                and id in (#{condition.whereSql})
+            </if>
+
+            <if test="condition.id!=null">
+                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op}
+                <if test="condition.id.op!='in'"> #{condition.id.data} </if>
+                <if test="condition.id.op=='in'">
+                    <foreach collection="condition.id.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.name!=null">
+                ${condition.groupOp}   ${condition.name.field}  ${condition.name.op}
+                <if test="condition.name.op!='in'"> #{condition.name.data} </if>
+                <if test="condition.name.op=='in'">
+                    <foreach collection="condition.name.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.linkUrl!=null">
+                ${condition.groupOp}   ${condition.linkUrl.field}  ${condition.linkUrl.op}
+                <if test="condition.linkUrl.op!='in'"> #{condition.linkUrl.data} </if>
+                <if test="condition.linkUrl.op=='in'">
+                    <foreach collection="condition.linkUrl.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.section!=null">
+                ${condition.groupOp}   ${condition.section.field}  ${condition.section.op}
+                <if test="condition.section.op!='in'"> #{condition.section.data} </if>
+                <if test="condition.section.op=='in'">
+                    <foreach collection="condition.section.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.status!=null">
+                ${condition.groupOp}   ${condition.status.field}  ${condition.status.op}
+                <if test="condition.status.op!='in'"> #{condition.status.data} </if>
+                <if test="condition.status.op=='in'">
+                    <foreach collection="condition.status.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.creator!=null">
+                ${condition.groupOp}   ${condition.creator.field}  ${condition.creator.op}
+                <if test="condition.creator.op!='in'"> #{condition.creator.data} </if>
+                <if test="condition.creator.op=='in'">
+                    <foreach collection="condition.creator.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.createDate!=null">
+                ${condition.groupOp}   ${condition.createDate.field}  ${condition.createDate.op}
+                <if test="condition.createDate.op!='in'"> #{condition.createDate.data} </if>
+                <if test="condition.createDate.op=='in'">
+                    <foreach collection="condition.createDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.lastModifier!=null">
+                ${condition.groupOp}   ${condition.lastModifier.field}  ${condition.lastModifier.op}
+                <if test="condition.lastModifier.op!='in'"> #{condition.lastModifier.data} </if>
+                <if test="condition.lastModifier.op=='in'">
+                    <foreach collection="condition.lastModifier.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.lastModDate!=null">
+                ${condition.groupOp}   ${condition.lastModDate.field}  ${condition.lastModDate.op}
+                <if test="condition.lastModDate.op!='in'"> #{condition.lastModDate.data} </if>
+                <if test="condition.lastModDate.op=='in'">
+                    <foreach collection="condition.lastModDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+            <if test="condition.description!=null">
+                ${condition.groupOp}   ${condition.description.field}  ${condition.description.op}
+                <if test="condition.description.op!='in'"> #{condition.description.data} </if>
+                <if test="condition.description.op=='in'">
+                    <foreach collection="condition.description.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+                </if>
+            </if>
+
+
+    </where>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="like" parameterType="java.util.Map" resultType="Product">
+        SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
                     <if test="selector.id!=null">
                         , id
                     </if>
@@ -38,6 +479,9 @@ pagingByCriteria
                     </if>
                     <if test="selector.section!=null">
                         , section
+                    </if>
+                    <if test="selector.status!=null">
+                        , status
                     </if>
                     <if test="selector.creator!=null">
                         , creator
@@ -54,6 +498,324 @@ pagingByCriteria
                     <if test="selector.description!=null">
                         , description
                     </if>
+            </trim>
+        </if>
+        <if test="selector==null">
+            <include refid="Base_Column_List" />
+        </if>
+        FROM dap_product
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id like CONCAT('%', #{condition.id} , '%')
+            </if>
+            <if test="condition.name!=null">
+                AND name like CONCAT('%', #{condition.name} , '%')
+            </if>
+            <if test="condition.linkUrl!=null">
+                AND linkUrl like CONCAT('%', #{condition.linkUrl} , '%')
+            </if>
+            <if test="condition.section!=null">
+                AND section like CONCAT('%', #{condition.section} , '%')
+            </if>
+            <if test="condition.status!=null">
+                AND status like CONCAT('%', #{condition.status} , '%')
+            </if>
+            <if test="condition.creator!=null">
+                AND creator like CONCAT('%', #{condition.creator} , '%')
+            </if>
+            <if test="condition.createDate!=null">
+                AND createDate like CONCAT('%', #{condition.createDate} , '%')
+            </if>
+            <if test="condition.lastModifier!=null">
+                AND lastModifier like CONCAT('%', #{condition.lastModifier} , '%')
+            </if>
+            <if test="condition.lastModDate!=null">
+                AND lastModDate like CONCAT('%', #{condition.lastModDate} , '%')
+            </if>
+            <if test="condition.description!=null">
+                AND description like CONCAT('%', #{condition.description} , '%')
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+
+    <select id="queryList" parameterType="java.util.Map" resultType="Product">
+        SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                    <if test="selector.id!=null">
+                        , id
+                    </if>
+                    <if test="selector.name!=null">
+                        , name
+                    </if>
+                    <if test="selector.linkUrl!=null">
+                        , linkUrl
+                    </if>
+                    <if test="selector.section!=null">
+                        , section
+                    </if>
+                    <if test="selector.status!=null">
+                        , status
+                    </if>
+                    <if test="selector.creator!=null">
+                        , creator
+                    </if>
+                    <if test="selector.createDate!=null">
+                        , createDate
+                    </if>
+                    <if test="selector.lastModifier!=null">
+                        , lastModifier
+                    </if>
+                    <if test="selector.lastModDate!=null">
+                        , lastModDate
+                    </if>
+                    <if test="selector.description!=null">
+                        , description
+                    </if>
+            </trim>
+        </if>
+        <if test="selector==null">
+        <include refid="Base_Column_List" />
+        </if>
+        FROM dap_product
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.name!=null">
+                AND name = #{condition.name}
+            </if>
+            <if test="condition.linkUrl!=null">
+                AND linkUrl = #{condition.linkUrl}
+            </if>
+            <if test="condition.section!=null">
+                AND section = #{condition.section}
+            </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
+            </if>
+            <if test="condition.creator!=null">
+                AND creator = #{condition.creator}
+            </if>
+            <if test="condition.createDate!=null">
+                AND createDate = #{condition.createDate}
+            </if>
+            <if test="condition.lastModifier!=null">
+                AND lastModifier = #{condition.lastModifier}
+            </if>
+            <if test="condition.lastModDate!=null">
+                AND lastModDate = #{condition.lastModDate}
+            </if>
+            <if test="condition.description!=null">
+                AND description = #{condition.description}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryOne" parameterType="java.util.Map" resultType="Product">
+        SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                    <if test="selector.id!=null">
+                        , id
+                    </if>
+                    <if test="selector.name!=null">
+                        , name
+                    </if>
+                    <if test="selector.linkUrl!=null">
+                        , linkUrl
+                    </if>
+                    <if test="selector.section!=null">
+                        , section
+                    </if>
+                    <if test="selector.status!=null">
+                        , status
+                    </if>
+                    <if test="selector.creator!=null">
+                        , creator
+                    </if>
+                    <if test="selector.createDate!=null">
+                        , createDate
+                    </if>
+                    <if test="selector.lastModifier!=null">
+                        , lastModifier
+                    </if>
+                    <if test="selector.lastModDate!=null">
+                        , lastModDate
+                    </if>
+                    <if test="selector.description!=null">
+                        , description
+                    </if>
+            </trim>
+        </if>
+        <if test="selector==null">
+            <include refid="Base_Column_List" />
+        </if>
+        FROM dap_product
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.name!=null">
+                AND name = #{condition.name}
+            </if>
+            <if test="condition.linkUrl!=null">
+                AND linkUrl = #{condition.linkUrl}
+            </if>
+            <if test="condition.section!=null">
+                AND section = #{condition.section}
+            </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
+            </if>
+            <if test="condition.creator!=null">
+                AND creator = #{condition.creator}
+            </if>
+            <if test="condition.createDate!=null">
+                AND createDate = #{condition.createDate}
+            </if>
+            <if test="condition.lastModifier!=null">
+                AND lastModifier = #{condition.lastModifier}
+            </if>
+            <if test="condition.lastModDate!=null">
+                AND lastModDate = #{condition.lastModDate}
+            </if>
+            <if test="condition.description!=null">
+                AND description = #{condition.description}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+        limit 0,1
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(id) FROM dap_product
+       <where>
+           <if test="id!=null">
+               ${groupOp} ${id.field} ${id.op}
+               <if test="condition.id.op!='in'"> #{id.data} </if>
+               <if test="condition.id.op=='in'">
+                   <foreach collection="condition.id.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
+           </if>
+           <if test="name!=null">
+               ${groupOp} ${name.field} ${name.op}
+               <if test="condition.name.op!='in'"> #{name.data} </if>
+               <if test="condition.name.op=='in'">
+                   <foreach collection="condition.name.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
+           </if>
+           <if test="linkUrl!=null">
+               ${groupOp} ${linkUrl.field} ${linkUrl.op}
+               <if test="condition.linkUrl.op!='in'"> #{linkUrl.data} </if>
+               <if test="condition.linkUrl.op=='in'">
+                   <foreach collection="condition.linkUrl.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
+           </if>
+           <if test="section!=null">
+               ${groupOp} ${section.field} ${section.op}
+               <if test="condition.section.op!='in'"> #{section.data} </if>
+               <if test="condition.section.op=='in'">
+                   <foreach collection="condition.section.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
+           </if>
+           <if test="status!=null">
+               ${groupOp} ${status.field} ${status.op}
+               <if test="condition.status.op!='in'"> #{status.data} </if>
+               <if test="condition.status.op=='in'">
+                   <foreach collection="condition.status.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
+           </if>
+           <if test="creator!=null">
+               ${groupOp} ${creator.field} ${creator.op}
+               <if test="condition.creator.op!='in'"> #{creator.data} </if>
+               <if test="condition.creator.op=='in'">
+                   <foreach collection="condition.creator.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
+           </if>
+           <if test="createDate!=null">
+               ${groupOp} ${createDate.field} ${createDate.op}
+               <if test="condition.createDate.op!='in'"> #{createDate.data} </if>
+               <if test="condition.createDate.op=='in'">
+                   <foreach collection="condition.createDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
+           </if>
+           <if test="lastModifier!=null">
+               ${groupOp} ${lastModifier.field} ${lastModifier.op}
+               <if test="condition.lastModifier.op!='in'"> #{lastModifier.data} </if>
+               <if test="condition.lastModifier.op=='in'">
+                   <foreach collection="condition.lastModifier.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
+           </if>
+           <if test="lastModDate!=null">
+               ${groupOp} ${lastModDate.field} ${lastModDate.op}
+               <if test="condition.lastModDate.op!='in'"> #{lastModDate.data} </if>
+               <if test="condition.lastModDate.op=='in'">
+                   <foreach collection="condition.lastModDate.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
+           </if>
+           <if test="description!=null">
+               ${groupOp} ${description.field} ${description.op}
+               <if test="condition.description.op!='in'"> #{description.data} </if>
+               <if test="condition.description.op=='in'">
+                   <foreach collection="condition.description.data" item="listItem" open="(" close=")" separator="," >#{listItem}</foreach>
+               </if>
+           </if>
+
+       </where>
+    </select>
+
+    <select id="selectMaxId" resultType="java.lang.Integer">
+        SELECT
+        MAX(id)
+        FROM dap_product
+    </select>
+
+    <select id="findByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria"
+            resultType="Product" >
+        select
+        <choose>
+            <when test="selector!=null and selector.size() > 0">
+                <trim prefixOverrides=",">
+                        <if test="selector.id!=null">
+                            , id
+                        </if>
+                        <if test="selector.name!=null">
+                            , name
+                        </if>
+                        <if test="selector.linkUrl!=null">
+                            , linkUrl
+                        </if>
+                        <if test="selector.section!=null">
+                            , section
+                        </if>
+                        <if test="selector.status!=null">
+                            , status
+                        </if>
+                        <if test="selector.creator!=null">
+                            , creator
+                        </if>
+                        <if test="selector.createDate!=null">
+                            , createDate
+                        </if>
+                        <if test="selector.lastModifier!=null">
+                            , lastModifier
+                        </if>
+                        <if test="selector.lastModDate!=null">
+                            , lastModDate
+                        </if>
+                        <if test="selector.description!=null">
+                            , description
+                        </if>
                 </trim>
             </when>
             <otherwise>
@@ -85,10 +847,9 @@ pagingByCriteria
 
     <select id="findOneByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria" resultType="Product" >
         select
-        <if test="selector!=null">
-            <choose>
-                <when test="selector!=null and selector.size() > 0">
-                    <trim prefixOverrides=",">
+        <choose>
+            <when test="selector!=null and selector.size() > 0">
+                <trim prefixOverrides=",">
                         <if test="selector.id!=null">
                             , id
                         </if>
@@ -100,6 +861,9 @@ pagingByCriteria
                         </if>
                         <if test="selector.section!=null">
                             , section
+                        </if>
+                        <if test="selector.status!=null">
+                            , status
                         </if>
                         <if test="selector.creator!=null">
                             , creator
@@ -116,16 +880,12 @@ pagingByCriteria
                         <if test="selector.description!=null">
                             , description
                         </if>
-                    </trim>
-                </when>
-                <otherwise>
-                    <include refid="Base_Column_List" />
-                </otherwise>
-            </choose>
-        </if>
-        <if test="selector==null">
-            <include refid="Base_Column_List" />
-        </if>
+                </trim>
+            </when>
+            <otherwise>
+                <include refid="Base_Column_List" />
+            </otherwise>
+        </choose>
         from dap_product
         <if test="_parameter != null" >
             <where >
@@ -144,33 +904,36 @@ pagingByCriteria
         <choose>
             <when test="selector!=null and selector.size() > 0">
                 <trim prefixOverrides=",">
-                    <if test="selector.id!=null">
-                        , id
-                    </if>
-                    <if test="selector.name!=null">
-                        , name
-                    </if>
-                    <if test="selector.linkUrl!=null">
-                        , linkUrl
-                    </if>
-                    <if test="selector.section!=null">
-                        , section
-                    </if>
-                    <if test="selector.creator!=null">
-                        , creator
-                    </if>
-                    <if test="selector.createDate!=null">
-                        , createDate
-                    </if>
-                    <if test="selector.lastModifier!=null">
-                        , lastModifier
-                    </if>
-                    <if test="selector.lastModDate!=null">
-                        , lastModDate
-                    </if>
-                    <if test="selector.description!=null">
-                        , description
-                    </if>
+                        <if test="selector.id!=null">
+                            , id
+                        </if>
+                        <if test="selector.name!=null">
+                            , name
+                        </if>
+                        <if test="selector.linkUrl!=null">
+                            , linkUrl
+                        </if>
+                        <if test="selector.section!=null">
+                            , section
+                        </if>
+                        <if test="selector.status!=null">
+                            , status
+                        </if>
+                        <if test="selector.creator!=null">
+                            , creator
+                        </if>
+                        <if test="selector.createDate!=null">
+                            , createDate
+                        </if>
+                        <if test="selector.lastModifier!=null">
+                            , lastModifier
+                        </if>
+                        <if test="selector.lastModDate!=null">
+                            , lastModDate
+                        </if>
+                        <if test="selector.description!=null">
+                            , description
+                        </if>
                 </trim>
             </when>
             <otherwise>
@@ -191,6 +954,53 @@ pagingByCriteria
             limit ${first - 1},${last - first}
         </if>
     </select>
+
+    <update id="updateByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria">
+        UPDATE dap_product
+        <trim prefix="SET" suffixOverrides=",">
+                <if test="name!=null">
+                    name = #{name},
+                </if>
+                <if test="linkUrl!=null">
+                    linkUrl = #{linkUrl},
+                </if>
+                <if test="section!=null">
+                    section = #{section},
+                </if>
+                <if test="status!=null">
+                    status = #{status},
+                </if>
+                <if test="creator!=null">
+                    creator = #{creator},
+                </if>
+                <if test="createDate!=null">
+                    createDate = #{createDate},
+                </if>
+                <if test="lastModifier!=null">
+                    lastModifier = #{lastModifier},
+                </if>
+                <if test="lastModDate!=null">
+                    lastModDate = #{lastModDate},
+                </if>
+                <if test="description!=null">
+                    description = #{description},
+                </if>
+        </trim>
+        <if test="_parameter != null" >
+            <where >
+                <include refid="Global.Where_Clause" />
+            </where>
+        </if>
+    </update>
+
+    <delete id="deleteByCriteria" parameterType="cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria">
+        DELETE FROM dap_product
+        <if test="_parameter != null" >
+            <where >
+                <include refid="Global.Where_Clause" />
+            </where>
+        </if>
+    </delete>
 
 </mapper>
 

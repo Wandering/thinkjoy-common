@@ -328,4 +328,24 @@ public abstract class AbstractBaseService<D extends IBaseDAO, T extends BaseDoma
         return (T) getDao().findOneByCriteria(criteria);
     }
 
+    /**
+     * 通过Criteria条件修改实体
+     *
+     * @param criteria
+     * @return int
+     */
+    public int updateByCriteria(Criteria criteria) {
+        return getDao().updateByCriteria(criteria);
+    }
+
+    /**
+     * 通过Criteria条件删除
+     *
+     * @param criteria
+     * @return int
+     */
+    public int deleteByCriteria(Criteria criteria) {
+        return getDao().deleteByCriteria(criteria);
+    }
+
 }

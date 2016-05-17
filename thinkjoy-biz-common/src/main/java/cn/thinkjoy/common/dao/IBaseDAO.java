@@ -320,6 +320,20 @@ public interface IBaseDAO<T extends BaseDomain> {
     public List<T> pagingByCriteria(Criteria criteria);
 
     /**
+     * 通过Criteria条件修改实体
+     * @param criteria
+     * @return int
+     */
+    public int updateByCriteria(Criteria criteria);
+
+    /**
+     * 通过Criteria条件删除
+     * @param criteria
+     * @return int
+     */
+    public int deleteByCriteria(Criteria criteria);
+
+    /**
      * 取得泛型类型
      *
      * @return
