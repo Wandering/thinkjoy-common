@@ -153,6 +153,16 @@ public abstract class AbstractPersistenceProvider implements IPersistenceProvide
     }
 
     @Override
+    public int updateByCriteria(Criteria criteria) {
+        return getService().updateByCriteria(criteria);
+    }
+
+    @Override
+    public int deleteByCriteria(Criteria criteria) {
+        return getService().deleteByCriteria(criteria);
+    }
+
+    @Override
     public int updateByCondition(Map updateMap, Map conditionMap) {
         return getService().updateByCondition(updateMap, conditionMap);
     }
