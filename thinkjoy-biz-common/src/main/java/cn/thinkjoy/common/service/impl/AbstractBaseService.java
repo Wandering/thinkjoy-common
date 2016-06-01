@@ -3,11 +3,13 @@ package cn.thinkjoy.common.service.impl;
 import cn.thinkjoy.cache.spring.CacheConstants;
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
+import cn.thinkjoy.common.domain.BizStatusEnum;
 import cn.thinkjoy.common.domain.CreateBaseDomain;
 import cn.thinkjoy.common.mybatis.core.mybatis.criteria.Criteria;
 import cn.thinkjoy.common.service.IBaseService;
 import cn.thinkjoy.common.service.IDaoAware;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
+import cn.thinkjoy.common.utils.UserContext;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -233,8 +235,13 @@ public abstract class AbstractBaseService<D extends IBaseDAO, T extends BaseDoma
 
     private final T enhanceCreateBaseDomain(T entity) {
         if (entity instanceof CreateBaseDomain) {
-            ((CreateBaseDomain) entity).setLastModDate(System.currentTimeMillis());
-            //TODO 当前用户
+            CreateBaseDomain createBaseDomain = (CreateBaseDomain) entity;
+
+            if (createBaseDomain.getLastModifier() == null) {
+                //当前用户
+                createBaseDomain.setLastModifier(UserContext.getCurrentUser() != null ? UserContext.getCurrentUser().getId() : 0L);
+            }
+            createBaseDomain.setLastModDate(System.currentTimeMillis());
         }
 
         return entity;
@@ -242,36 +249,48 @@ public abstract class AbstractBaseService<D extends IBaseDAO, T extends BaseDoma
 
     private final T enhanceNewCreateBaseDomain(T entity) {
         if (entity instanceof CreateBaseDomain) {
+            CreateBaseDomain createBaseDomain = (CreateBaseDomain) entity;
             //设置默认值，如果默认值和common不一样，需要自行设置初始值
-            if (((CreateBaseDomain) entity).getCreateDate() == null) {
-                ((CreateBaseDomain) entity).setCreateDate(System.currentTimeMillis());
+            if (createBaseDomain.getStatus() == null) {
+                createBaseDomain.setStatus(BizStatusEnum.N.getCode());
             }
-            if (((CreateBaseDomain) entity).getStatus() == null) {
-                ((CreateBaseDomain) entity).setStatus(0);
+            if (createBaseDomain.getCreator() == null) {
+                //当前用户
+                createBaseDomain.setCreator(UserContext.getCurrentUser() != null ? UserContext.getCurrentUser().getId() : 0L);
             }
-            if (((CreateBaseDomain) entity).getLastModDate() == null) {
-                ((CreateBaseDomain) entity).setLastModDate(0l);
-            }
-            if (((CreateBaseDomain) entity).getCreator() == null) {
-                ((CreateBaseDomain) entity).setCreator(0l);
-            }
-            if (((CreateBaseDomain) entity).getLastModifier() == null) {
-                ((CreateBaseDomain) entity).setLastModifier(0l);
-            }
-            //TODO 当前用户
+
+            createBaseDomain.setCreateDate(System.currentTimeMillis());
+            createBaseDomain.setLastModifier(0L);
+            createBaseDomain.setLastModDate(0L);
         }
 
         return entity;
     }
 
     private final Map enhanceCreateBaseDomain(Map entityMap) {
+
+        if (!entityMap.containsKey("lastModifier")) {
+            //当前用户
+            entityMap.put("lastModifier", (UserContext.getCurrentUser() != null ? UserContext.getCurrentUser().getId() : 0L));
+        }
         entityMap.put("lastModDate", System.currentTimeMillis());
 
         return entityMap;
     }
 
     private final Map enhanceNewCreateBaseDomain(Map entityMap) {
+        //设置默认值，如果默认值和common不一样，需要自行设置初始值
+        if (!entityMap.containsKey("status")) {
+            entityMap.put("status", BizStatusEnum.N.getCode());
+        }
+        if (!entityMap.containsKey("creator")) {
+            //当前用户
+            entityMap.put("creator", (UserContext.getCurrentUser() != null ? UserContext.getCurrentUser().getId() : 0L));
+        }
+
         entityMap.put("createDate", System.currentTimeMillis());
+        entityMap.put("lastModifier", 0L);
+        entityMap.put("lastModDate", 0L);
 
         return entityMap;
     }
