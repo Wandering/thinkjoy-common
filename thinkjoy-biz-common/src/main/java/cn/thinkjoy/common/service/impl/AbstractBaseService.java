@@ -260,8 +260,10 @@ public abstract class AbstractBaseService<D extends IBaseDAO, T extends BaseDoma
             }
 
             createBaseDomain.setCreateDate(System.currentTimeMillis());
-            createBaseDomain.setLastModifier(0L);
-            createBaseDomain.setLastModDate(0L);
+            if (createBaseDomain.getLastModifier() == null) {
+                createBaseDomain.setLastModifier(UserContext.getCurrentUser() != null ? UserContext.getCurrentUser().getId() : 0L);
+            }
+            createBaseDomain.setLastModDate(System.currentTimeMillis());
         }
 
         return entity;
@@ -289,8 +291,10 @@ public abstract class AbstractBaseService<D extends IBaseDAO, T extends BaseDoma
         }
 
         entityMap.put("createDate", System.currentTimeMillis());
-        entityMap.put("lastModifier", 0L);
-        entityMap.put("lastModDate", 0L);
+        if (entityMap.containsKey("lastModifier")) {
+            entityMap.put("lastModifier", (UserContext.getCurrentUser() != null ? UserContext.getCurrentUser().getId() : 0L));
+        }
+        entityMap.put("lastModDate", System.currentTimeMillis());
 
         return entityMap;
     }
