@@ -96,6 +96,8 @@ public abstract class AbstractCommonController<T>  extends AbstractController{
             //做通用校验
             verifyData(dataMap, mainObj, true);
 
+            dataMap.put("creator", null);//修改时不修改
+            dataMap.put("createDate", null);//修改时不修改
             dataMap.put("lastModifier", UserContext.getCurrentUser().getId());
             dataMap.put("lastModDate", System.currentTimeMillis());
             //getMainService(mainObj).updateMap(dataMap);
