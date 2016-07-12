@@ -1,7 +1,7 @@
 allprojects {
     springVersion = "4.1.0.RELEASE"
 
-    thinkjoyCloudstackVersion = "0.0.36-SNAPSHOT"
+    thinkjoyCloudstackVersion = "0.0.37-SNAPSHOT"
     thinkjoyUtilsVersion = "0.0.7-SNAPSHOT"
 
     mybatisVerion = "3.2.2"
