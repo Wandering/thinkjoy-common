@@ -37,6 +37,18 @@ public class BizData4Page<T> implements Serializable {
     /** 返回的用户自定义数据 例如总计行？ */
     private Map<List,Object> userdata;
 
+    /** 返回的用户自定义数据 例如总计行？ userdata有问题 */
+    private Map<String,Object> customData;
+
+
+    public Map<String, Object> getCustomData() {
+        return customData;
+    }
+
+    public void setCustomData(Map<String, Object> customData) {
+        this.customData = customData;
+    }
+
     public int getPage() {
         return page;
     }
